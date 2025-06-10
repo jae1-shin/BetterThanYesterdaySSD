@@ -1,3 +1,10 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class TestConsole {
@@ -6,7 +13,37 @@ public class TestConsole {
         return "";
     }
 
+    public static List<String> loadBlocks(String content) throws Exception {
+        //String content = Files.readString(Paths.get(filePath)).replaceAll("\\s+", ""); // 줄바꿈 제거
+
+        List<String> blocks = new ArrayList<>();
+        for (int i = 0; i < content.length(); i += 10) {
+            if (i + 10 <= content.length()) {
+                blocks.add(content.substring(i, i + 10));
+            }
+        }
+
+        return blocks;
+    }
+
     public boolean write(String commandStr){
+
+
+        ProcessBuilder pb = new ProcessBuilder("commandStr");
+        pb.inheritIO(); // 콘솔 출력 연결
+
+        Process process = null;
+
+        try {
+            process = pb.start();
+            process.waitFor();
+            List<String> blocks  = loadBlocks("ssd_nand.txt");
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
         return true;
     }
 
