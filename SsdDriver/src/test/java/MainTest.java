@@ -1,12 +1,9 @@
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class SsdDriverTest {
+class MainTest {
 
     @Test
     void WRITE_3개의_파라미터_검증_실패(){
-
     }
 
     @Test
