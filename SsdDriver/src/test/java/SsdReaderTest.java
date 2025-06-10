@@ -10,9 +10,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SsdReaderTest {
 
+    public static final String READ_FILE_PATH = "ssd_nand.txt";
+    public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
+    public static final String SAMPLE_DATA = "0XAAAABBBB";
+
     @BeforeEach
     void setUp() throws IOException {
-        Files.writeString(Paths.get("ssd_nand.txt"), "0XAAAABBBB");
+        Files.writeString(Paths.get(READ_FILE_PATH), SAMPLE_DATA);
     }
 
     @Test
@@ -22,8 +26,8 @@ class SsdReaderTest {
         reader.read("0");
 
         String output = null;
-        output = Files.readString(Paths.get("ssd_output.txt"));
-        assertThat(output).isEqualTo("0XAAAABBBB");
+        output = Files.readString(Paths.get(OUTPUT_FILE_PATH));
+        assertThat(output).isEqualTo(SAMPLE_DATA);
     }
 
     @Test
@@ -32,7 +36,7 @@ class SsdReaderTest {
 
         reader.read("100");
 
-        String output = Files.readString(Paths.get("ssd_output.txt"));
+        String output = Files.readString(Paths.get(OUTPUT_FILE_PATH));
         assertThat(output).contains("ERROR");
     }
 
