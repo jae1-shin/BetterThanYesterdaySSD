@@ -17,23 +17,21 @@ class ReadCompareTest {
 
     @Test
     void ReadCompare_PASS_테스트() {
-        int LBA = 1;
-        String value = "0x12345678";
-        doReturn(true).when(readCompare).execute(LBA, value);
+        String commandStr = "1 0x12345678";
+        doReturn(true).when(readCompare).execute(commandStr);
 
-        testConsole.write(LBA, value);
-        Boolean result = readCompare.execute(LBA, value);
+        testConsole.write(commandStr);
+        Boolean result = readCompare.execute(commandStr);
         assertThat(result).isEqualTo(true);
     }
 
     @Test
     void ReadCompare_FAIL_테스트() {
-        int LBA = 1;
-        String value = "0x12345678";
-        doReturn(true).when(readCompare).execute(LBA, value);
+        String commandStr = "1 0x12345678";
+        doReturn(true).when(readCompare).execute(commandStr);
 
-        testConsole.write(LBA, value);
-        Boolean result = readCompare.execute(LBA, value);
+        testConsole.write(commandStr);
+        Boolean result = readCompare.execute(commandStr);
         assertThat(result).isEqualTo(true);
     }
 

@@ -1,10 +1,10 @@
 public class ReadCompare{
-    public boolean execute(int LBA, String value) {
+    public boolean execute(String CommandStr) {
         TestConsole testConsole = new TestConsole();
 
         String commandStr="";
-        String result = testConsole.read(LBA);
+        String result = testConsole.read(commandStr);
 
-        return result.equals(value);
+        return result.equals(commandStr);
     }
 }

@@ -2,12 +2,12 @@ import java.util.Scanner;
 
 public class TestConsole {
 
-    public String read(int LBA){
+    public String read(String commandStr){
         return "";
     }
 
-    public boolean write(int LBA, String value){
-        return true;
+    public void write(String commandStr){
+        return;
     }
 
     public String fullRead(String commandStr){
