@@ -1,9 +1,34 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Scanner;
 
 public class TestConsole {
 
     public String read(String commandStr){
-        return "";
+        String[] args = commandStr.split(" ");
+        if (args.length != 2) {
+            return "ERROR no args";
+        }
+
+        try {
+            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "read", args[0], args[1]);
+            pb.inheritIO();
+            Process process = null;
+            process = pb.start();
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            return "ERROR process " + e.getMessage();
+        }
+
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(Paths.get("ssd_output.txt"));
+        } catch (IOException e) {
+            return "ERROR file " + e.getMessage();
+        }
+        return lines.get(0);
     }
 
     public boolean write(String commandStr){
