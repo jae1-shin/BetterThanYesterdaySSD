@@ -35,4 +35,17 @@ class SsdWriterTest {
         //assert
         assertThat(actual).isEqualTo("ERROR");
     }
+
+    @Test
+    void 세번째_파라미터_0x_시작_미포함_확인_실패() {
+        //arrange
+        SsdWriter ssdWriter = new SsdWriter();
+
+        //act
+        String actual = ssdWriter.write("0", "00ZZFFFFFF");
+
+        //assert
+        assertThat(actual).isEqualTo("ERROR");
+    }
+
 }
