@@ -1,6 +1,23 @@
 import java.util.Scanner;
 
 public class TestConsole {
+
+    public String read(String commandStr){
+        return "";
+    }
+
+    public boolean write(String commandStr){
+        return true;
+    }
+
+    public String fullRead(String commandStr){
+        return "";
+    }
+
+    public boolean fullWrite(String commandStr){
+        return true;
+    }
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
