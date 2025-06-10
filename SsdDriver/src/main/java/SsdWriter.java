@@ -1,35 +1,58 @@
 public class SsdWriter {
-    public String write(String number, String s) {
+
+    public static final String ERROR = "ERROR";
+
+    public String write(String addrStr, String writeData) {
         int addr = -1;
         try {
-            addr = Integer.valueOf(number);
+            addr = Integer.valueOf(addrStr);
         } catch (NumberFormatException e) {
-            return "ERROR";
+            return ERROR;
         }
 
-        if (addr < 0 || addr > 99) {
-            return "ERROR";
+        if (!isValidAddress(addr)) {
+            return ERROR;
         }
 
-        if (s.length() != 10) {
-            return "ERROR";
+        if (!isValidDataLength(writeData)) {
+            return ERROR;
         }
 
-        if (!s.startsWith("0x")) {
-            return "ERROR";
+        if (!isStartWithHexPrefix(writeData)) {
+            return ERROR;
         }
 
-        for (int i = 2; i < s.length(); i++) {
-            if (s.charAt(i) < '0' || s.charAt(i) > '9') {
-                return "ERROR";
+        if (!isValidData(writeData)) {
+            return ERROR;
+        }
+
+        return writeData;
+    }
+
+    private boolean isValidData(String writeData) {
+        for (int i = 2; i < writeData.length(); i++) {
+            if (writeData.charAt(i) < '0' || writeData.charAt(i) > '9') {
+                return false;
             }
-            if (s.charAt(i) < 'A' || s.charAt(i) > 'Z') {
-                return "ERROR";
+            if (writeData.charAt(i) < 'A' || writeData.charAt(i) > 'Z') {
+                return false;
             }
-            if (s.charAt(i) < 'a' || s.charAt(i) > 'z') {
-                return "ERROR";
+            if (writeData.charAt(i) < 'a' || writeData.charAt(i) > 'z') {
+                return false;
             }
         }
-        return s;
+        return true;
+    }
+
+    private boolean isStartWithHexPrefix(String writeData) {
+        return !writeData.startsWith("0x");
+    }
+
+    private boolean isValidDataLength(String writeData) {
+        return writeData.length() != 10;
+    }
+
+    private boolean isValidAddress(int addr) {
+        return addr < 0 || addr > 99;
     }
 }
