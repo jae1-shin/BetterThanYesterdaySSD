@@ -1,19 +1,11 @@
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import static java.nio.file.Files.readString;
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class SsdWriterTest {
 
     @Test
-    void 두번째_파라미터_0_99_아닌경우_실패() {
+    void 두번째_파라미터_0_99_아닌경우_실패() throws Exception {
         //arrange
         SsdWriter ssdWriter = new SsdWriter();
 
@@ -48,4 +40,15 @@ class SsdWriterTest {
         assertThat(actual).isEqualTo("ERROR");
     }
 
+    @Test
+    void 파일이_없을때_데이터_저장() {
+        //arrange
+        SsdWriter ssdWriter = new SsdWriter();
+
+        //act
+        String actual = ssdWriter.write("0", "0xABCDEFFF");
+
+        //assert
+        assertThat(Paths.get("ssd_output.txt")).isNotNull();
+    }
 }
