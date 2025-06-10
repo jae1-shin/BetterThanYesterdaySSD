@@ -26,7 +26,13 @@ class SsdWriterTest {
 
     @Test
     void 세번째_파라미터_10글자가_아닌경우_실패() {
+        //arrange
+        SsdWriter ssdWriter = new SsdWriter();
 
+        //act
+        String actual = ssdWriter.write("0", "0xFFFFFFFFGGGGGGG");
+
+        //assert
+        assertThat(actual).isEqualTo("ERROR");
     }
-
 }
