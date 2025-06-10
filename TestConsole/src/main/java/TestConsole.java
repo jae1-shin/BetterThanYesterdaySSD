@@ -2,11 +2,11 @@ import java.util.Scanner;
 
 public class TestConsole {
 
-    public String read(String commandStr){
+    public String read(int LBA){
         return "";
     }
 
-    public boolean write(String commandStr){
+    public boolean write(int LBA, String value){
         return true;
     }
 

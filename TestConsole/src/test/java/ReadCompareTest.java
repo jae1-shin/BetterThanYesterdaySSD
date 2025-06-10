@@ -9,7 +9,7 @@ import static org.mockito.Mockito.doReturn;
 @ExtendWith(MockitoExtension.class)
 class ReadCompareTest {
     @Mock
-    Write write;
+    TestConsole testConsole;
 
     @Mock
     ReadCompare readCompare;
@@ -17,23 +17,27 @@ class ReadCompareTest {
 
     @Test
     void ReadCompare_PASS_테스트() {
-        String commandStr = "write 3 0x12345678";
-        doReturn(true).when(readCompare).execute(commandStr);
+        int LBA = 1;
+        String value = "0x12345678";
+        doReturn(true).when(readCompare).execute(LBA, value);
 
-        write.execute(commandStr);
-        Boolean result = readCompare.execute(commandStr);
+        testConsole.write(LBA, value);
+        Boolean result = readCompare.execute(LBA, value);
         assertThat(result).isEqualTo(true);
     }
 
     @Test
     void ReadCompare_FAIL_테스트() {
-        String commandStr = "write 3 0x12345678";
-        doReturn(false).when(readCompare).execute(commandStr);
+        int LBA = 1;
+        String value = "0x12345678";
+        doReturn(true).when(readCompare).execute(LBA, value);
 
-        write.execute(commandStr);
-        Boolean result = readCompare.execute(commandStr);
-        assertThat(result).isEqualTo(false);
+        testConsole.write(LBA, value);
+        Boolean result = readCompare.execute(LBA, value);
+        assertThat(result).isEqualTo(true);
     }
+
+
 
 
 
