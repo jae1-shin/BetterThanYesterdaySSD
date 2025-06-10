@@ -31,12 +31,7 @@ public class SsdReader {
             int bytesRead = raf.read(buffer);
 
             if (bytesRead == -1) {
-                Files.writeString(Paths.get(OUTPUT_FILE_PATH),
-                        "ERROR",
-                        StandardOpenOption.CREATE,
-                        StandardOpenOption.TRUNCATE_EXISTING
-                );
-
+                writeError();
                 return;
             }
 
@@ -51,5 +46,17 @@ public class SsdReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static boolean isLBAOutOfRange(int LBA) {
+        return LBA < 0 || LBA > 99;
+    }
+
+    private static void writeError() throws IOException {
+        Files.writeString(Paths.get(OUTPUT_FILE_PATH),
+                "ERROR",
+                StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING
+        );
     }
 }
