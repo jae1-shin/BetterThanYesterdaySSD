@@ -11,6 +11,9 @@ public class SsdWriter {
             return "ERROR";
         }
 
+        if (s.length() != 10) {
+            return "ERROR";
+        }
         return s;
     }
 }
