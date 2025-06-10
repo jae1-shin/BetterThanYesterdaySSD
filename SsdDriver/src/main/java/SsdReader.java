@@ -13,12 +13,8 @@ public class SsdReader {
     public void read(String LBAParam) throws IOException {
         int LBA = Integer.parseInt(LBAParam);
 
-        if (LBA < 0 || LBA > 99) {
-            Files.writeString(Paths.get(OUTPUT_FILE_PATH),
-                    "ERROR",
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING
-            );
+        if (isLBAOutOfRange(LBA)) {
+            writeError();
             return;
         }
 
