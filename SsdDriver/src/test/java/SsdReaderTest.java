@@ -13,9 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SsdReaderTest {
 
-    public static final String READ_FILE_PATH = "ssd_nand.txt";
-    public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
-    public static final String SAMPLE_DATA = "0XAAAABBBB0XCCCCDDDD0XEEEEFFFF";
+    public static final String SAMPLE_DATA = "0xAAAABBBB0xCCCCDDDD0xEEEEFFFF";
     public static final String DEFAULT_VALUE = "0x00000000";
 
     private SsdReader reader;
@@ -30,11 +28,11 @@ class SsdReaderTest {
     private void writeDefaultValue() throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append(DEFAULT_VALUE.repeat(100));
-        Files.writeString(Paths.get(READ_FILE_PATH), sb.toString());
+        Files.writeString(Paths.get(SsdConstants.SSD_NAND_FILE), sb.toString());
     }
 
     private void writeSampleData() throws IOException {
-        try (RandomAccessFile raf = new RandomAccessFile(READ_FILE_PATH, "rw")) {
+        try (RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "rw")) {
             raf.seek(0);
             raf.write(SAMPLE_DATA.getBytes());
         }
@@ -49,7 +47,7 @@ class SsdReaderTest {
         int end = Math.min(start + 10, SAMPLE_DATA.length());
         String expected = SAMPLE_DATA.substring(start, end);
 
-        String output = Files.readString(Paths.get(OUTPUT_FILE_PATH));
+        String output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
         assertThat(output).isEqualTo(expected);
     }
 
@@ -58,7 +56,7 @@ class SsdReaderTest {
     void 기록이_한적이_없는_LBA를_읽으면_0X00000000으로_읽힌다(int LBA) throws IOException {
         reader.read(LBA);
 
-        String output = Files.readString(Paths.get(OUTPUT_FILE_PATH));
+        String output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
         assertThat(output).isEqualTo(DEFAULT_VALUE);
     }
 

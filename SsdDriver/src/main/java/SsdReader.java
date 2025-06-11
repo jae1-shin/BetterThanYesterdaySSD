@@ -6,17 +6,13 @@ import java.nio.file.StandardOpenOption;
 
 public class SsdReader {
 
-    private static final String READ_FILE_PATH = "ssd_nand.txt";
-    private static final String OUTPUT_FILE_PATH = "ssd_output.txt";
-    private static final int BLOCK_SIZE = 10;
-
     public void read(int LBA) throws IOException {
-        long offset = (long) LBA * BLOCK_SIZE;
+        long offset = (long) LBA * SsdConstants.BLOCK_SIZE;
 
-        try (RandomAccessFile raf = new RandomAccessFile(READ_FILE_PATH, "r")) {
+        try (RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r")) {
             raf.seek(offset);
 
-            byte[] buffer = new byte[BLOCK_SIZE];
+            byte[] buffer = new byte[SsdConstants.BLOCK_SIZE];
             int bytesRead = raf.read(buffer);
 
             if (bytesRead == -1) {
@@ -26,7 +22,7 @@ public class SsdReader {
 
             String readStr = new String(buffer, 0, bytesRead);
 
-            Files.writeString(Paths.get(OUTPUT_FILE_PATH),
+            Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH),
                     readStr,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING
@@ -38,7 +34,7 @@ public class SsdReader {
     }
 
     private static void writeError() throws IOException {
-        Files.writeString(Paths.get(OUTPUT_FILE_PATH),
+        Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH),
                 "ERROR",
                 StandardOpenOption.CREATE,
                 StandardOpenOption.TRUNCATE_EXISTING
