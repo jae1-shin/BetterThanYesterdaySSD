@@ -77,7 +77,7 @@ class MainTest {
 
         // act
         Main.main(new String[]{"W", "3", "0x1234ABCD"});
-        RandomAccessFile raf = new RandomAccessFile("ssd_nand.txt", "r");
+        RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
         raf.seek(3 * SsdConstants.BLOCK_SIZE);
         byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
         raf.readFully(buf);
@@ -93,12 +93,14 @@ class MainTest {
 
         // act
         Main.main(new String[]{"R", "0"});
-        BufferedReader br = new BufferedReader(new FileReader(SsdConstants.OUTPUT_FILE_PATH));
-        String result = br.readLine();
-        br.close();
+        RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
+        raf.seek(0 * SsdConstants.BLOCK_SIZE);
+        byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
+        raf.readFully(buf);
+        raf.close();
 
         // assert
-        assertThat(result).isNotBlank();
+        assertThat(new String(buf)).isEqualTo("0xAAAABBBB");
     }
 
 }

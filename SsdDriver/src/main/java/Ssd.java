@@ -67,6 +67,7 @@ public class Ssd {
     }
 
     private boolean isValidDataForWrite(String[] args) {
+        if (isReadCommand(args)) return true;
         return isWriteCommand(args) && args[ARGUMENT_DATA_INDEX].matches(DATA_FORMAT);
     }
 
