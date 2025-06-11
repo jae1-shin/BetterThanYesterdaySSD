@@ -28,8 +28,20 @@ public class TestConsole {
 
     public boolean write(String commandStr){
 
+        //SHELL write 3 0x00000
 
-        ProcessBuilder pb = new ProcessBuilder("commandStr");
+            String[] parts = commandStr.split("\\s+");
+           String commandName = parts[0];
+           String[] commandArgs = new String[parts.length - 1];
+           System.arraycopy(parts, 1, commandArgs, 0, commandArgs.length);
+           String address= commandArgs[0];
+            String data= commandArgs[1];
+
+
+        ProcessBuilder pb = new ProcessBuilder(
+                "java", "-jar", "\"C:\\Users\\User\\IdeaProjects\\BetterThanYesterdaySSD\\TestConsole\\src\\main\\resources\\SSD.jar\"", "W", address, data
+        );
+
         pb.inheritIO(); // 콘솔 출력 연결
 
         Process process = null;

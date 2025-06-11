@@ -10,10 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class WriteTest {
 
     @Test
-    @Disabled
     void WRITE에서_익셉션안나면_성공() {
 
-        String commandStr = "java -jar SSD.jar W 3 0x123456";
+        String commandStr = "write 4 0x123456";
         TestConsole tc = new TestConsole();
 
         assertDoesNotThrow(() -> tc.write(commandStr));
