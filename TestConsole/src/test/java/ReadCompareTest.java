@@ -11,18 +11,15 @@ class ReadCompareTest {
     @Mock
     TestConsole testConsole;
 
-    @Mock
-    ReadCompare readCompare;
-
 
     @Test
     void ReadCompare_PASS_테스트() {
         int LBA = 3;
         String value = "0x12345678";
-        doReturn(true).when(readCompare).execute(LBA, value);
+        doReturn(true).when(testConsole).readCompare(LBA, value);
 
         testConsole.write(LBA, value);
-        Boolean result = readCompare.execute(LBA, value);
+        Boolean result = testConsole.readCompare(LBA, value);
         assertThat(result).isEqualTo(true);
     }
 
@@ -30,11 +27,11 @@ class ReadCompareTest {
     void ReadCompare_FAIL_테스트() {
         int LBA = 3;
         String value = "0x12345678";
-        doReturn(true).when(readCompare).execute(LBA, value);
+        doReturn(false).when(testConsole).readCompare(LBA, value);
 
         testConsole.write(LBA, value);
-        Boolean result = readCompare.execute(LBA, value);
-        assertThat(result).isEqualTo(true);
+        Boolean result = testConsole.readCompare(LBA, value);
+        assertThat(result).isEqualTo(false);
     }
 
 
