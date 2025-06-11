@@ -1,5 +1,7 @@
-import java.io.IOException;
+public abstract class Command implements ICommand {
+    protected final ConsoleService service;
 
-public interface Command {
-    void execute(String commandStr) throws IOException, InterruptedException;
+    protected Command(ConsoleService service) {
+        this.service =  service ;
+    }
 }
