@@ -7,16 +7,16 @@ public class Script2 extends Command {
     }
 
     @Override
-    public void execute(String commandStr) {
+    public void execute(String[] args) {
         int[] lbaTestSequence = {4, 0, 3, 1, 2};
 
         for(int i = 0; i< LOOP_COUNT; i++){
             for(int lba : lbaTestSequence){
-                consoleService.write(lba, TEST_VALUE);
+                service.write(lba, TEST_VALUE);
             }
 
             for(int lba : lbaTestSequence){
-                if(!consoleService.readCompare(lba, TEST_VALUE)){
+                if(!service.readCompare(lba, TEST_VALUE)){
                     System.out.println("FAIL");
                     return;
                 }
