@@ -11,18 +11,14 @@ import java.util.Scanner;
 
 public class TestConsole {
 
-    public String read(String commandStr){
-        String[] args = commandStr.split(" ");
-        if (args.length != 2) {
-            return "ERROR no args";
-        }
-
+    public String read(int address){
         try {
-            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "read", args[0], args[1]);
+            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "R", Integer.toString(address) );
             pb.inheritIO();
             Process process = null;
             process = pb.start();
             process.waitFor();
+            System.out.println("process가 실행됐어요");
         } catch (IOException | InterruptedException e) {
             return "ERROR process " + e.getMessage();
         }
@@ -86,8 +82,8 @@ public class TestConsole {
         return;
     }
 
-    public String fullRead(String commandStr){
-        return "";
+    public void fullRead(){
+
     }
 
     public boolean fullWrite(String commandStr){
