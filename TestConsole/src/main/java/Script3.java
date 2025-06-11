@@ -1,7 +1,10 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Script3 extends Command{
     public static final int LOOP_COUNT = 200;
+    public static final int[] targetLBA = new int[]{0, 99};
 
     protected Script3(ConsoleService service) {
         super(service);
@@ -10,24 +13,42 @@ public class Script3 extends Command{
     @Override
     public void execute(String[] args) {
         for (int i = 0; i < LOOP_COUNT; i++) {
-            String randomHexFor0 = getRandomHexString();
-            String randomHexFor99 = getRandomHexString();
+            Map<Integer, String> writeData = createWriteData();
 
-            service.write(0, randomHexFor0);
-            service.write(99, randomHexFor99);
+            writeAtTargetLBA(writeData);
 
-            if (!service.readCompare(0, randomHexFor0)) {
-                System.out.println("FAIL");
-                return;
-            }
-
-            if (!service.readCompare(99, randomHexFor99)) {
+            if (!readCompareTargetLBA(writeData)) {
                 System.out.println("FAIL");
                 return;
             }
         }
 
         System.out.println("PASS");
+    }
+
+    private Map<Integer, String> createWriteData() {
+        Map<Integer, String> writeData = new HashMap<>();
+        for (int lba : targetLBA) {
+            writeData.put(lba, getRandomHexString());
+        }
+        return writeData;
+    }
+
+    private void writeAtTargetLBA(Map<Integer, String> writeData) {
+        for (int lba : targetLBA) {
+            String value = writeData.get(lba);
+            service.write(lba, value);
+        }
+    }
+
+    private boolean readCompareTargetLBA(Map<Integer, String> writeData) {
+        for (int lba : targetLBA) {
+            String value = writeData.get(lba);
+            if (!service.readCompare(lba, value)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private String getRandomHexString() {
