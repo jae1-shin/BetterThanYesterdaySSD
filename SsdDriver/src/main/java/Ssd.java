@@ -16,56 +16,62 @@ public class Ssd {
     public static final int LBA_MAX = 99;
     public static final int ARGUMENT_MAX_COUNT = 3;
 
-    public static void main(String[] args) {
-        if (!isValidArgumentCount(args)) {
+    public void processCommand(String[] args) {
+        if (!checkPreCondition(args)) {
             writeError();
             return;
         }
 
-        if (!isValidCommand(args[ARGUMENT_COMMAND_INDEX])) {
-            writeError();
-            return;
+        if (isWriteCommand(args)) {
+            processWriteCommand(args);
+        } else if (isReadCommand(args)) {
+            processReadCommand(args);
         }
-
-        if (!isValidAddressRange(args[ARGUMENT_ADDRESS_INDEX])) {
-            writeError();
-            return;
-        }
-
-        if (!isValidDataForWrite(args)) {
-            writeError();
-            return;
-        }
-
-        if (WRITE_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX])) {
-            SsdWriter writer = new SsdWriter();
-
-            int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
-            try {
-                writer.write(LBA, args[ARGUMENT_DATA_INDEX]);
-            } catch (IOException e) {
-                // ignore
-            }
-        }
-
-        if (READ_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX])) {
-            SsdReader reader = new SsdReader();
-
-            int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
-            try {
-                reader.read(LBA);
-            } catch (IOException e) {
-                // ignore
-            }
-        }
-
     }
 
-    private static boolean isValidDataForWrite(String[] args) {
-        return WRITE_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX]) && args[ARGUMENT_DATA_INDEX].matches(DATA_FORMAT);
+    private static boolean isReadCommand(String[] args) {
+        return READ_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX]);
     }
 
-    private static boolean isValidAddressRange(String address) {
+    private static boolean isWriteCommand(String[] args) {
+        return WRITE_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX]);
+    }
+
+    private void processWriteCommand(String[] args) {
+        SsdWriter writer = new SsdWriter();
+
+        int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
+        try {
+            writer.write(LBA, args[ARGUMENT_DATA_INDEX]);
+        } catch (IOException e) {
+            // ignore
+        }
+    }
+
+    private void processReadCommand(String[] args) {
+        SsdReader reader = new SsdReader();
+
+        int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
+        try {
+            reader.read(LBA);
+        } catch (IOException e) {
+            // ignore
+        }
+    }
+
+    private boolean checkPreCondition(String[] args) {
+        if (!isValidArgumentCount(args)) return false;
+        if (!isValidCommand(args[ARGUMENT_COMMAND_INDEX])) return false;
+        if (!isValidAddressRange(args[ARGUMENT_ADDRESS_INDEX])) return false;
+        if (!isValidDataForWrite(args)) return false;
+        return true;
+    }
+
+    private boolean isValidDataForWrite(String[] args) {
+        return isWriteCommand(args) && args[ARGUMENT_DATA_INDEX].matches(DATA_FORMAT);
+    }
+
+    private boolean isValidAddressRange(String address) {
         int LBA = Integer.parseInt(address);
         if (LBA < LBA_MIN || LBA > LBA_MAX) {
             return false;
@@ -73,15 +79,15 @@ public class Ssd {
         return true;
     }
 
-    private static boolean isValidCommand(String command) {
+    private boolean isValidCommand(String command) {
         return WRITE_COMMAND.equals(command) || READ_COMMAND.equals(command);
     }
 
-    private static boolean isValidArgumentCount(String[] args) {
+    private boolean isValidArgumentCount(String[] args) {
         return !(args.length < ARGUMENT_DATA_INDEX || args.length > ARGUMENT_MAX_COUNT);
     }
 
-    static private void writeError() {
+    private void writeError() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(OUTPUT_FILE_PATH))) {
             bw.write(ERROR);
         } catch (IOException e) {
