@@ -8,17 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SsdTest {
     @Test
-    void LBA_범위_초과시_에러_출력() throws Exception {
-        Ssd.main(new String[]{"W", "100", "0x12345678"});
-        BufferedReader br = new BufferedReader(new FileReader("ssd_nand.txt"));
-        String result = br.readLine();
-        br.close();
-        Assertions.assertThat(result).isEqualTo("ERROR");
-    }
-
-    @Test
-    void 데이터_형식_오류시_에러_출력() throws Exception {
-        Ssd.main(new String[]{"W", "1", "12345678"});
+    void 파라미터_부족시_에러_출력() throws Exception {
+        Ssd.main(new String[]{"W"});
         BufferedReader br = new BufferedReader(new FileReader("ssd_output.txt"));
         String result = br.readLine();
         br.close();
@@ -35,8 +26,17 @@ class SsdTest {
     }
 
     @Test
-    void 파라미터_부족시_에러_출력() throws Exception {
-        Ssd.main(new String[]{"W"});
+    void LBA_범위_초과시_에러_출력() throws Exception {
+        Ssd.main(new String[]{"W", "100", "0x12345678"});
+        BufferedReader br = new BufferedReader(new FileReader("ssd_output.txt"));
+        String result = br.readLine();
+        br.close();
+        Assertions.assertThat(result).isEqualTo("ERROR");
+    }
+
+    @Test
+    void 데이터_형식_오류시_에러_출력() throws Exception {
+        Ssd.main(new String[]{"W", "1", "12345678"});
         BufferedReader br = new BufferedReader(new FileReader("ssd_output.txt"));
         String result = br.readLine();
         br.close();
