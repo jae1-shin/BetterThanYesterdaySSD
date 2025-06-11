@@ -56,20 +56,11 @@ public class TestConsole {
         return blocks;
     }
 
-    public boolean write(String commandStr){
+    public boolean write(int address ,String data){
 
         //SHELL write 3 0x00000
-
-            String[] parts = commandStr.split("\\s+");
-           String commandName = parts[0];
-           String[] commandArgs = new String[parts.length - 1];
-           System.arraycopy(parts, 1, commandArgs, 0, commandArgs.length);
-           String address= commandArgs[0];
-            String data= commandArgs[1];
-
-
         ProcessBuilder pb = new ProcessBuilder(
-                "java", "-jar", "\"C:\\Users\\User\\IdeaProjects\\BetterThanYesterdaySSD\\TestConsole\\src\\main\\resources\\SSD.jar\"", "W", address, data
+                "java", "-jar", "ssd.jar", "W", Integer.toString(address), data
         );
 
         pb.inheritIO(); // 콘솔 출력 연결
@@ -79,15 +70,22 @@ public class TestConsole {
         try {
             process = pb.start();
             process.waitFor();
-            List<String> blocks  = loadBlocks("ssd_nand.txt");
+
+            String rtnStr = read(address);
+
+            if(data.equals(rtnStr)) return true;
+
+            process.destroy(); // 또는 process.destroyForcibly();
+            System.out.println("Process was forcefully terminated.");
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
 
-        return true;
+        return false;
     }
+
 
     public void fullRead(){
 
@@ -132,7 +130,7 @@ public class TestConsole {
                 System.out.println("Program terminated");
                 break;
             } else {
-                System.out.println("wrong input");
+                System.out.println("Command 실행");;
             }
         }
     }
