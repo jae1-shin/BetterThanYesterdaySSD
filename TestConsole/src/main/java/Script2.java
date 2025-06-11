@@ -1,10 +1,9 @@
-public class Script2 implements Command{
+public class Script2 extends Command {
     public static final int LOOP_COUNT = 30;
     public static final String TEST_VALUE = "0x12345678";
-    private ConsoleService consoleService;
 
-    public Script2(ConsoleService consoleService) {
-        this.consoleService = consoleService;
+    protected Script2(ConsoleService service) {
+        super(service);
     }
 
     @Override
@@ -26,5 +25,4 @@ public class Script2 implements Command{
 
         System.out.println("PASS");
     }
-
 }

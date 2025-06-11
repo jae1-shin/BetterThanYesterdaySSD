@@ -1,11 +1,11 @@
 import java.util.Random;
 
-public class Script3 implements Command{
-    public static final int LOOP_COUNT = 200;
-    private ConsoleService consoleService;
 
-    public Script3(ConsoleService consoleService) {
-        this.consoleService = consoleService;
+public class Script3 extends Command{
+    public static final int LOOP_COUNT = 200;
+
+    protected Script3(ConsoleService service) {
+        super(service);
     }
 
     @Override

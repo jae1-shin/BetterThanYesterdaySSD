@@ -1,8 +1,6 @@
-import java.io.IOException;
-
 public class Write implements Command{
     @Override
-    public void execute(String commandStr)  {
+    public void execute(String[] args)  {
 
 
 
