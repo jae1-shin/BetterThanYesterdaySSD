@@ -102,6 +102,10 @@ public class TestConsole {
         return true;
     }
 
+    public boolean readCompare(int LBA, String value) {
+        return value.equals(this.read(LBA));
+    }
+
 
     public void run() {
 

@@ -13,26 +13,24 @@ class ScriptsTest {
     @Mock
     private TestConsole testConsole;
 
-    @Mock
-    private ReadCompare readCompare;
 
     @Spy
     Script2 script2;
 
     @Test
     void script3_write_readCompare_실행횟수_정상() {
-        Script3 script1 = new Script3(testConsole, readCompare);
+        Script3 script1 = new Script3(testConsole);
         String commandStr = "";
 
-        doReturn(true).when(readCompare).execute(anyInt(), anyString());
+        doReturn(true).when(testConsole).readCompare(anyInt(), anyString());
 
         script1.execute(commandStr);
 
         verify(testConsole, times(200)).write(eq(0), anyString());
         verify(testConsole, times(200)).write(eq(99), anyString());
 
-        verify(readCompare, times(200)).execute(eq(0), anyString());
-        verify(readCompare, times(200)).execute(eq(99), anyString());
+        verify(testConsole, times(200)).readCompare(eq(0), anyString());
+        verify(testConsole, times(200)).readCompare(eq(99), anyString());
 
     }
 
