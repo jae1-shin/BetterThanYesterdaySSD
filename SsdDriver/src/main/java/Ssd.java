@@ -50,11 +50,11 @@ public class Ssd {
         }
     }
 
-    private static boolean isWriteCommand(String[] args) {
+    private boolean isWriteCommand(String[] args) {
         return WRITE_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX]);
     }
 
-    private static boolean isReadCommand(String[] args) {
+    private boolean isReadCommand(String[] args) {
         return READ_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX]);
     }
 
