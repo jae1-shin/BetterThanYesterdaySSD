@@ -10,7 +10,7 @@ public class ConsoleService {
 
     public String read(int address){
         try {
-            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "R", Integer.toString(address) );
+            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "../ssd.jar", "R", Integer.toString(address) );
             pb.inheritIO();
             Process process = null;
             process = pb.start();
@@ -32,7 +32,7 @@ public class ConsoleService {
     public boolean write(int address, String data){
         try {
             ProcessBuilder pb = new ProcessBuilder(
-                    "java", "-jar", "ssd.jar", "W", Integer.toString(address), data
+                    "java", "-jar", "../ssd.jar", "W", Integer.toString(address), data
             );
 
             pb.inheritIO(); // 콘솔 출력 연결

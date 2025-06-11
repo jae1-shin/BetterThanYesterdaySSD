@@ -1,3 +1,6 @@
+
+import jdk.jfr.Description;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -113,6 +116,31 @@ public class ActionsTest {
     }
 
     @Test
+    @Description("실제 ssd.jar에 입력하는 코드입니다")
+    void 실제_SDD_jar_쓰기테스트(){
+        String inputData = "0xCCCCCCC1";
+
+        ConsoleService cs = new ConsoleService();
+        cs.write(0,inputData);
+        String result = cs.read(0);
+
+        assertEquals(inputData, result);
+    }
+
+    @Test
+    @Description("실제 ssd.jar에 리드하는 코드입니다")
+    void 실제_SDD_jar_읽기_테스트(){
+        ConsoleService cs = new ConsoleService();
+
+        String notExpected = "ERROR";
+
+        String result = cs.read(1);
+
+        assertNotEquals(notExpected, result);
+    }
+
+
+    @Test
     void help_정상_출력_확인(){
         java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
         System.setOut(new java.io.PrintStream(outContent));
@@ -124,6 +152,7 @@ public class ActionsTest {
             assertTrue(outContent.toString().contains(expected));
         }
     }
+
 }
 
 
