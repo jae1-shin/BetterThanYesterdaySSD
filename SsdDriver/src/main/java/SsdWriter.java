@@ -13,7 +13,7 @@ public class SsdWriter {
     public static final int ADDRESS_MIN_RANGE = 0;
     public static final int BLOCK_SIZE = 10;
 
-    public void write(int address, String data) {
+    public void write(int address, String data) throws IOException {
         if (!isValidAddress(address)) {
             writeError();
             return;
@@ -24,12 +24,8 @@ public class SsdWriter {
             return;
         }
 
-        try {
-            checkFileAndWriteDefaultData();
-            writeData(address, data);
-        } catch (IOException e) {
-            writeError();
-        }
+        checkFileAndWriteDefaultData();
+        writeData(address, data);
     }
 
     private void checkFileAndWriteDefaultData() throws IOException {

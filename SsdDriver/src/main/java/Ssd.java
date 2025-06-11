@@ -37,6 +37,17 @@ public class Ssd {
             return;
         }
 
+        if (WRITE_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX])) {
+            SsdWriter writer = new SsdWriter();
+
+            int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
+            try {
+                writer.write(LBA, args[ARGUMENT_DATA_INDEX]);
+            } catch (IOException e) {
+                // ignore
+            }
+        }
+
         if (READ_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX])) {
             SsdReader reader = new SsdReader();
 

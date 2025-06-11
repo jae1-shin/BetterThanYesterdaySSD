@@ -5,13 +5,16 @@ import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.RandomAccessFile;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SsdTest {
 
     public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
     public static final String ERROR = "ERROR";
+    public static final int BLOCK_SIZE = 10;
 
     @BeforeEach
     void setUp() {
@@ -29,7 +32,7 @@ class SsdTest {
         br.close();
         
         // assert
-        Assertions.assertThat(result).isEqualTo(ERROR);
+        assertThat(result).isEqualTo(ERROR);
     }
 
     @Test
@@ -43,7 +46,7 @@ class SsdTest {
         br.close();
 
         // assert
-        Assertions.assertThat(result).isEqualTo(ERROR);
+        assertThat(result).isEqualTo(ERROR);
     }
 
     @Test
@@ -57,7 +60,7 @@ class SsdTest {
         br.close();
 
         // assert
-        Assertions.assertThat(result).isEqualTo(ERROR);
+        assertThat(result).isEqualTo(ERROR);
     }
 
     @Test
@@ -71,7 +74,23 @@ class SsdTest {
         br.close();
 
         // assert
-        Assertions.assertThat(result).isEqualTo(ERROR);
+        assertThat(result).isEqualTo(ERROR);
+    }
+
+    @Test
+    void 첫번째_인자가_W인경우_ssd_nand파일에_데이터가_입력된다() throws Exception {
+        // arrange
+
+        // act
+        Ssd.main(new String[]{"W", "3", "0x1234ABCD"});
+        RandomAccessFile raf = new RandomAccessFile("ssd_nand.txt", "r");
+        raf.seek(3 * BLOCK_SIZE);
+        byte[] buf = new byte[BLOCK_SIZE];
+        raf.readFully(buf);
+        raf.close();
+
+        // assert
+        assertThat(new String(buf)).isEqualTo("0x1234ABCD");
     }
 
     @Test
@@ -85,7 +104,7 @@ class SsdTest {
         br.close();
 
         // assert
-        Assertions.assertThat(result).isNotBlank();
+        assertThat(result).isNotBlank();
     }
 
 }
