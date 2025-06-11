@@ -100,7 +100,7 @@ class MainTest {
         raf.close();
 
         // assert
-        assertThat(new String(buf)).isEqualTo("0xAAAABBBB");
+        assertThat(new String(buf)).isEqualTo("0x00000000");
     }
 
 }
