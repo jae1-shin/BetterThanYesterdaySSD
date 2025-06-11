@@ -1,18 +1,17 @@
-public class Script1 implements Command {
-    private TestConsole testConsole;
+public class Script1 extends Command {
 
-    public Script1(TestConsole testConsole) {
-        this.testConsole = testConsole;
+    protected Script1(ConsoleService service) {
+        super(service);
     }
 
     @Override
-    public void execute(String commandStr) {
+    public void execute(String[] args) {
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 5; j++) {
-                testConsole.write((i * 5 + j), "0xFFFFFFFF");
+                service.write((i * 5 + j), "0xFFFFFFFF");
             }
             for (int j = 0; j < 5; j++) {
-                boolean result = testConsole.readCompare((i * 5 + j), "0xFFFFFFFF");
+                boolean result = service.readCompare((i * 5 + j), "0xFFFFFFFF");
 
                 if (!result) {
                     System.out.printf("FAIL");
