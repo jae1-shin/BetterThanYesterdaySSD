@@ -73,4 +73,19 @@ class SsdTest {
         // assert
         Assertions.assertThat(result).isEqualTo(ERROR);
     }
+
+    @Test
+    void 첫번째_인자가_R인경우_output파일에_데이터가_입력된다() throws Exception {
+        // arrange
+
+        // act
+        Ssd.main(new String[]{"R", "0"});
+        BufferedReader br = new BufferedReader(new FileReader(OUTPUT_FILE_PATH));
+        String result = br.readLine();
+        br.close();
+
+        // assert
+        Assertions.assertThat(result).isNotBlank();
+    }
+
 }
