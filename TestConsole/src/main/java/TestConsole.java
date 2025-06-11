@@ -22,7 +22,6 @@ public class TestConsole {
         this.scanner = new Scanner(in);
     }
 
-
     public void run() {
 
 
