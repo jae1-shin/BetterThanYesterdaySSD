@@ -1,5 +1,5 @@
 public class ReadCompare{
-    public boolean execute(int CommandStr) {
+    public boolean execute(String CommandStr) {
         TestConsole testConsole = new TestConsole();
 
         String commandStr="";
