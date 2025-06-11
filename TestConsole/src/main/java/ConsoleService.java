@@ -85,8 +85,8 @@ public class ConsoleService {
     }
 
     public void help() {
-        System.out.println("Authors:");
-        System.out.println("신재원, 정혜원, 문영민, 조효민, 류지우, 서인규");
+        System.out.println("Team: BetterThanYesterday");
+        System.out.println("Members: 신재원, 정혜원, 문영민, 조효민, 류지우, 서인규");
         System.out.println();
         System.out.println();
         System.out.println("Available commands:");
