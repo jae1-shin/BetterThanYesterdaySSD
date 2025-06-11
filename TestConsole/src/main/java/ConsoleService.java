@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConsoleService {
+
+    public static final int TOTAL_LBA_COUNT = 100;
+
     public String read(int address){
         try {
             ProcessBuilder pb = new ProcessBuilder("java", "-jar", "../ssd.jar", "R", Integer.toString(address) );
@@ -26,9 +29,7 @@ public class ConsoleService {
         return lines.get(0);
     }
 
-    public boolean write(int address ,String data){
-
-        //SHELL write 3 0x00000
+    public boolean write(int address, String data){
         try {
             ProcessBuilder pb = new ProcessBuilder(
                     "java", "-jar", "../ssd.jar", "W", Integer.toString(address), data
@@ -36,14 +37,10 @@ public class ConsoleService {
 
             pb.inheritIO(); // 콘솔 출력 연결
 
-            Process process = null;
-
-            process = pb.start();
+            Process process = pb.start();
             process.waitFor();
 
-            String rtnStr = read(address);
-
-            if(data.equals(rtnStr)) return true;
+            if(data.equals(read(address))) return true;
 
             process.destroy(); // 또는 process.destroyForcibly();
             System.out.println("Process was forcefully terminated.");
@@ -56,23 +53,15 @@ public class ConsoleService {
         return false;
     }
 
-
     public void fullRead(){
-
-        for(int i=0;i<100;i++){
-            String value = read(i);
-            if(value == null || value.isEmpty()){
-                System.out.println("LBA " + i + " is empty");
-            } else {
-                System.out.println("LBA " + i + ": " + value);
-            }
+        for(int i = 0; i < TOTAL_LBA_COUNT; i++){
+            System.out.println("LBA " + i + ": " + read(i));
         }
-
     }
 
     public boolean fullWrite(String data){
         boolean eachResult = false;
-        for(int i=0;i<100;i++){
+        for(int i = 0; i< TOTAL_LBA_COUNT; i++){
             eachResult = write(i,data);
             if(eachResult == false) return false;
         }

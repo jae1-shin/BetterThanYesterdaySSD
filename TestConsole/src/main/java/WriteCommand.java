@@ -6,8 +6,8 @@ public class WriteCommand extends Command{
     @Override
     public void execute(String[] args)  {
         try {
-            if (args.length < 3) {
-                System.out.println("ERROR Not enough arguments. Usage: write <address> <value>");
+            if (args.length != 3) {
+                System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
                 return;
             }
             if (!args[2].startsWith("0x")) {
