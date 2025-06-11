@@ -32,13 +32,15 @@ public class TestConsole {
         invoker.register("fullread",  new FullReadCommand(service));
         invoker.register("fullwrite",  new FullWriteCommand(service));
         invoker.register("1_FullWriteAndReadCompare",  new Script1(service));
+        invoker.register("1_",  new Script1(service));
         invoker.register("2_PartialLBAWrite",  new Script2(service));
+        invoker.register("2_",  new Script2(service));
         invoker.register("3_WriteReadAging",  new Script3(service));
+        invoker.register("3_",  new Script3(service));
         invoker.register("exit",  new ExitCommand(service));
 
-
         while (true) {
-            System.out.print("> ");
+            System.out.print("Shell> ");
             String input = scanner.nextLine().trim();
             invoker.execute(input);
         }

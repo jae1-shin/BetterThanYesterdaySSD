@@ -109,6 +109,7 @@ public class ActionsTest {
         // 검증
         assertFalse(result);
     }
+
     @Test
     @Disabled
     @Description("실제 ssd.jar에 입력하는 코드입니다")
@@ -117,5 +118,20 @@ public class ActionsTest {
         cs.write(0,"0xCCCCCCCC");
     }
 
+
+    @Test
+    void help_정상_출력_확인(){
+        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(outContent));
+        String[] expectedValues = {"Team", "Members", "Available commands", "write", "read", "exit", "help", "fullwrite", "fullread", "Note"};
+
+        consoleServiceSpy.help();
+
+        for (String expected : expectedValues) {
+            assertTrue(outContent.toString().contains(expected));
+        }
+    }
+
 }
+
 
