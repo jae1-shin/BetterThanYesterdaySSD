@@ -1,6 +1,5 @@
 public class Script1 implements Command {
     private TestConsole testConsole;
-    private ReadCompare readCompare;
 
     public Script1(TestConsole testConsole) {
         this.testConsole = testConsole;
