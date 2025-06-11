@@ -51,7 +51,7 @@ class ScriptsTest {
 
         doReturn(true).when(consoleService).readCompare(anyInt(), anyString());
 
-        script1.execute(commandStr);
+        script1.execute(new String[]{});
 
         verify(consoleService, times(100)).write(intThat(i -> i >= 0 && i < 100), anyString());
         verify(consoleService, times(100)).readCompare(intThat(i -> i >= 0 && i < 100), anyString());
