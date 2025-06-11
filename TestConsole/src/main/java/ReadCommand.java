@@ -5,6 +5,7 @@ public class ReadCommand extends Command{
 
     @Override
     public void execute(String[] args) {
+        System.out.println("ReadCommand.execute() called with args: " + String.join(", ", args));
         try {
             int address = Integer.parseInt(args[1]);
             System.out.println("[Read] LBA " + String.format("%02d", address) + " : " + service.read(address));

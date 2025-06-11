@@ -38,7 +38,7 @@ public class TestConsole {
 
 
         while (true) {
-            System.out.print("> ");
+            System.out.print("Shell> ");
             String input = scanner.nextLine().trim();
             invoker.execute(input);
         }
