@@ -4,26 +4,45 @@ import java.io.IOException;
 
 public class Ssd {
     public static void main(String[] args) {
-        if (args.length < 2 || args.length > 3) {
+        if (!isValidArgumentCount(args)) {
             writeError();
             return;
         }
 
-        if (!("W".equals(args[0]) || "R".equals(args[0]))) {
+        if (!isValidCommand(args[0])) {
             writeError();
             return;
         }
 
-        int LBA = Integer.parseInt(args[1]);
+        if (!isValidAddressRange(args[1])) {
+            writeError();
+            return;
+        }
+
+        if (!isValidDataForWrite(args)) {
+            writeError();
+            return;
+        }
+    }
+
+    private static boolean isValidDataForWrite(String[] args) {
+        return "W".equals(args[0]) && args[2].matches("^0x[0-9A-Fa-f]{8}$");
+    }
+
+    private static boolean isValidAddressRange(String address) {
+        int LBA = Integer.parseInt(address);
         if (LBA < 0 || LBA >= 100) {
-            writeError();
-            return;
+            return false;
         }
+        return true;
+    }
 
-        if (!args[2].matches("^0x[0-9A-Fa-f]{8}$")) {
-            writeError();
-            return;
-        }
+    private static boolean isValidCommand(String command) {
+        return "W".equals(command) || "R".equals(command);
+    }
+
+    private static boolean isValidArgumentCount(String[] args) {
+        return !(args.length < 2 || args.length > 3);
     }
 
     static private void writeError() {
