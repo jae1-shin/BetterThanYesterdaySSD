@@ -14,6 +14,7 @@ class SsdTest {
 
     public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
     public static final String ERROR = "ERROR";
+    public static final int BLOCK_SIZE = 10;
 
     @BeforeEach
     void setUp() {
@@ -83,8 +84,8 @@ class SsdTest {
         // act
         Ssd.main(new String[]{"W", "3", "0x1234ABCD"});
         RandomAccessFile raf = new RandomAccessFile("ssd_nand.txt", "r");
-        raf.seek(3 * 10);
-        byte[] buf = new byte[10];
+        raf.seek(3 * BLOCK_SIZE);
+        byte[] buf = new byte[BLOCK_SIZE];
         raf.readFully(buf);
         raf.close();
 
