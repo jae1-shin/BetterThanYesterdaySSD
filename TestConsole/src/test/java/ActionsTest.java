@@ -1,4 +1,7 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -11,7 +14,33 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
+@ExtendWith(MockitoExtension.class)
 public class ActionsTest {
+    @Mock
+    TestConsole testConsole;
+
+    @Test
+    void ReadCompare_PASS_테스트() {
+        int LBA = 3;
+        String value = "0x12345678";
+        doReturn(true).when(testConsole).readCompare(LBA, value);
+
+        testConsole.write(LBA, value);
+        Boolean result = testConsole.readCompare(LBA, value);
+        assertThat(result).isEqualTo(true);
+    }
+
+    @Test
+    void ReadCompare_FAIL_테스트() {
+        int LBA = 3;
+        String value = "0x12345678";
+        doReturn(false).when(testConsole).readCompare(LBA, value);
+
+        testConsole.write(LBA, value);
+        Boolean result = testConsole.readCompare(LBA, value);
+        assertThat(result).isEqualTo(false);
+    }
+
     @Test
     void 읽기_1_LBA_성공() {
         int input = 3;

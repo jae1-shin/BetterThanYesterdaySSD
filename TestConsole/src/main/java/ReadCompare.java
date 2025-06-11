@@ -1,6 +1,6 @@
-public class ReadCompare{
-    public boolean execute(int LBA, String value) {
-        TestConsole testConsole = new TestConsole();
-        return value.equals(testConsole.read(LBA));
+public class ReadCompare implements Command{
+    @Override
+    public void execute(String commandStr) {
+        throw new RuntimeException("아직 구현 안됐어요");
     }
 }

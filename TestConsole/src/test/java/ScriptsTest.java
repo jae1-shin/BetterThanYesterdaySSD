@@ -13,10 +13,6 @@ class ScriptsTest {
     @Mock
     private TestConsole testConsole;
 
-
-    @Spy
-    Script2 script2;
-
     @Test
     void script3_write_readCompare_실행횟수_정상() {
         Script3 script1 = new Script3(testConsole);
@@ -35,22 +31,29 @@ class ScriptsTest {
     }
 
     @Test
-    void Script2_테스트_통과 (){
+    void script2_write_readCompare_실행횟수_정상() {
+        Script2 script2 = new Script2(testConsole);
+        String commandStr = "";
+
+        doReturn(true).when(testConsole).readCompare(anyInt(), anyString());
+
         script2.execute();
-        verify(script2, times(1)).execute();
+
+        verify(testConsole, times(150)).write(intThat(i -> i >= 0 && i < 100), anyString());
+        verify(testConsole, times(150)).readCompare(intThat(i -> i >= 0 && i < 100), anyString());
     }
 
     @Test
     void script1_write_readCompare_실행횟수_정상() {
-        Script1 script1 = new Script1(testConsole, readCompare);
+        Script1 script1 = new Script1(testConsole);
         String commandStr = "";
 
-        doReturn(true).when(readCompare).execute(anyInt(), anyString());
+        doReturn(true).when(testConsole).readCompare(anyInt(), anyString());
 
         script1.execute(commandStr);
 
         verify(testConsole, times(100)).write(intThat(i -> i >= 0 && i < 100), anyString());
-        verify(readCompare, times(100)).execute(intThat(i -> i >= 0 && i < 100), anyString());
+        verify(testConsole, times(100)).readCompare(intThat(i -> i >= 0 && i < 100), anyString());
     }
 
 }
