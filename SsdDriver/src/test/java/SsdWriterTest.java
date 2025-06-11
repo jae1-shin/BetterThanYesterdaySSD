@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import static org.assertj.core.api.Assertions.*;
 
 class SsdWriterTest {
@@ -32,7 +33,7 @@ class SsdWriterTest {
         raf.close();
 
         // assert
-        assertThat(new String(buf) ).isEqualTo("0x00000000");
+        assertThat(new String(buf)).isEqualTo("0x00000000");
     }
 
     @Test
@@ -48,6 +49,6 @@ class SsdWriterTest {
         raf.close();
 
         // assert
-        assertThat(new String(buf) ).isEqualTo("0x1234ABCD");
+        assertThat(new String(buf)).isEqualTo("0x1234ABCD");
     }
 }
