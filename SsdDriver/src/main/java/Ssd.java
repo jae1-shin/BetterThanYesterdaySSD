@@ -4,11 +4,10 @@ import java.io.IOException;
 
 public class Ssd {
 
-    public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
+
     public static final String DATA_FORMAT = "^0x[0-9A-Fa-f]{8}$";
     public static final String WRITE_COMMAND = "W";
     public static final String READ_COMMAND = "R";
-    public static final String ERROR = "ERROR";
     public static final int ARGUMENT_COMMAND_INDEX = 0;
     public static final int ARGUMENT_ADDRESS_INDEX = 1;
     public static final int ARGUMENT_DATA_INDEX = 2;
@@ -82,8 +81,8 @@ public class Ssd {
     }
 
     static private void writeError() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(OUTPUT_FILE_PATH))) {
-            bw.write(ERROR);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SsdConstants.OUTPUT_FILE_PATH))) {
+            bw.write(SsdConstants.ERROR);
         } catch (IOException e) {
             // ignore
         }

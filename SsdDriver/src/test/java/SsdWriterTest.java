@@ -10,16 +10,12 @@ import static org.assertj.core.api.Assertions.*;
 
 class SsdWriterTest {
 
-    public static final String SSD_NAND_FILE = "ssd_nand.txt";
-    public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
-    public static final String ERROR = "ERROR";
-    public static final int BLOCK_SIZE = 10;
     private SsdWriter ssdWriter;
 
     @BeforeEach
     void setUp() {
-        new File(SSD_NAND_FILE).delete();
-        new File(OUTPUT_FILE_PATH).delete();
+        new File(SsdConstants.SSD_NAND_FILE).delete();
+        new File(SsdConstants.OUTPUT_FILE_PATH).delete();
         ssdWriter = new SsdWriter();
     }
 
@@ -29,9 +25,9 @@ class SsdWriterTest {
 
         // act
         ssdWriter.write(3, "0x1234ABCD");
-        RandomAccessFile raf = new RandomAccessFile(SSD_NAND_FILE, "r");
+        RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
         raf.seek(0);
-        byte[] buf = new byte[BLOCK_SIZE];
+        byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
         raf.readFully(buf);
         raf.close();
 
@@ -45,9 +41,9 @@ class SsdWriterTest {
 
         // act
         ssdWriter.write(3, "0x1234ABCD");
-        RandomAccessFile raf = new RandomAccessFile(SSD_NAND_FILE, "r");
-        raf.seek(3 * BLOCK_SIZE);
-        byte[] buf = new byte[BLOCK_SIZE];
+        RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
+        raf.seek(3 * SsdConstants.BLOCK_SIZE);
+        byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
         raf.readFully(buf);
         raf.close();
 
