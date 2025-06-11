@@ -19,4 +19,34 @@ class CommandPatternTest {
         // Assert
         verify(mockService).read(0);
     }
+
+    @Test
+    void FullReadCommand호출시_service_fullRead_호출_테스트() {
+        // Arrange
+        ConsoleService mockService = mock(ConsoleService.class);
+        FullReadCommand command = new FullReadCommand(mockService);
+        String[] args = {"fullread"};
+
+        // Act
+        command.execute(args);
+
+        // Assert
+        verify(mockService).fullRead();
+    }
+
+    @Test
+    void FullWriteCommand호출시_service_fullWrite_호출_테스트() {
+        // Arrange
+        ConsoleService mockService = mock(ConsoleService.class);
+        FullWriteCommand command = new FullWriteCommand(mockService);
+        String[] args = {"fullwrite", "0x12345678"};
+
+        // Act
+        command.execute(args);
+
+        // Assert
+        verify(mockService).fullWrite("0x12345678");
+    }
+
+
 }
