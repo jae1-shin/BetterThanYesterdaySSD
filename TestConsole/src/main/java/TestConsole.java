@@ -45,13 +45,9 @@ public class TestConsole {
         return blocks;
     }
 
-    public String write(int address ,String data){
+    public boolean write(int address ,String data){
 
         //SHELL write 3 0x00000
-        /*ProcessBuilder pb = new ProcessBuilder(
-                "java", "-jar", "\"C:\\Users\\User\\IdeaProjects\\BetterThanYesterdaySSD\\TestConsole\\src\\main\\resources\\SSD.jar\"", "W", Integer.toString(address), data
-        );*/
-
         ProcessBuilder pb = new ProcessBuilder(
                 "java", "-jar", "ssd.jar", "W", Integer.toString(address), data
         );
@@ -66,7 +62,7 @@ public class TestConsole {
 
             String rtnStr = read(address);
 
-            if(data.equals(rtnStr)) return "Done";
+            if(data.equals(rtnStr)) return true;
 
             process.destroy(); // 또는 process.destroyForcibly();
             System.out.println("Process was forcefully terminated.");
@@ -76,7 +72,7 @@ public class TestConsole {
         }
 
 
-        return "ERROR";
+        return false;
     }
 
 
