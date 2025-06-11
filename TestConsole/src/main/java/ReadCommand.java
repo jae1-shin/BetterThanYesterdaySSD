@@ -12,7 +12,13 @@ public class ReadCommand extends Command{
             }
 
             int address = Integer.parseInt(args[1]);
-            System.out.println("[Read] LBA " + String.format("%02d", address) + " : " + service.read(address));
+            String result = service.read(address);
+            if(result.startsWith("ERROR")) {
+                System.out.println(result);
+                return;
+            }
+
+            System.out.println("[Read] LBA " + String.format("%02d", address) + " : " + result);
         } catch (NumberFormatException e) {
             System.out.println("ERROR NumberFormatException" + e.getMessage());
         } catch (IndexOutOfBoundsException e) {
