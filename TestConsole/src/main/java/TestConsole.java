@@ -43,7 +43,10 @@ public class TestConsole {
             System.out.print("Shell> ");
             String input = scanner.nextLine().trim();
 
-            if(input.startsWith("exit")) break;
+            if(input.startsWith("exit")) {
+                System.out.print("Program terminated");
+                break;
+            }
             invoker.execute(input);
         }
     }
