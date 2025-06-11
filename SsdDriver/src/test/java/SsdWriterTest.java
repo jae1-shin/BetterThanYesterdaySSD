@@ -13,6 +13,7 @@ class SsdWriterTest {
     public static final String SSD_NAND_FILE = "ssd_nand.txt";
     public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
     public static final String ERROR = "ERROR";
+    public static final int BLOCK_SIZE = 10;
     private SsdWriter ssdWriter;
 
     @BeforeEach
@@ -30,7 +31,7 @@ class SsdWriterTest {
         ssdWriter.write(3, "0x1234ABCD");
         RandomAccessFile raf = new RandomAccessFile(SSD_NAND_FILE, "r");
         raf.seek(0);
-        byte[] buf = new byte[10];
+        byte[] buf = new byte[BLOCK_SIZE];
         raf.readFully(buf);
         raf.close();
 
@@ -45,8 +46,8 @@ class SsdWriterTest {
         // act
         ssdWriter.write(3, "0x1234ABCD");
         RandomAccessFile raf = new RandomAccessFile(SSD_NAND_FILE, "r");
-        raf.seek(3 * 10);
-        byte[] buf = new byte[10];
+        raf.seek(3 * BLOCK_SIZE);
+        byte[] buf = new byte[BLOCK_SIZE];
         raf.readFully(buf);
         raf.close();
 
