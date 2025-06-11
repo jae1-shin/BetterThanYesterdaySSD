@@ -20,12 +20,16 @@ class Script3Test {
         Script3 script1 = new Script3(testConsole, readCompare);
         String commandStr = "";
 
-        doReturn(true).when(readCompare).execute(any());
+        doReturn(true).when(readCompare).execute(anyInt(), anyString());
 
         script1.execute(commandStr);
 
-        verify(testConsole, times(400)).write(any());
-        verify(readCompare, times(400)).execute(any());
+        verify(testConsole, times(200)).write(eq(0), anyString());
+        verify(testConsole, times(200)).write(eq(99), anyString());
+
+        verify(readCompare, times(200)).execute(eq(0), anyString());
+        verify(readCompare, times(200)).execute(eq(99), anyString());
+
     }
 
 }

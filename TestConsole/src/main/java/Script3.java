@@ -15,15 +15,15 @@ public class Script3 implements Command{
             String randomHexFor0 = getRandomHexString();
             String randomHexFor99 = getRandomHexString();
 
-            testConsole.write("0 " + randomHexFor0);
-            testConsole.write("99 " + randomHexFor99);
+            testConsole.write(0, randomHexFor0);
+            testConsole.write(99, randomHexFor99);
 
-            if (!readCompare.execute("0 " + randomHexFor0)) {
+            if (!readCompare.execute(0, randomHexFor0)) {
                 System.out.println("FAIL");
                 return;
             }
 
-            if (!readCompare.execute("99 " + randomHexFor99)) {
+            if (!readCompare.execute(99, randomHexFor99)) {
                 System.out.println("FAIL");
                 return;
             }
