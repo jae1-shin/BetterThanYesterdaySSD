@@ -27,8 +27,8 @@ public class TestConsole {
         return lines.get(0);
     }
 
-    public boolean write(String commandStr){
-        return true;
+    public void write(String commandStr){
+        return;
     }
 
     public void fullRead(){
