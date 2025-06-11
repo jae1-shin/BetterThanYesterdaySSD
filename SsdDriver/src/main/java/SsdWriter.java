@@ -1,4 +1,6 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class SsdWriter {
 
@@ -7,16 +9,25 @@ public class SsdWriter {
     public static final int ADDRESS_MAX_RANGE = 99;
 
     public void write(int address, String data) {
-        File file = new File("ssd_nand.txt");
-        RandomAccessFile raf = null;
+
         try {
-            raf = new RandomAccessFile(file, "rw");
-            raf.seek(address * 100);
+            File file = new File("ssd_nand.txt");
+            if (!file.exists()) {
+                writeDefaultValue();
+            }
+            RandomAccessFile raf = new RandomAccessFile(file, "rw");
+            raf.seek(address * 10);
             raf.writeBytes(data);
             raf.close();
         } catch (IOException e) {
             writeError();
         }
+    }
+
+    private void writeDefaultValue() throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("0x00000000".repeat(100));
+        Files.writeString(Paths.get("ssd_nand.txt"), sb.toString());
     }
 
     static private void writeError() {
