@@ -22,9 +22,9 @@ public class TestConsole {
         this.scanner = new Scanner(in);
     }
 
-    public String read(int address){
+    public String read(int address) {
         try {
-            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "R", Integer.toString(address) );
+            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "R", Integer.toString(address));
             pb.inheritIO();
             Process process = null;
             process = pb.start();
@@ -56,7 +56,7 @@ public class TestConsole {
         return blocks;
     }
 
-    public boolean write(int address ,String data){
+    public boolean write(int address, String data) {
 
 
         try {
@@ -77,20 +77,19 @@ public class TestConsole {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
 
-    public void fullRead(){
+    public void fullRead() {
 
 
     }
 
-    public boolean fullWrite(String data){
+    public boolean fullWrite(String data) {
         boolean eachResult = false;
-        for(int i=0;i<100;i++){
-            eachResult = write(i,data);
-            if(eachResult == false) return false;
+        for (int i = 0; i < 100; i++) {
+            eachResult = write(i, data);
+            if (eachResult == false) return false;
         }
         return true;
     }
