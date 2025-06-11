@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class WriteTest {
 
@@ -15,6 +16,47 @@ class WriteTest {
         TestConsole tc = new TestConsole();
 
         assertDoesNotThrow(() -> tc.write(4,"0x12345678"));
+    }
+
+    @Test
+    void WRITE에서_true_성공() {
+
+        TestConsole tc = spy(new TestConsole());
+
+        // read()가 호출되면 "0x12345678" 리턴하도록 설정
+        doReturn("0x12345678").when(tc).read(4);
+
+        // 테스트
+        boolean result = tc.write(4, "0x12345678");
+        String readValue = tc.read(4);
+
+        // 검증
+        assertTrue(result);
+        assertEquals("0x12345678", readValue);
+    }
+
+    @Test
+    void Full_write_test(){
+        TestConsole tc = spy(new TestConsole());
+
+        // read()가 호출되면 "0x12345678" 리턴하도록 설정
+        doReturn("0x12345678").when(tc).read(anyInt());
+        boolean result = tc.fullWrite("0x12345678");
+
+        // 검증
+        assertTrue(result);
+    }
+
+    @Test
+    void Full_write_fail나는지_확인하기(){
+        TestConsole tc = spy(new TestConsole());
+
+        // read()가 호출되면 "0x12345678" 리턴하도록 설정
+        doReturn("1").doReturn("0x12345678").when(tc).read(anyInt());
+        boolean result = tc.fullWrite("0x12345678");
+
+        // 검증
+        assertFalse(result);
     }
 
     @Test
