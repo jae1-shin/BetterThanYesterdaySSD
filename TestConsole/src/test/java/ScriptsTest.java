@@ -47,7 +47,6 @@ class ScriptsTest {
     void script1_write_readCompare_실행횟수_정상() {
         Script1 script1 = new Script1(testConsole);
         String commandStr = "";
-
         doReturn(true).when(testConsole).readCompare(anyInt(), anyString());
 
         script1.execute(commandStr);

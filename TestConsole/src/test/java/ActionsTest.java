@@ -60,7 +60,7 @@ public class ActionsTest {
         TestConsole mockConsole = mock(TestConsole.class);
         when(mockConsole.read(input)).thenReturn(expect);
 
-        assertThat(mockConsole.read(input)).startsWith(expect);
+        assertThat(mockConsole.read(input)).isEqualTo(expect);
     }
 
     @Test
