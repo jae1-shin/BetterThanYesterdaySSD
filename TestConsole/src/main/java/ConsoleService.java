@@ -33,8 +33,6 @@ public class ConsoleService {
             ProcessBuilder pb = new ProcessBuilder(
                     "java", "-jar", "ssd.jar", "W", Integer.toString(address), data
             );
-
-
             pb.inheritIO(); // 콘솔 출력 연결
 
             Process process = null;
