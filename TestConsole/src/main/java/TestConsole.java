@@ -22,9 +22,9 @@ public class TestConsole {
         this.scanner = new Scanner(in);
     }
 
-    public String read(int address){
+    public String read(int address) {
         try {
-            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "R", Integer.toString(address) );
+            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "R", Integer.toString(address));
             pb.inheritIO();
             Process process = null;
             process = pb.start();
@@ -56,48 +56,40 @@ public class TestConsole {
         return blocks;
     }
 
-    public boolean write(int address ,String data){
+    public boolean write(int address, String data) {
 
-        //SHELL write 3 0x00000
+
         try {
             ProcessBuilder pb = new ProcessBuilder(
                     "java", "-jar", "ssd.jar", "W", Integer.toString(address), data
             );
 
-
             pb.inheritIO(); // 콘솔 출력 연결
-
             Process process = null;
-
             process = pb.start();
             process.waitFor();
 
             String rtnStr = read(address);
 
-            if(data.equals(rtnStr)) return true;
-
             process.destroy(); // 또는 process.destroyForcibly();
-            System.out.println("Process was forcefully terminated.");
+            return data.equals(rtnStr);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
-        return false;
     }
 
 
-    public void fullRead(){
+    public void fullRead() {
 
 
     }
 
-    public boolean fullWrite(String data){
+    public boolean fullWrite(String data) {
         boolean eachResult = false;
-        for(int i=0;i<100;i++){
-            eachResult = write(i,data);
-            if(eachResult == false) return false;
+        for (int i = 0; i < 100; i++) {
+            eachResult = write(i, data);
+            if (eachResult == false) return false;
         }
         return true;
     }
