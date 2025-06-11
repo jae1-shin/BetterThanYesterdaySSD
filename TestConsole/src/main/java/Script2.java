@@ -7,7 +7,7 @@ public class Script2 extends Command {
     }
 
     @Override
-    public void execute(String[] arg) {
+    public void execute(String[] args) {
         int[] lbaTestSequence = {4, 0, 3, 1, 2};
 
         for(int i = 0; i< LOOP_COUNT; i++){

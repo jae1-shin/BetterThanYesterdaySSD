@@ -1,6 +1,5 @@
 import java.util.Random;
 
-
 public class Script3 extends Command{
     public static final int LOOP_COUNT = 200;
 
