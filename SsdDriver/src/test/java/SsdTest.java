@@ -12,13 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SsdTest {
 
-    public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
-    public static final String ERROR = "ERROR";
-    public static final int BLOCK_SIZE = 10;
-
     @BeforeEach
     void setUp() {
-        new File(OUTPUT_FILE_PATH).delete();
+        new File(SsdConstants.OUTPUT_FILE_PATH).delete();
     }
 
     @Test
@@ -27,12 +23,12 @@ class SsdTest {
 
         // act
         Ssd.main(new String[]{"W"});
-        BufferedReader br = new BufferedReader(new FileReader(OUTPUT_FILE_PATH));
+        BufferedReader br = new BufferedReader(new FileReader(SsdConstants.OUTPUT_FILE_PATH));
         String result = br.readLine();
         br.close();
         
         // assert
-        assertThat(result).isEqualTo(ERROR);
+        assertThat(result).isEqualTo(SsdConstants.ERROR);
     }
 
     @Test
@@ -41,12 +37,12 @@ class SsdTest {
 
         // act
         Ssd.main(new String[]{"X", "1"});
-        BufferedReader br = new BufferedReader(new FileReader(OUTPUT_FILE_PATH));
+        BufferedReader br = new BufferedReader(new FileReader(SsdConstants.OUTPUT_FILE_PATH));
         String result = br.readLine();
         br.close();
 
         // assert
-        assertThat(result).isEqualTo(ERROR);
+        assertThat(result).isEqualTo(SsdConstants.ERROR);
     }
 
     @Test
@@ -55,12 +51,12 @@ class SsdTest {
         
         // act
         Ssd.main(new String[]{"W", "100", "0x12345678"});
-        BufferedReader br = new BufferedReader(new FileReader(OUTPUT_FILE_PATH));
+        BufferedReader br = new BufferedReader(new FileReader(SsdConstants.OUTPUT_FILE_PATH));
         String result = br.readLine();
         br.close();
 
         // assert
-        assertThat(result).isEqualTo(ERROR);
+        assertThat(result).isEqualTo(SsdConstants.ERROR);
     }
 
     @Test
@@ -69,12 +65,12 @@ class SsdTest {
 
         // act
         Ssd.main(new String[]{"W", "1", "12345678"});
-        BufferedReader br = new BufferedReader(new FileReader(OUTPUT_FILE_PATH));
+        BufferedReader br = new BufferedReader(new FileReader(SsdConstants.OUTPUT_FILE_PATH));
         String result = br.readLine();
         br.close();
 
         // assert
-        assertThat(result).isEqualTo(ERROR);
+        assertThat(result).isEqualTo(SsdConstants.ERROR);
     }
 
     @Test
@@ -84,8 +80,8 @@ class SsdTest {
         // act
         Ssd.main(new String[]{"W", "3", "0x1234ABCD"});
         RandomAccessFile raf = new RandomAccessFile("ssd_nand.txt", "r");
-        raf.seek(3 * BLOCK_SIZE);
-        byte[] buf = new byte[BLOCK_SIZE];
+        raf.seek(3 * SsdConstants.BLOCK_SIZE);
+        byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
         raf.readFully(buf);
         raf.close();
 
@@ -99,7 +95,7 @@ class SsdTest {
 
         // act
         Ssd.main(new String[]{"R", "0"});
-        BufferedReader br = new BufferedReader(new FileReader(OUTPUT_FILE_PATH));
+        BufferedReader br = new BufferedReader(new FileReader(SsdConstants.OUTPUT_FILE_PATH));
         String result = br.readLine();
         br.close();
 
