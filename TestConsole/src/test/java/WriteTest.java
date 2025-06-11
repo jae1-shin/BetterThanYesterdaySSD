@@ -12,10 +12,9 @@ class WriteTest {
     @Test
     void WRITE에서_익셉션안나면_성공() {
 
-        String commandStr = "write 4 0x123456";
         TestConsole tc = new TestConsole();
 
-        assertDoesNotThrow(() -> tc.write(commandStr));
+        assertDoesNotThrow(() -> tc.write(4,"0x12345678"));
     }
 
     @Test
