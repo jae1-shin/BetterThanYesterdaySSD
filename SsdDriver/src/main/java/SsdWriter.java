@@ -1,8 +1,31 @@
+import java.io.*;
+
 public class SsdWriter {
 
     public static final String ERROR = "ERROR";
     public static final int ADDRESS_MIN_RANGE = 0;
     public static final int ADDRESS_MAX_RANGE = 99;
+
+    public void write(int address, String data) {
+        File file = new File("ssd_nand.txt");
+        RandomAccessFile raf = null;
+        try {
+            raf = new RandomAccessFile(file, "rw");
+            raf.seek(address * 100);
+            raf.writeBytes(data);
+            raf.close();
+        } catch (IOException e) {
+            writeError();
+        }
+    }
+
+    static private void writeError() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("ssd_output.txt"))) {
+            bw.write(ERROR);
+        } catch (IOException e) {
+            // ignore
+        }
+    }
 
     public String write(String addrStr, String data) {
         if (!isValidAddress(addrStr)) {

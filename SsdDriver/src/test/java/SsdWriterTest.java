@@ -26,6 +26,23 @@ class SsdWriterTest {
     }
 
     @Test
+    void 파일_Write시_파일이_없으면_초기화() throws Exception {
+        // arrange
+        SsdWriter ssdWriter = new SsdWriter();
+
+        // act
+        ssdWriter.write(1, "0x1234ABCD");
+        RandomAccessFile raf = new RandomAccessFile("ssd_nand.txt", "r");
+        raf.seek(0);
+        byte[] buf = new byte[10];
+        raf.readFully(buf);
+        raf.close();
+
+        // assert
+        assertThat(new String(buf) ).isEqualTo("0x00000000");
+    }
+
+    @Test
     void 두번째_파라미터_0_99_아닌경우_실패() throws Exception {
         //arrange
         SsdWriter ssdWriter = new SsdWriter();
