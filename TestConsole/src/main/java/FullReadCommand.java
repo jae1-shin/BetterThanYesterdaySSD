@@ -5,6 +5,11 @@ public class FullReadCommand extends Command{
 
     @Override
     public void execute(String[] args) {
-        throw new RuntimeException("아직 구현 안됐어요");
+        if(args.length != 1){
+            System.out.println("INVALID ARGUMENT");
+            return;
+        }
+
+        service.fullRead();
     }
 }
