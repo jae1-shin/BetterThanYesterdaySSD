@@ -6,8 +6,8 @@ public class TestConsole {
         return "";
     }
 
-    public boolean write(String commandStr){
-        return true;
+    public void write(String commandStr){
+        return;
     }
 
     public String fullRead(String commandStr){
