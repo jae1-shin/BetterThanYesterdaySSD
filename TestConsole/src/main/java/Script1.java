@@ -10,12 +10,12 @@ public class Script1 extends Command {
     @Override
     public void execute(String[] args) {
         int currentLBA = 0;
-        while(currentLBA < LAST_LBA) {
-            for(int LBA = currentLBA; LBA< currentLBA + DIV_NUM;LBA++){
+        while (currentLBA < LAST_LBA) {
+            for (int LBA = currentLBA; LBA < currentLBA + DIV_NUM; LBA++) {
                 service.write(LBA, TEST_VALUE);
             }
 
-            for(int LBA = currentLBA; LBA < currentLBA + DIV_NUM;LBA++){
+            for (int LBA = currentLBA; LBA < currentLBA + DIV_NUM; LBA++) {
                 if (!service.readCompare(LBA, TEST_VALUE)) {
                     System.out.println("FAIL");
                     return;
