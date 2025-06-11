@@ -36,6 +36,18 @@ public class Ssd {
             writeError();
             return;
         }
+
+        if (READ_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX])) {
+            SsdReader reader = new SsdReader();
+
+            int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
+            try {
+                reader.read(LBA);
+            } catch (IOException e) {
+                // ignore
+            }
+        }
+
     }
 
     private static boolean isValidDataForWrite(String[] args) {
