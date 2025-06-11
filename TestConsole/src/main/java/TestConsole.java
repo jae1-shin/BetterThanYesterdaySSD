@@ -8,7 +8,7 @@ public class TestConsole {
 
     public String read(int address){
         try {
-            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "r", Integer.toString(address) );
+            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "R", Integer.toString(address) );
             pb.inheritIO();
             Process process = null;
             process = pb.start();
