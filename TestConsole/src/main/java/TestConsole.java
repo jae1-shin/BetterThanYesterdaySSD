@@ -59,15 +59,16 @@ public class TestConsole {
     public boolean write(int address ,String data){
 
         //SHELL write 3 0x00000
-        ProcessBuilder pb = new ProcessBuilder(
-                "java", "-jar", "ssd.jar", "W", Integer.toString(address), data
-        );
-
-        pb.inheritIO(); // 콘솔 출력 연결
-
-        Process process = null;
-
         try {
+            ProcessBuilder pb = new ProcessBuilder(
+                    "java", "-jar", "ssd.jar", "W", Integer.toString(address), data
+            );
+
+
+            pb.inheritIO(); // 콘솔 출력 연결
+
+            Process process = null;
+
             process = pb.start();
             process.waitFor();
 
@@ -89,9 +90,15 @@ public class TestConsole {
 
     public void fullRead(){
 
+
     }
 
-    public boolean fullWrite(String commandStr){
+    public boolean fullWrite(String data){
+        boolean eachResult = false;
+        for(int i=0;i<100;i++){
+            eachResult = write(i,data);
+            if(eachResult == false) return false;
+        }
         return true;
     }
 
