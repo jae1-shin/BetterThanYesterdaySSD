@@ -16,10 +16,12 @@ public class SsdWriter {
     public void write(int address, String data) {
         if (!isValidAddress(address)) {
             writeError();
+            return;
         }
 
         if (!isValidData(data)) {
             writeError();
+            return;
         }
 
         try {
