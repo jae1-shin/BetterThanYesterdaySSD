@@ -5,11 +5,15 @@ public class FullReadCommand extends Command{
 
     @Override
     public void execute(String[] args) {
-        if(args.length != 1){
+        if(!isValidArgumentNumber(args)){
             System.out.println("INVALID ARGUMENT");
             return;
         }
 
         service.fullRead();
+    }
+
+    private static boolean isValidArgumentNumber(String[] args) {
+        return args.length == 1;
     }
 }

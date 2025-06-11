@@ -6,15 +6,19 @@ public class FullWriteCommand extends Command{
 
     @Override
     public void execute(String[] args) {
-        if(args.length != 2){
+        if(!isValidArgumentNumber(args)){
             System.out.println("[ERROR] INVALID NUMBER OF ARGUMENT");
             return;
         }
 
-        if(isValidData(args[1])){
+        if(!isValidData(args[1])){
             System.out.println("[ERROR] INVALID ARGUMENT");
         }
         service.fullWrite(args[1]);
+    }
+
+    private static boolean isValidArgumentNumber(String[] args) {
+        return args.length == 2;
     }
 
     private boolean isValidData(String data) {
