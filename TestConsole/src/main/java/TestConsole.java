@@ -58,33 +58,26 @@ public class TestConsole {
 
     public boolean write(int address ,String data){
 
-        //SHELL write 3 0x00000
+
         try {
             ProcessBuilder pb = new ProcessBuilder(
                     "java", "-jar", "ssd.jar", "W", Integer.toString(address), data
             );
 
-
             pb.inheritIO(); // 콘솔 출력 연결
-
             Process process = null;
-
             process = pb.start();
             process.waitFor();
 
             String rtnStr = read(address);
 
-            if(data.equals(rtnStr)) return true;
-
             process.destroy(); // 또는 process.destroyForcibly();
-            System.out.println("Process was forcefully terminated.");
+            return data.equals(rtnStr);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-
-        return false;
     }
 
 
