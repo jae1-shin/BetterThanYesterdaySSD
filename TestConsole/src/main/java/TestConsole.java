@@ -1,16 +1,39 @@
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Scanner;
 
 public class TestConsole {
 
     public String read(String commandStr){
-        return "";
+        String[] args = commandStr.split(" ");
+        if (args.length != 2) {
+            return "ERROR no args";
+        }
+
+        try {
+            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "ssd.jar", "read", args[0], args[1]);
+            pb.inheritIO();
+            Process process = null;
+            process = pb.start();
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            return "ERROR process " + e.getMessage();
+        }
+
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(Paths.get("ssd_output.txt"));
+        } catch (IOException e) {
+            return "ERROR file " + e.getMessage();
+        }
+        return lines.get(0);
     }
 
     public static List<String> loadBlocks(String content) throws Exception {
@@ -57,6 +80,10 @@ public class TestConsole {
 
 
         return true;
+    }
+
+    public void write(String commandStr){
+        return;
     }
 
     public String fullRead(String commandStr){
