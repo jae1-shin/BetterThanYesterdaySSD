@@ -120,17 +120,17 @@ public class TestConsole {
                 System.out.println("fullread");
             } else if (line.startsWith("fullwrite")) {
                 System.out.println("fullwrite");
-            } else if (line.startsWith("FullWriteAndReadCompare")) {
+            } else if (line.startsWith("1_FullWriteAndReadCompare")) {
                 System.out.println("FullWriteAndReadCompare");
-            } else if (line.startsWith("PartialLBAWrite")) {
+            } else if (line.startsWith("2_PartialLBAWrite")) {
                 System.out.println("PartialLBAWrite");
-            } else if (line.startsWith("WriteReadAging")) {
+            } else if (line.startsWith("3_WriteReadAging")) {
                 System.out.println("WriteReadAging");
             } else if (line.startsWith("exit")) {
                 System.out.println("Program terminated");
                 break;
             } else {
-                System.out.println("Command 실행");;
+                System.out.println("Command 실행");
             }
         }
     }
