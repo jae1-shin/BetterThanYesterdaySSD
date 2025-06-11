@@ -28,14 +28,6 @@ public class Ssd {
         }
     }
 
-    private static boolean isReadCommand(String[] args) {
-        return READ_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX]);
-    }
-
-    private static boolean isWriteCommand(String[] args) {
-        return WRITE_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX]);
-    }
-
     private void processWriteCommand(String[] args) {
         SsdWriter writer = new SsdWriter();
 
@@ -56,6 +48,14 @@ public class Ssd {
         } catch (IOException e) {
             // ignore
         }
+    }
+
+    private static boolean isWriteCommand(String[] args) {
+        return WRITE_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX]);
+    }
+
+    private static boolean isReadCommand(String[] args) {
+        return READ_COMMAND.equals(args[ARGUMENT_COMMAND_INDEX]);
     }
 
     private boolean checkPreCondition(String[] args) {
@@ -87,7 +87,7 @@ public class Ssd {
     }
 
     private void writeError() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(OUTPUT_FILE_PATH))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SsdConstants.OUTPUT_FILE_PATH))) {
             bw.write(SsdConstants.ERROR);
         } catch (IOException e) {
             // ignore

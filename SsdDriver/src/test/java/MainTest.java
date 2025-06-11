@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 
 import static org.assertj.core.api.Assertions.*;
 
-class SsdTest {
+class MainTest {
 
     @BeforeEach
     void setUp() {
