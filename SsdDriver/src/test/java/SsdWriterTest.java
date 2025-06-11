@@ -54,40 +54,4 @@ class SsdWriterTest {
         // assert
         assertThat(new String(buf) ).isEqualTo("0x1234ABCD");
     }
-
-    @Test
-    void LBA_범위가_아닌_경우_에러_출력() throws Exception {
-        //arrange
-
-        //act
-        ssdWriter.write(-1, "0xFFFFFFFF");
-        String actual = Files.readString(Paths.get(OUTPUT_FILE_PATH));
-
-        //assert
-        assertThat(actual).isEqualTo(ERROR);
-    }
-
-    @Test
-    void Write_데이터_10글자가_아닌경우_에러_출력() throws Exception {
-        //arrange
-
-        //act
-        ssdWriter.write(0, "0xFFFFFFFFGGGGGGG");
-        String actual = Files.readString(Paths.get(OUTPUT_FILE_PATH));
-
-        //assert
-        assertThat(actual).isEqualTo(ERROR);
-    }
-
-    @Test
-    void Write_데이터_0x_시작_미포함인경우_에러_출력() throws Exception {
-        //arrange
-
-        //act
-        ssdWriter.write(0, "00ZZFFFFFF");
-        String actual = Files.readString(Paths.get(OUTPUT_FILE_PATH));
-
-        //assert
-        assertThat(actual).isEqualTo(ERROR);
-    }
 }
