@@ -1,10 +1,10 @@
 public class Script2 implements Command{
     public static final int LOOP_COUNT = 30;
     public static final String TEST_VALUE = "0x12345678";
-    private TestConsole testConsole;
+    private ConsoleService consoleService;
 
-    public Script2(TestConsole testConsole) {
-        this.testConsole = testConsole;
+    public Script2(ConsoleService consoleService) {
+        this.consoleService = consoleService;
     }
 
     @Override
@@ -13,11 +13,11 @@ public class Script2 implements Command{
 
         for(int i = 0; i< LOOP_COUNT; i++){
             for(int lba : lbaTestSequence){
-                testConsole.write(lba, TEST_VALUE);
+                consoleService.write(lba, TEST_VALUE);
             }
 
             for(int lba : lbaTestSequence){
-                if(!testConsole.readCompare(lba, TEST_VALUE)){
+                if(!consoleService.readCompare(lba, TEST_VALUE)){
                     System.out.println("FAIL");
                     return;
                 }
