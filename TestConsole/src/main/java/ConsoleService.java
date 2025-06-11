@@ -84,5 +84,21 @@ public class ConsoleService {
         return value.equals(this.read(LBA));
     }
 
-
+    public void help() {
+        System.out.println("Authors:");
+        System.out.println("신재원, 정혜원, 문영민, 조효민, 류지우, 서인규");
+        System.out.println();
+        System.out.println();
+        System.out.println("Available commands:");
+        System.out.println("write {lba} {data} - Write data to the specified LBA");
+        System.out.println("read {lba} - Read data from the specified LBA");
+        System.out.println("exit - Exit the console");
+        System.out.println("help - Display this help message");
+        System.out.println("fullwrite {data} - Write the same data to all LBAs");
+        System.out.println("fullread - Read all LBAs and display their values");
+        System.out.println();
+        System.out.println("Note: ");
+        System.out.println("{lba} must be an integer between 0 and 99");
+        System.out.println("{data} must be 4-byte unsigned hexadecimal (0x00000000 - 0xFFFFFFFF)");
+    }
 }
