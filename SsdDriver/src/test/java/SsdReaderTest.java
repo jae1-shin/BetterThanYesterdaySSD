@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -15,10 +16,18 @@ class SsdReaderTest {
     public static final String READ_FILE_PATH = "ssd_nand.txt";
     public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
     public static final String SAMPLE_DATA = "0XAAAABBBB0XCCCCDDDD0XEEEEFFFF";
+    public static final String DEFAULT_VALUE = "0x00000000";
 
     @BeforeEach
     void setUp() throws IOException {
-        Files.writeString(Paths.get(READ_FILE_PATH), SAMPLE_DATA);
+        StringBuilder sb = new StringBuilder();
+        sb.append(DEFAULT_VALUE.repeat(100));
+        Files.writeString(Paths.get(READ_FILE_PATH), sb.toString());
+
+        try (RandomAccessFile raf = new RandomAccessFile(READ_FILE_PATH, "rw")) {
+            raf.seek(0);
+            raf.write(SAMPLE_DATA.getBytes());
+        }
     }
 
     @Test
@@ -57,9 +66,15 @@ class SsdReaderTest {
         assertThat(output).isEqualTo(expected);
     }
 
-    @Test
-    void 기록이_한적이_없는_LBA를_읽으면_0X00000000으로_읽힌다() {
+    @ParameterizedTest
+    @ValueSource(strings = {"5", "50", "99"})
+    void 기록이_한적이_없는_LBA를_읽으면_0X00000000으로_읽힌다(String lbaParam) throws IOException {
+        SsdReader reader = new SsdReader();
 
+        reader.read(lbaParam);
+
+        String output = Files.readString(Paths.get(OUTPUT_FILE_PATH));
+        assertThat(output).isEqualTo(DEFAULT_VALUE);
     }
 
 }
