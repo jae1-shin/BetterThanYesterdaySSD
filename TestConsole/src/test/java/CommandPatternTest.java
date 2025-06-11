@@ -21,6 +21,20 @@ class CommandPatternTest {
     }
 
     @Test
+    void WriteCommand호출시_service_write_호출_테스트() {
+        // Arrange
+        ConsoleService mockService = mock(ConsoleService.class);
+        WriteCommand command = new WriteCommand(mockService);
+        String[] args = {"write", "0", "0x12341234"};
+
+        // Act
+        command.execute(args);
+
+        // Assert
+        verify(mockService).write(Integer.parseInt(args[1]), args[2]);
+    }
+
+    @Test
     void FullReadCommand호출시_service_fullRead_호출_테스트() {
         // Arrange
         ConsoleService mockService = mock(ConsoleService.class);

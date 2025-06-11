@@ -5,6 +5,28 @@ public class WriteCommand extends Command{
 
     @Override
     public void execute(String[] args)  {
-        throw new RuntimeException("아직 구현 안됐어요");
+        try {
+            if (args.length < 3) {
+                System.out.println("ERROR Not enough arguments. Usage: write <address> <value>");
+                return;
+            }
+            if (!args[2].startsWith("0x")) {
+                System.out.println("ERROR Value must be in hex format (e.g., 0x1234ABCD)");
+                return;
+            }
+
+            if(service.write(Integer.parseInt(args[1]), args[2]) == false) {
+                System.out.println("ERROR Write failed");
+                return;
+            }else{
+                System.out.println("[Write] Done");
+            }
+
+
+        } catch (NumberFormatException e) {
+            System.out.println("ERROR NumberFormatException" + e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("ERROR IndexOutOfBoundsException" + e.getMessage());
+        }
     }
 }
