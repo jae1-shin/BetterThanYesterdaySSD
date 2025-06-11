@@ -25,31 +25,32 @@ public class SsdWriter {
         }
 
         try {
-            File file = new File(SSD_NAND_FILE);
-            checkFileAndWriteDefaultData(file);
-            writeData(file, address, data);
+            checkFileAndWriteDefaultData();
+            writeData(address, data);
         } catch (IOException e) {
             writeError();
         }
     }
 
-    private void checkFileAndWriteDefaultData(File file) throws IOException {
+    private void checkFileAndWriteDefaultData() throws IOException {
+        File file = new File(SSD_NAND_FILE);
         if (file.exists()) return;
         writeDefaultData();
     }
 
-    private static void writeData(File file, long address, String data) throws IOException {
+    private void writeData(long address, String data) throws IOException {
+        File file = new File(SSD_NAND_FILE);
         RandomAccessFile raf = new RandomAccessFile(file, "rw");
         raf.seek(address * BLOCK_SIZE);
         raf.writeBytes(data);
         raf.close();
     }
 
-    private static void writeDefaultData() throws IOException {
+    private void writeDefaultData() throws IOException {
         Files.writeString(Paths.get(SSD_NAND_FILE), DEFAULT_DATA.repeat(MAX_DATA_COUNT));
     }
 
-    static private void writeError() {
+    private void writeError() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(OUTPUT_FILE_PATH))) {
             bw.write(ERROR);
         } catch (IOException e) {
