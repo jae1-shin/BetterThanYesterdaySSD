@@ -11,11 +11,6 @@ public class SsdReader {
     private static final int BLOCK_SIZE = 10;
 
     public void read(int LBA) throws IOException {
-        if (isLBAOutOfRange(LBA)) {
-            writeError();
-            return;
-        }
-
         long offset = (long) LBA * BLOCK_SIZE;
 
         try (RandomAccessFile raf = new RandomAccessFile(READ_FILE_PATH, "r")) {
@@ -40,10 +35,6 @@ public class SsdReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private static boolean isLBAOutOfRange(int LBA) {
-        return LBA < 0 || LBA > 99;
     }
 
     private static void writeError() throws IOException {
