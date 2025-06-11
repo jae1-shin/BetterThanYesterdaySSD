@@ -23,8 +23,6 @@ public class TestConsole {
     }
 
     public void run() {
-
-
         while (true) {
             System.out.print("Shell> ");
             String line = scanner.nextLine().trim();
