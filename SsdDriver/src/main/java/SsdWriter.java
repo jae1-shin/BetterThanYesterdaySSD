@@ -8,9 +8,9 @@ public class SsdWriter {
     public static final String DEFAULT_DATA = "0x00000000";
     public static final String SSD_NAND_FILE = "ssd_nand.txt";
     public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
-    public static final int ADDRESS_MIN_RANGE = 0;
-    public static final int ADDRESS_MAX_RANGE = 99;
     public static final int MAX_DATA_COUNT = 100;
+    public static final int ADDRESS_MAX_RANGE = MAX_DATA_COUNT - 1;
+    public static final int ADDRESS_MIN_RANGE = 0;
     public static final int BLOCK_SIZE = 10;
 
     public void write(int address, String data) {
