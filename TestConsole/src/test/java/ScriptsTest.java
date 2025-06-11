@@ -12,17 +12,18 @@ class ScriptsTest {
 
     @Test
     void script3_write_readCompare_실행횟수_정상() {
-        Script3 script1 = new Script3(service);
-        doReturn(true).when(service).readCompare(anyInt(), anyString());
+        Script3 script3 = new Script3(service);
+        for (int lba : script3.targetLBA) {
+            doReturn(true).when(service).readCompare(eq(lba), anyString());
+        }
 
-        script1.execute(new String[]{});
+        script3.execute(new String[]{});
 
-        verify(service, times(200)).write(eq(0), anyString());
-        verify(service, times(200)).write(eq(99), anyString());
+        for (int lba : script3.targetLBA) {
+            verify(service, times(script3.LOOP_COUNT)).write(eq(lba), anyString());
+            verify(service, times(script3.LOOP_COUNT)).readCompare(eq(lba), anyString());
 
-        verify(service, times(200)).readCompare(eq(0), anyString());
-        verify(service, times(200)).readCompare(eq(99), anyString());
-
+        }
     }
 
     @Test
@@ -32,8 +33,10 @@ class ScriptsTest {
 
         script2.execute(new String[]{});
 
-        verify(service, times(150)).write(intThat(i -> i >= 0 && i < 100), anyString());
-        verify(service, times(150)).readCompare(intThat(i -> i >= 0 && i < 100), anyString());
+        for (int LBA : script2.LBA_TEST_SEQUENCE) {
+            verify(service, times(script2.LOOP_COUNT)).write(LBA, script2.TEST_VALUE);
+            verify(service, times(script2.LOOP_COUNT)).readCompare(LBA, script2.TEST_VALUE);
+        }
     }
 
     @Test
@@ -43,8 +46,10 @@ class ScriptsTest {
 
         script1.execute(new String[]{});
 
-        verify(service, times(100)).write(intThat(i -> i >= 0 && i < 100), anyString());
-        verify(service, times(100)).readCompare(intThat(i -> i >= 0 && i < 100), anyString());
+        for (int i = 0; i < script1.LAST_LBA; i++) {
+            verify(service, times(1)).write(i, script1.TEST_VALUE);
+            verify(service, times(1)).readCompare(i, script1.TEST_VALUE);
+        }
     }
 
 }
