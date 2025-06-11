@@ -1,12 +1,20 @@
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SsdTest {
+
+    @BeforeEach
+    void setUp() {
+        new File("ssd_output.txt").delete();
+    }
+
     @Test
     void 파라미터_부족시_에러_출력() throws Exception {
         Ssd.main(new String[]{"W"});
