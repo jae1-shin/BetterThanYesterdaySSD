@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -13,41 +14,44 @@ import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class ActionsTest {
+    public static final String TEST_DATA = "0x12345678";
+    public static final String TEST_DATA_FAIL = "0x87654321";
+    public static final int TEST_LBA = 0;
+
     @Mock
     ConsoleService consoleServiceMock;
 
     @Spy
     ConsoleService consoleServiceSpy;
 
+    @BeforeEach
+    void setUp() {
+        consoleServiceMock = mock(ConsoleService.class);
+        consoleServiceSpy = spy(new ConsoleService());
+    }
+
     @Test
     void ReadCompare_PASS_테스트() {
-        int LBA = 3;
-        String value = "0x12345678";
-        doReturn(true).when(consoleServiceMock).readCompare(LBA, value);
+        doReturn(TEST_DATA).when(consoleServiceSpy).read(TEST_LBA);
 
-        consoleServiceMock.write(LBA, value);
-        Boolean result = consoleServiceMock.readCompare(LBA, value);
+        Boolean result = consoleServiceSpy.readCompare(TEST_LBA, TEST_DATA);
         assertThat(result).isEqualTo(true);
     }
 
     @Test
     void ReadCompare_FAIL_테스트() {
-        int LBA = 3;
-        String value = "0x12345678";
-        doReturn(false).when(consoleServiceMock).readCompare(LBA, value);
+        doReturn(false).when(consoleServiceMock).readCompare(TEST_LBA, TEST_DATA);
 
-        consoleServiceMock.write(LBA, value);
-        Boolean result = consoleServiceMock.readCompare(LBA, value);
+        consoleServiceMock.write(TEST_LBA, TEST_DATA);
+        Boolean result = consoleServiceMock.readCompare(TEST_LBA, TEST_DATA);
         assertThat(result).isEqualTo(false);
     }
 
     @Test
     void 읽기_1_LBA_성공() {
-        int input = 3;
-        String expect = "0xAAAABBBB";
-        when(consoleServiceMock.read(input)).thenReturn(expect);
+        when(consoleServiceMock.read(TEST_LBA)).thenReturn(TEST_DATA);
 
-        assertThat(consoleServiceMock.read(input)).isEqualTo(expect);
+        assertThat(consoleServiceMock.read(TEST_LBA)).isEqualTo(TEST_DATA);
     }
 
     @Test
@@ -61,50 +65,50 @@ public class ActionsTest {
 
     @Test
     void 읽기_FULL_LBA_성공() {
-        when(consoleServiceSpy.read(anyInt())).thenReturn("0x00000000");
+        when(consoleServiceSpy.read(anyInt())).thenReturn(TEST_DATA);
         consoleServiceSpy.fullRead();
 
-        verify(consoleServiceSpy, times(100)).read(anyInt());
+        verify(consoleServiceSpy, times(consoleServiceSpy.TOTAL_LBA_COUNT)).read(anyInt());
     }
 
     @Test
     void WRITE에서_익셉션안나면_성공() {
-        assertDoesNotThrow(() -> consoleServiceMock.write(4,"0x12345678"));
+        assertDoesNotThrow(() -> consoleServiceMock.write(TEST_LBA, TEST_DATA));
     }
 
     @Test
     void WRITE에서_true_성공() {
-        // read()가 호출되면 "0x12345678" 리턴하도록 설정
-        doReturn("0x12345678").when(consoleServiceSpy).read(4);
+        doReturn(TEST_DATA).when(consoleServiceSpy).read(TEST_LBA);
 
-        // 테스트
-        boolean result = consoleServiceSpy.write(4, "0x12345678");
+        boolean result = consoleServiceSpy.write(TEST_LBA, TEST_DATA);
 
-        // 검증
         assertTrue(result);
     }
 
     @Test
+    void WRITE_직후_READ_결과_다를_때_false_정상_출력_확인() {
+        doReturn(TEST_DATA_FAIL).when(consoleServiceSpy).read(TEST_LBA);
+
+        boolean result = consoleServiceSpy.write(TEST_LBA, TEST_DATA);
+
+        assertFalse(result);
+    }
+
+    @Test
     void Full_write_전부_성공인지(){
-        // read()가 호출되면 "0x12345678" 리턴하도록 설정
-        doReturn("0x12345678").when(consoleServiceSpy).read(anyInt());
+        doReturn(TEST_DATA).when(consoleServiceSpy).read(anyInt());
 
-        // 테스트
-        boolean result = consoleServiceSpy.fullWrite("0x12345678");
+        boolean result = consoleServiceSpy.fullWrite(TEST_DATA);
 
-        // 검증
         assertTrue(result);
     }
 
     @Test
     void Full_write_fail나는지_확인하기(){
-        // read()가 호출되면 "0x12345678" 리턴하도록 설정
-        doReturn("1").doReturn("0x12345678").when(consoleServiceSpy).read(anyInt());
+        doReturn(false).when(consoleServiceSpy).write(anyInt(), anyString());
 
-        // 테스트
-        boolean result = consoleServiceSpy.fullWrite("0x12345678");
+        boolean result = consoleServiceSpy.fullWrite(TEST_DATA);
 
-        // 검증
         assertFalse(result);
     }
 
