@@ -10,9 +10,7 @@ public class SsdReader {
     private static final String OUTPUT_FILE_PATH = "ssd_output.txt";
     private static final int BLOCK_SIZE = 10;
 
-    public void read(String LBAParam) throws IOException {
-        int LBA = Integer.parseInt(LBAParam);
-
+    public void read(int LBA) throws IOException {
         if (isLBAOutOfRange(LBA)) {
             writeError();
             return;
