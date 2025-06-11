@@ -12,15 +12,11 @@ public class CommandInvoker {
         String[] parts = inputLine.trim().split("\\s+");
         if (parts.length == 0) return;
 
-        String commandName = parts[0].toLowerCase();
-        String[] args = new String[parts.length - 1];
-        System.arraycopy(parts, 1, args, 0, args.length);
-
-        Command command = commands.get(commandName);
+        Command command = commands.get(parts[0].toLowerCase());
         if (command != null) {
-            command.execute(args);
+            command.execute(parts);
         } else {
-            System.out.println("Unknown command: " + commandName);
+            System.out.println("INVALID COMMAND");
         }
     }
 }
