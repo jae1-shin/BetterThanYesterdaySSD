@@ -107,5 +107,19 @@ public class ActionsTest {
         // 검증
         assertFalse(result);
     }
+
+    @Test
+    void help_정상_출력_확인(){
+        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(outContent));
+        String[] expectedValues = {"Team", "Members", "Available commands", "write", "read", "exit", "help", "fullwrite", "fullread", "Note"};
+
+        consoleServiceSpy.help();
+
+        for (String expected : expectedValues) {
+            assertTrue(outContent.toString().contains(expected));
+        }
+    }
 }
+
 
