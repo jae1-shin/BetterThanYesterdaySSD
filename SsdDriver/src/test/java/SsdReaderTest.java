@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SsdReaderTest {
 
-    public static final String SAMPLE_DATA = "0XAAAABBBB0XCCCCDDDD0XEEEEFFFF";
+    public static final String SAMPLE_DATA = "0xAAAABBBB0xCCCCDDDD0xEEEEFFFF";
     public static final String DEFAULT_VALUE = "0x00000000";
 
     private SsdReader reader;
