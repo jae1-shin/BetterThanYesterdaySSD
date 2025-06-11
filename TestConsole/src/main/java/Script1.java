@@ -11,10 +11,10 @@ public class Script1 implements Command {
     public void execute(String commandStr) {
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 5; j++) {
-                testConsole.write((i * 5 + j) + " " + "0xFFFFFFFF");
+                testConsole.write((i * 5 + j), "0xFFFFFFFF");
             }
             for (int j = 0; j < 5; j++) {
-                boolean result = readCompare.execute((i * 5 + j) + " " + "0xFFFFFFFF");
+                boolean result = readCompare.execute((i * 5 + j), "0xFFFFFFFF");
 
                 if (!result) {
                     System.out.printf("FAIL");

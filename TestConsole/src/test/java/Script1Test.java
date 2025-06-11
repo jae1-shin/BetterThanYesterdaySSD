@@ -20,12 +20,12 @@ class Script1Test {
         Script1 script1 = new Script1(testConsole, readCompare);
         String commandStr = "";
 
-        doReturn(true).when(readCompare).execute(any());
+        doReturn(true).when(readCompare).execute(anyInt(), anyString());
 
         script1.execute(commandStr);
 
-        verify(testConsole, times(100)).write(any());
-        verify(readCompare, times(100)).execute(any());
+        verify(testConsole, times(100)).write(intThat(i -> i >= 0 && i < 100), anyString());
+        verify(readCompare, times(100)).execute(intThat(i -> i >= 0 && i < 100), anyString());
     }
 
 }
