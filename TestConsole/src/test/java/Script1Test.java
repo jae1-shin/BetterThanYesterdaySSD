@@ -12,20 +12,18 @@ class Script1Test {
     @Mock
     private TestConsole testConsole;
 
-    @Mock
-    private ReadCompare readCompare;
 
     @Test
     void script1_write_readCompare_실행횟수_정상() {
-        Script1 script1 = new Script1(testConsole, readCompare);
+        Script1 script1 = new Script1(testConsole);
         String commandStr = "";
 
-        doReturn(true).when(readCompare).execute(anyInt(), anyString());
+        doReturn(true).when(testConsole).readCompare(anyInt(), anyString());
 
         script1.execute(commandStr);
 
         verify(testConsole, times(100)).write(intThat(i -> i >= 0 && i < 100), anyString());
-        verify(readCompare, times(100)).execute(intThat(i -> i >= 0 && i < 100), anyString());
+        verify(testConsole, times(100)).readCompare(intThat(i -> i >= 0 && i < 100), anyString());
     }
 
 }

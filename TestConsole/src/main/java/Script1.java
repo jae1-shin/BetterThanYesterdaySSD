@@ -1,10 +1,8 @@
 public class Script1 implements Command {
     private TestConsole testConsole;
-    private ReadCompare readCompare;
 
-    public Script1(TestConsole testConsole, ReadCompare readCompare) {
+    public Script1(TestConsole testConsole) {
         this.testConsole = testConsole;
-        this.readCompare = readCompare;
     }
 
     @Override
@@ -14,7 +12,7 @@ public class Script1 implements Command {
                 testConsole.write((i * 5 + j), "0xFFFFFFFF");
             }
             for (int j = 0; j < 5; j++) {
-                boolean result = readCompare.execute((i * 5 + j), "0xFFFFFFFF");
+                boolean result = testConsole.readCompare((i * 5 + j), "0xFFFFFFFF");
 
                 if (!result) {
                     System.out.printf("FAIL");
