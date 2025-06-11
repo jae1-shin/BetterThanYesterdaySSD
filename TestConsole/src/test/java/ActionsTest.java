@@ -89,10 +89,10 @@ public class ActionsTest {
     @Test
     void Full_write_전부_성공인지(){
         // read()가 호출되면 "0x12345678" 리턴하도록 설정
-        doReturn("0x12345678").when(consoleServiceSpy).read(anyInt());
+        doReturn("0x99999999").when(consoleServiceSpy).read(anyInt());
 
         // 테스트
-        boolean result = consoleServiceSpy.fullWrite("0x12345678");
+        boolean result = consoleServiceSpy.fullWrite("0x99999999");
 
         // 검증
         assertTrue(result);
@@ -111,11 +111,27 @@ public class ActionsTest {
     }
 
     @Test
-    @Disabled
     @Description("실제 ssd.jar에 입력하는 코드입니다")
     void 실제_SDD_jar_쓰기테스트(){
+        String inputData = "0xCCCCCCC1";
+
         ConsoleService cs = new ConsoleService();
-        cs.write(0,"0xCCCCCCCC");
+        cs.write(0,inputData);
+        String result = cs.read(0);
+
+        assertEquals(inputData, result);
+    }
+
+    @Test
+    @Description("실제 ssd.jar에 리드하는 코드입니다")
+    void 실제_SDD_jar_읽기_테스트(){
+        ConsoleService cs = new ConsoleService();
+
+        String notExpected = "ERROR";
+
+        String result = cs.read(1);
+
+        assertNotEquals(notExpected, result);
     }
 
 
