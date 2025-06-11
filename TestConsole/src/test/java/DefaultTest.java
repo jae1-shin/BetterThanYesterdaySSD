@@ -3,9 +3,8 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-class TestConsoleTest {
+public class DefaultTest {
     @Test
     void exit_입력시_종료메시지를_출력한다() throws IOException {
         // Arrange
