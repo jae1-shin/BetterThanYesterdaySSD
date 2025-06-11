@@ -1,8 +1,29 @@
 import org.junit.jupiter.api.Test;
+
+import java.io.FileNotFoundException;
+import java.io.RandomAccessFile;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import static org.assertj.core.api.Assertions.*;
 
 class SsdWriterTest {
+
+    @Test
+    void 파일_Write_정상_동작() throws Exception {
+        // arrange
+        SsdWriter ssdWriter = new SsdWriter();
+
+        // act
+        ssdWriter.write(1, "0x1234ABCD");
+        RandomAccessFile raf = new RandomAccessFile("ssd_nand.txt", "r");
+        raf.seek(3 * 10);
+        byte[] buf = new byte[10];
+        raf.readFully(buf);
+        raf.close();
+
+        // assert
+        assertThat(new String(buf) ).isEqualTo("0x1234ABCD");
+    }
 
     @Test
     void 두번째_파라미터_0_99_아닌경우_실패() throws Exception {
