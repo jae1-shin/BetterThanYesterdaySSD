@@ -6,8 +6,8 @@ public class ReadCommand extends Command{
     @Override
     public void execute(String[] args) {
         try {
-            if (args.length < 2) {
-                System.out.println("ERROR Not enough arguments. Usage: read <address>");
+            if (args.length != 2) {
+                System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
                 return;
             }
 

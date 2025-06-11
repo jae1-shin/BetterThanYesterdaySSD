@@ -5,6 +5,15 @@ public class FullReadCommand extends Command{
 
     @Override
     public void execute(String[] args) {
-        throw new RuntimeException("아직 구현 안됐어요");
+        if(!isValidArgumentNumber(args)){
+            System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
+            return;
+        }
+
+        service.fullRead();
+    }
+
+    private static boolean isValidArgumentNumber(String[] args) {
+        return args.length == 1;
     }
 }
