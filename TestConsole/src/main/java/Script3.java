@@ -1,22 +1,22 @@
 import java.util.Random;
 
-public class Script3 implements Command{
-    private TestConsole testConsole;
+public class Script3 implements ICommand {
+    private ConsoleService consoleService;
     private ReadCompare readCompare;
 
-    public Script3(TestConsole testConsole, ReadCompare readCompare) {
-        this.testConsole = testConsole;
+    public Script3(ConsoleService consoleService, ReadCompare readCompare) {
+        this.consoleService = consoleService;
         this.readCompare = readCompare;
     }
 
     @Override
-    public void execute(String commandStr) {
+    public void execute(String[] args) {
         for (int i = 0; i < 200; i++) {
             String randomHexFor0 = getRandomHexString();
             String randomHexFor99 = getRandomHexString();
 
-            testConsole.write(0, randomHexFor0);
-            testConsole.write(99, randomHexFor99);
+            consoleService.write(0, randomHexFor0);
+            consoleService.write(99, randomHexFor99);
 
             if (!readCompare.execute(0, randomHexFor0)) {
                 System.out.println("FAIL");

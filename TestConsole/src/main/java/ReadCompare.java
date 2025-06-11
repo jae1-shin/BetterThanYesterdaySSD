@@ -1,6 +1,6 @@
 public class ReadCompare{
     public boolean execute(int LBA, String value) {
-        TestConsole testConsole = new TestConsole();
-        return value.equals(testConsole.read(LBA));
+        ConsoleService consoleService = new ConsoleService();
+        return value.equals(consoleService.read(LBA));
     }
 }

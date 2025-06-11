@@ -1,4 +1,4 @@
-public class WriteReadAging implements ICommand {
+public class HelpCommand implements ICommand {
     @Override
     public void execute(String[] args) {
         throw new RuntimeException("아직 구현 안됐어요");

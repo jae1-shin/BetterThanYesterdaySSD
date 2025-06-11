@@ -7,9 +7,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-class ReadCompareTest {
+class ReadCommandCompareTest {
     @Mock
-    TestConsole testConsole;
+    ConsoleService consoleService;
 
     @Mock
     ReadCompare readCompare;
@@ -21,7 +21,7 @@ class ReadCompareTest {
         String value = "0x12345678";
         doReturn(true).when(readCompare).execute(LBA, value);
 
-        testConsole.write(LBA, value);
+        consoleService.write(LBA, value);
         Boolean result = readCompare.execute(LBA, value);
         assertThat(result).isEqualTo(true);
     }
@@ -32,7 +32,7 @@ class ReadCompareTest {
         String value = "0x12345678";
         doReturn(true).when(readCompare).execute(LBA, value);
 
-        testConsole.write(LBA, value);
+        consoleService.write(LBA, value);
         Boolean result = readCompare.execute(LBA, value);
         assertThat(result).isEqualTo(true);
     }
