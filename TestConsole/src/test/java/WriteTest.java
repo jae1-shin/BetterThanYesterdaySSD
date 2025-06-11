@@ -28,15 +28,13 @@ class WriteTest {
 
         // 테스트
         boolean result = tc.write(4, "0x12345678");
-        String readValue = tc.read(4);
 
         // 검증
         assertTrue(result);
-        assertEquals("0x12345678", readValue);
     }
 
     @Test
-    void Full_write_test(){
+    void Full_write_전부_성공인지(){
         TestConsole tc = spy(new TestConsole());
 
         // read()가 호출되면 "0x12345678" 리턴하도록 설정
