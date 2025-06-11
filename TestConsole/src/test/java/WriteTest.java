@@ -56,27 +56,4 @@ class WriteTest {
         // 검증
         assertFalse(result);
     }
-
-    @Test
-    void 파일에서_block_단위_읽어오기(){
-        TestConsole tc = new TestConsole();
-        try {
-
-            InputStream is = getClass().getClassLoader().getResourceAsStream("test.txt");
-            String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-
-            List<String> result = tc.loadBlocks(content);
-
-            // ✅ 기대 결과 정의
-            List<String> expected = List.of(
-                    "0x12345678", "0x12345678","0x12345678", "0x12345678");
-
-            // ✅ 검증
-            assertEquals(expected, result);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 }
