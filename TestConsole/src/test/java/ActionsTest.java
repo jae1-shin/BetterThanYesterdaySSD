@@ -1,3 +1,5 @@
+import jdk.jfr.Description;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -69,7 +71,7 @@ public class ActionsTest {
 
     @Test
     void WRITE에서_익셉션안나면_성공() {
-        assertDoesNotThrow(() -> consoleServiceMock.write(4,"0x12345678"));
+        assertDoesNotThrow(() -> consoleServiceMock.write(0,"0x98989898"));
     }
 
     @Test
@@ -107,5 +109,13 @@ public class ActionsTest {
         // 검증
         assertFalse(result);
     }
+    @Test
+    @Disabled
+    @Description("실제 ssd.jar에 입력하는 코드입니다")
+    void 실제_SDD_jar_쓰기테스트(){
+        ConsoleService cs = new ConsoleService();
+        cs.write(0,"0xCCCCCCCC");
+    }
+
 }
 
