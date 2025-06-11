@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -44,9 +46,10 @@ class ScriptsTest {
     void script1_write_readCompare_실행횟수_정상() {
         Script1 script1 = new Script1(consoleService);
         String commandStr = "";
+
         doReturn(true).when(consoleService).readCompare(anyInt(), anyString());
 
-        script1.execute(commandStr);
+        script1.execute(new String[]{});
 
         verify(consoleService, times(100)).write(intThat(i -> i >= 0 && i < 100), anyString());
         verify(consoleService, times(100)).readCompare(intThat(i -> i >= 0 && i < 100), anyString());
