@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SsdTest {
 
     public static final String OUTPUT_FILE_PATH = "ssd_output.txt";
+    public static final String ERROR = "ERROR";
 
     @BeforeEach
     void setUp() {
@@ -28,7 +29,7 @@ class SsdTest {
         br.close();
         
         // assert
-        Assertions.assertThat(result).isEqualTo("ERROR");
+        Assertions.assertThat(result).isEqualTo(ERROR);
     }
 
     @Test
@@ -42,7 +43,7 @@ class SsdTest {
         br.close();
 
         // assert
-        Assertions.assertThat(result).isEqualTo("ERROR");
+        Assertions.assertThat(result).isEqualTo(ERROR);
     }
 
     @Test
@@ -56,7 +57,7 @@ class SsdTest {
         br.close();
 
         // assert
-        Assertions.assertThat(result).isEqualTo("ERROR");
+        Assertions.assertThat(result).isEqualTo(ERROR);
     }
 
     @Test
@@ -70,6 +71,6 @@ class SsdTest {
         br.close();
 
         // assert
-        Assertions.assertThat(result).isEqualTo("ERROR");
+        Assertions.assertThat(result).isEqualTo(ERROR);
     }
 }
