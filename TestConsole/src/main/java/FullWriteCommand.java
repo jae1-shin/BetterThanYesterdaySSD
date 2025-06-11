@@ -7,12 +7,12 @@ public class FullWriteCommand extends Command{
     @Override
     public void execute(String[] args) {
         if(!isValidArgumentNumber(args)){
-            System.out.println("[ERROR] INVALID NUMBER OF ARGUMENT");
+            System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
             return;
         }
 
         if(!isValidData(args[1])){
-            System.out.println("[ERROR] INVALID ARGUMENT");
+            System.out.println("ERROR Value must be in hex format (e.g., 0x1234ABCD)");
         }
         service.fullWrite(args[1]);
     }

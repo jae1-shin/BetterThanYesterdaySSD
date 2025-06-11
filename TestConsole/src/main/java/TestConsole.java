@@ -42,6 +42,8 @@ public class TestConsole {
         while (true) {
             System.out.print("Shell> ");
             String input = scanner.nextLine().trim();
+
+            if(input.startsWith("exit")) break;
             invoker.execute(input);
         }
     }
