@@ -1,4 +1,9 @@
+package script;
+
 import static logger.LoggerHolder.logger;
+
+import command.CommandInvoker;
+import command.ConsoleService;
 import logger.LoggerContext;
 
 import java.io.File;
@@ -10,7 +15,7 @@ import java.util.List;
 
 public class ScriptRunner {
 
-    void run(String filePath) {
+    public void run(String filePath) {
         if(!fileExists(filePath)){
             logger.info("There's no File !");
             return;
