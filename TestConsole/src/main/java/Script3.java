@@ -11,7 +11,7 @@ public class Script3 extends Command{
     }
 
     @Override
-    public void execute(String[] args) {
+    public boolean execute(String[] args) {
         for (int i = 0; i < LOOP_COUNT; i++) {
             Map<Integer, String> writeData = createWriteData();
 
@@ -19,11 +19,12 @@ public class Script3 extends Command{
 
             if (!readCompareTargetLBA(writeData)) {
                 System.out.println("FAIL");
-                return;
+                return false;
             }
         }
 
         System.out.println("PASS");
+        return true;
     }
 
     private Map<Integer, String> createWriteData() {

@@ -11,6 +11,7 @@ public class FullReadCommand extends Command{
         }
 
         service.fullRead();
+        return true;
     }
 
     private static boolean isValidArgumentNumber(String[] args) {
