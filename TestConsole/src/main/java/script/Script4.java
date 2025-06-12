@@ -1,4 +1,7 @@
+package script;
+
 import static logger.LoggerHolder.logger;
+import command.*;
 
 public class Script4 extends Command {
     public static final int LOOP_COUNT = 30;
@@ -8,7 +11,7 @@ public class Script4 extends Command {
     public static final int BASE_COUNT = 3;
     public static final int EXCEPT_COUNT = 2;
 
-    protected Script4(ConsoleService service) {
+    public Script4(ConsoleService service) {
         super(service);
     }
 
