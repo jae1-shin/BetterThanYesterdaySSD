@@ -14,8 +14,10 @@ class ScriptsTest {
     @Test
     void script4_실행횟수_정상() {
         Script4 script4 = new Script4(service);
-        script4.execute(new String[]{});
         int ERASE_CALL_COUNT = 146;
+        doReturn(true).when(service).readCompare(anyInt(), anyString());
+
+        script4.execute(new String[]{});
 
         verify(service, times(script4.LOOP_COUNT* ERASE_CALL_COUNT)).erase(anyInt(), anyInt());
     }
