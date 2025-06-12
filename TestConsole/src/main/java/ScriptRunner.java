@@ -1,3 +1,6 @@
+import static logger.LoggerHolder.logger;
+import logger.LoggerContext;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,11 +36,11 @@ public class ScriptRunner {
         }
 
         if(!isValidScriptNames(scriptNames, invoker)){
-            System.out.println("Invalid Script Names!");
+            logger.info("Invalid Script Names!");
         }
 
         for(String script : scriptNames){
-            System.out.print(script + "  ___  Run...");
+            logger.result(script + "  ___  Run...", LoggerContext.CONSOLE_NO_NEWLINE);
             if(!invoker.execute(script)){
                 return;
             }
