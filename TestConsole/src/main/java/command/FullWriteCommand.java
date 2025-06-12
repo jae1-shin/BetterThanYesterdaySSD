@@ -9,7 +9,7 @@ public class FullWriteCommand extends Command {
     @Override
     public boolean execute(String[] args) {
         if(!isValidArgumentNumber(args)){
-            logger.error("ERROR Invalid argument numbers. Usage: read <address>");
+            logger.error("ERROR Invalid argument numbers. Usage: fullwrite");
             return false;
         }
 
