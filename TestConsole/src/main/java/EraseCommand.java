@@ -1,5 +1,5 @@
-public class WriteCommand extends Command{
-    protected WriteCommand(ConsoleService service) {
+public class EraseCommand extends Command{
+    protected EraseCommand(ConsoleService service) {
         super(service);
     }
 
@@ -7,7 +7,7 @@ public class WriteCommand extends Command{
     public void execute(String[] args)  {
         try {
             if (args.length != 3) {
-                System.out.println("ERROR Invalid argument numbers. Usage: write <address>");
+                System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
                 return;
             }
             if (!args[2].startsWith("0x")) {
