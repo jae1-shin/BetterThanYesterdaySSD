@@ -12,7 +12,7 @@ public class ScriptRunner {
 
     void run(String filePath) {
         if(!fileExists(filePath)){
-            System.out.println("There's no File !");
+            logger.info("There's no File !");
             return;
         }
 
