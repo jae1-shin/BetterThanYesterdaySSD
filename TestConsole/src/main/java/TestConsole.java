@@ -42,6 +42,7 @@ public class TestConsole {
         invoker.register("write",  new WriteCommand(service));
         invoker.register("erase",  new EraseCommand(service));
         invoker.register("erase_range",  new EraseRangeCommand(service));
+        invoker.register("flush",  new FlushCommand(service));
         invoker.register("fullread",  new FullReadCommand(service));
         invoker.register("fullwrite",  new FullWriteCommand(service));
         invoker.register("1_FullWriteAndReadCompare",  new Script1(service));
