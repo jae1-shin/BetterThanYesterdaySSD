@@ -24,7 +24,7 @@ public class ScriptRunner {
         invoker.register("3_",  new Script3(service));
 
 
-        List<String> scriptNames = new ArrayList<>();
+        List<String> scriptNames;
         try {
             scriptNames = Files.readAllLines(Paths.get(filePath));
         } catch (IOException e) {
@@ -37,10 +37,10 @@ public class ScriptRunner {
 
         for(String script : scriptNames){
             System.out.print(script + "  ___  Run...");
-            invoker.execute(script);
+            if(!invoker.execute(script)){
+                return;
+            }
         }
-
-
     }
 
     private boolean isValidScriptNames(List<String> scriptNames, CommandInvoker invoker) {
