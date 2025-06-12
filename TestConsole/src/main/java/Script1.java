@@ -1,3 +1,5 @@
+import static logger.LoggerHolder.logger;
+
 public class Script1 extends Command {
     public static final String TEST_VALUE = "0xFFFFFFFF";
     public static final int LAST_LBA = 100;
@@ -17,16 +19,16 @@ public class Script1 extends Command {
 
             for (int LBA = currentLBA; LBA < currentLBA + DIV_NUM; LBA++) {
                 if (!service.readCompare(LBA, TEST_VALUE)) {
-                    System.out.println("FAIL");
+                    logger.result("FAIL");
                     return false;
                 }
             }
 
             currentLBA += DIV_NUM;
         }
-        
-        
-        System.out.println("PASS");
+
+
+        logger.result("PASS");
         return true;
     }
 

@@ -1,3 +1,5 @@
+import static logger.LoggerHolder.logger;
+
 public class Script2 extends Command {
     public static final int LOOP_COUNT = 30;
     public static final String TEST_VALUE = "0x12345678";
@@ -17,13 +19,13 @@ public class Script2 extends Command {
 
             for(int lba : LBA_TEST_SEQUENCE){
                 if(!service.readCompare(lba, TEST_VALUE)){
-                    System.out.println("FAIL");
+                    logger.result("FAIL");
                     return false;
                 }
             }
         }
 
-        System.out.println("PASS");
+        logger.result("PASS");
         return true;
     }
 }

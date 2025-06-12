@@ -1,3 +1,5 @@
+import static logger.LoggerHolder.logger;
+
 public class Script4 extends Command {
     public static final int LOOP_COUNT = 30;
     public static final String WRITE_VALUE = "0x11111111";
@@ -25,14 +27,14 @@ public class Script4 extends Command {
                 for (int LBA = startLBA; LBA < startLBA + count; LBA++) {
                     service.erase(LBA, 1);
                     if (!service.readCompare(LBA, ERASED_VALUE)) {
-                        System.out.println("FAIL");
+                        logger.result("FAIL");
                         return false;
                     }
                 }
             }
         }
 
-        System.out.println("PASS");
+        logger.result("PASS");
         return true;
     }
 }

@@ -2,6 +2,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import static logger.LoggerHolder.logger;
+
 public class Script3 extends Command{
     public static final int LOOP_COUNT = 200;
     public static final int[] targetLBA = new int[]{0, 99};
@@ -18,12 +20,12 @@ public class Script3 extends Command{
             writeAtTargetLBA(writeData);
 
             if (!readCompareTargetLBA(writeData)) {
-                System.out.println("FAIL");
+                logger.result("FAIL");
                 return false;
             }
         }
 
-        System.out.println("PASS");
+        logger.result("PASS");
         return true;
     }
 
