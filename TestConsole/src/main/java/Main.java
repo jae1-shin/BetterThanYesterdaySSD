@@ -1,8 +1,9 @@
-import java.util.Scanner;
+import script.ScriptRunner;
 
 public class Main {
 
     public static void main(String[] args) {
+
         if (args.length == 0) {
             TestConsole console = new TestConsole();
             console.run();

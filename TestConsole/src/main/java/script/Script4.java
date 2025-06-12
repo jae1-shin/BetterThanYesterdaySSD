@@ -1,3 +1,8 @@
+package script;
+
+import command.Command;
+import command.ConsoleService;
+
 public class Script4 extends Command {
     public static final int LOOP_COUNT = 30;
     public static final String WRITE_VALUE = "0x11111111";
@@ -6,7 +11,7 @@ public class Script4 extends Command {
     public static final int BASE_COUNT = 3;
     public static final int EXCEPT_COUNT = 2;
 
-    protected Script4(ConsoleService service) {
+    public Script4(ConsoleService service) {
         super(service);
     }
 

@@ -1,5 +1,7 @@
-public class EraseCommand extends Command{
-    protected EraseCommand(ConsoleService service) {
+package command;
+
+public class EraseCommand extends Command {
+    public EraseCommand(ConsoleService service) {
         super(service);
     }
 
