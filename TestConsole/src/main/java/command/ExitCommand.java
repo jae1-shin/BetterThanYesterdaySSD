@@ -1,5 +1,7 @@
-public class ExitCommand extends Command{
-    protected ExitCommand(ConsoleService service) {
+package command;
+
+public class ExitCommand extends Command {
+    public ExitCommand(ConsoleService service) {
         super(service);
     }
 

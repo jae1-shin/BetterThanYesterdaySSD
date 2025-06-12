@@ -1,5 +1,7 @@
-public class ReadCommand extends Command{
-    protected ReadCommand(ConsoleService service) {
+package command;
+
+public class ReadCommand extends Command {
+    public ReadCommand(ConsoleService service) {
         super(service);
     }
 

@@ -1,5 +1,7 @@
-public class EraseRangeCommand extends Command{
-    protected EraseRangeCommand(ConsoleService service) {
+package command;
+
+public class EraseCommand extends Command {
+    public EraseCommand(ConsoleService service) {
         super(service);
     }
 
@@ -8,10 +10,10 @@ public class EraseRangeCommand extends Command{
         try {
             if (InvalidCheck(args)) return false;
 
-            service.erase_range(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+            service.erase(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 
         } catch (NumberFormatException e) {
-            System.out.println("ERROR NumberFormainvoker.register(\"erase\",  new EraseCommand(service));tException" + e.getMessage());
+            System.out.println("ERROR NumberFormatException" + e.getMessage());
         } catch (IndexOutOfBoundsException e) {
             System.out.println("ERROR IndexOutOfBoundsException" + e.getMessage());
         }
@@ -27,15 +29,9 @@ public class EraseRangeCommand extends Command{
             return true;
         }
 
-        int start_lba = Integer.parseInt(args[1]);
-        if (start_lba < 0 || start_lba > 99) {
-            System.out.println("ERROR Start LBA must be between 0 and 99.");
-            return true;
-        }
-
-        int end_lba = Integer.parseInt(args[2]);
-        if (end_lba < 0 || end_lba > 99) {
-            System.out.println("ERROR End LBA must be between 0 and 99.");
+        int lba = Integer.parseInt(args[1]);
+        if (lba < 0 || lba > 99) {
+            System.out.println("ERROR LBA must be between 0 and 99.");
             return true;
         }
 
