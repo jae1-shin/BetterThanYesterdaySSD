@@ -9,7 +9,7 @@ public class BufferReader {
 
     public String read(int targetLBA) {
         File bufferDir = new File(BUFFER_PATH);
-        File[] files = bufferDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
+        File[] files = bufferDir.listFiles();
         if (files == null) return "";
 
         List<Command> commandList = getCommandList(files);
@@ -30,7 +30,7 @@ public class BufferReader {
         List<Command> commandList = new ArrayList<>();
 
         for (File file : files) {
-            String name = file.getName().replace(".txt", "");
+            String name = file.getName();
             if (name.contains("empty")) continue;
 
             String[] parts = name.split("_");

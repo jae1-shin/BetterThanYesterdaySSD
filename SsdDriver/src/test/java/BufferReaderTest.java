@@ -14,9 +14,9 @@ class BufferReaderTest {
 
     @BeforeEach
     void setup() throws Exception {
-        createFile("1_W_10_0xAAAA_test.txt");
-        createFile("2_E_10_2_test.txt");
-        createFile("3_W_11_0xBBBB_test.txt");
+        createFile("1_W_10_0xAAAA_test");
+        createFile("2_E_10_2_test");
+        createFile("3_W_11_0xBBBB_test");
     }
 
     void createFile(String fileName) throws Exception {
