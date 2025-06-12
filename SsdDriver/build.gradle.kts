@@ -28,9 +28,8 @@ java {
 }
 
 application {
-    mainClass.set("Ssd") // 🔁 여기를 실제 메인 클래스 이름으로 바꾸세요
+    mainClass.set("Main") // 🔁 여기를 실제 메인 클래스 이름으로 바꾸세요
 }
-
 
 tasks.named<Jar>("jar") {
     manifest {
