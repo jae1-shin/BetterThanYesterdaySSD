@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
@@ -12,7 +11,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FlushTest {
+class SsdFlushTest {
 
     void initDefaultData() {
         try {
@@ -53,14 +52,29 @@ class FlushTest {
         Files.createFile(folder.resolve("4_E_4_1"));
         Files.createFile(folder.resolve("5_W_5_0x1234ABCD"));
 
-        Flush flush = new Flush();
-        flush.plush();
+        SsdFlush ssdFlush = new SsdFlush();
+        ssdFlush.plush();
         RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
         raf.seek(1 * SsdConstants.BLOCK_SIZE);
         byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
         raf.readFully(buf);
-        raf.close();
+        assertThat(new String(buf)).isEqualTo("0x1234ABCD");
 
+        raf.seek(2 * SsdConstants.BLOCK_SIZE);
+        raf.readFully(buf);
+        assertThat(new String(buf)).isEqualTo("0x00000000");
+
+        raf.seek(3 * SsdConstants.BLOCK_SIZE);
+        raf.readFully(buf);
+        assertThat(new String(buf)).isEqualTo("0x1234ABCD");
+
+        raf.seek(4 * SsdConstants.BLOCK_SIZE);
+        raf.readFully(buf);
+        assertThat(new String(buf)).isEqualTo("0x00000000");
+
+        raf.seek(5 * SsdConstants.BLOCK_SIZE);
+        raf.readFully(buf);
+        raf.close();
         assertThat(new String(buf)).isEqualTo("0x1234ABCD");
     }
 
@@ -74,8 +88,8 @@ class FlushTest {
         Files.createFile(folder.resolve("4_E_4_1"));
         Files.createFile(folder.resolve("5_empty"));
 
-        Flush flush = new Flush();
-        flush.plush();
+        SsdFlush ssdFlush = new SsdFlush();
+        ssdFlush.plush();
         RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
         raf.seek(5 * SsdConstants.BLOCK_SIZE);
         byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
