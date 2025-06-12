@@ -8,7 +8,7 @@ public class Script1 extends Command {
     }
 
     @Override
-    public void execute(String[] args) {
+    public boolean execute(String[] args) {
         int currentLBA = 0;
         while (currentLBA < LAST_LBA) {
             for (int LBA = currentLBA; LBA < currentLBA + DIV_NUM; LBA++) {
@@ -18,7 +18,7 @@ public class Script1 extends Command {
             for (int LBA = currentLBA; LBA < currentLBA + DIV_NUM; LBA++) {
                 if (!service.readCompare(LBA, TEST_VALUE)) {
                     System.out.println("FAIL");
-                    return;
+                    return false;
                 }
             }
 
@@ -27,6 +27,7 @@ public class Script1 extends Command {
         
         
         System.out.println("PASS");
+        return true;
     }
 
 }
