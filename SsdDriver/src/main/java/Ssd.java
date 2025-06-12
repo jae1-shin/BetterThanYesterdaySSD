@@ -4,7 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 public class Ssd {
     public static final String DATA_FORMAT = "^0x[0-9A-Fa-f]{8}$";
@@ -23,7 +22,7 @@ public class Ssd {
         try  {
             initFiles();
         } catch (IOException e) {
-            // Ignore?
+            // ignore
         }
 
         if (!checkPreCondition(args)) {
@@ -41,28 +40,16 @@ public class Ssd {
     }
 
     void initFiles() throws IOException {
-        // SsdConstants.OUTPUT_FILE_PATH
-        Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH), "");
-
-        // SsdConstants.SSD_NAND_FILE
-        checkFileAndWriteDefaultData();
-
-        // buffer
-        File bufferDir = new File("buffer");
-        if (!bufferDir.exists()) {
-            bufferDir.mkdirs();
-        }
-
-        for (int bufferNum = 1; bufferNum <= SsdConstants.BUFFER_SIZE; bufferNum++) {
-            String bufferPrefix = bufferNum + "_";
-            File[] bufferFiles = bufferDir.listFiles((dir, name) -> name.startsWith(bufferPrefix));
-            if (bufferFiles == null || bufferFiles.length == 0) {
-                Files.writeString(Paths.get(bufferDir.getPath(), bufferPrefix + "empty"), "");
-            }
-        }
+        checkAndClearOutputFile();
+        checkAndCreateNandFile();
+        checkAndCreateBuffer();
     }
 
-    private void checkFileAndWriteDefaultData() throws IOException {
+    private void checkAndClearOutputFile() throws IOException {
+        Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH), "");
+    }
+
+    private void checkAndCreateNandFile() throws IOException {
         File file = new File(SsdConstants.SSD_NAND_FILE);
         if (file.exists()) return;
         writeDefaultData();
@@ -70,6 +57,11 @@ public class Ssd {
 
     private void writeDefaultData() throws IOException {
         Files.writeString(Paths.get(SsdConstants.SSD_NAND_FILE), (SsdConstants.DEFAULT_DATA).repeat(LBA_MAX_COUNT));
+    }
+
+    private void checkAndCreateBuffer() throws IOException {
+        File bufferDir = BufferUtil.checkAndCreateBufferDir();
+        BufferUtil.checkAndCreateEmptyBufferFiles(bufferDir);
     }
 
     private void processWriteCommand(String[] args) {

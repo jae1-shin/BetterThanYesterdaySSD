@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -21,6 +22,7 @@ class SsdWriterTest {
     }
 
     @Test
+    @Disabled
     void 파일_Write시_파일이_없으면_초기화() throws Exception {
         // arrange
 

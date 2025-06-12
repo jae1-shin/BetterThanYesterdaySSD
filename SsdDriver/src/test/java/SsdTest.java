@@ -32,6 +32,20 @@ class SsdTest {
     }
 
     @Test
+    void buffer_폴더_및_하위_파일_있을_때_삭제_기능_확인() {
+        try {
+            File bufferDir = BufferUtil.checkAndCreateBufferDir();
+            BufferUtil.checkAndCreateEmptyBufferFiles(bufferDir);
+
+            BufferUtil.deleteBufferDirAndFiles();
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+
+        assertFalse(new File("buffer").exists(), "Buffer directory should NOT exist");
+    }
+
+    @Test
     void initFiles_뒤_파일_정상_초기화_및_생성_확인() {
         Ssd ssd = spy(new Ssd());
 
