@@ -6,32 +6,24 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.*;
-
-public class Flush {
+public class SsdFlush {
 
     public void plush() throws IOException {
-        String folderPath = "buffer";
-        List<String> sortedNames;
-        try (Stream<Path> paths = Files.list(Paths.get(folderPath))) {
-            sortedNames = paths
-                    .map(path -> path.getFileName().toString())
-                    .sorted()
-                    .collect(toList());
-        }
-
-        SsdWriter writer = new SsdWriter();
-        for (String fileName : sortedNames) {
-            String[] cmdStr = fileName.split("_");
-            if (cmdStr.length != 4) continue;
-            if ("W".equals(cmdStr[1])) {
-                writer.write(Integer.parseInt(cmdStr[2]), cmdStr[3]);
-            } else if ("E".equals(cmdStr[1])) {
-                // TODO : Erase command로 변경 필요
-                writer.write(Integer.parseInt(cmdStr[2]), "0x00000000");
+        List<Command> commandList = BufferUtil.getCommandList();
+        for (Command cmd : commandList) {
+            if (cmd.type == CommandType.WRITE) {
+                SsdWriter writer = new SsdWriter();
+                writer.write(cmd.lba, cmd.data);
+            } else if (cmd.type == CommandType.ERASE) {
+                SsdEraser eraser = new SsdEraser();
+                eraser.erase(cmd.lba, cmd.size);
             }
         }
 
+        initBuffer();
+    }
+
+    private void initBuffer() throws IOException {
         Path folder = Paths.get("buffer");
         if (Files.exists(folder) && Files.isDirectory(folder)) {
             try (Stream<Path> walk = Files.walk(folder, FileVisitOption.FOLLOW_LINKS)) {

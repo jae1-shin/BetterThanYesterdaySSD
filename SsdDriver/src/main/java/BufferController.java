@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class BufferController {
-    List<BufferReader.Command> bufCmdList;
+    List<Command> bufCmdList;
 
     public void optimizeBuffer() {
 
@@ -23,7 +23,7 @@ public class BufferController {
 
     }
 
-    public List<BufferReader.Command> getBufCmdList() {
+    public List<Command> getBufCmdList() {
         return bufCmdList;
     }
 }
