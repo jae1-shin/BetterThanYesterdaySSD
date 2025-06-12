@@ -1,7 +1,7 @@
 package script;
 
-import command.Command;
-import command.ConsoleService;
+import static logger.LoggerHolder.logger;
+import command.*;
 
 public class Script1 extends Command {
     public static final String TEST_VALUE = "0xFFFFFFFF";
@@ -22,16 +22,16 @@ public class Script1 extends Command {
 
             for (int LBA = currentLBA; LBA < currentLBA + DIV_NUM; LBA++) {
                 if (!service.readCompare(LBA, TEST_VALUE)) {
-                    System.out.println("FAIL");
+                    logger.result("FAIL");
                     return false;
                 }
             }
 
             currentLBA += DIV_NUM;
         }
-        
-        
-        System.out.println("PASS");
+
+
+        logger.result("PASS");
         return true;
     }
 

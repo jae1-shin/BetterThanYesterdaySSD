@@ -1,19 +1,23 @@
 package script;
 
+import static logger.LoggerHolder.logger;
+
 import command.CommandInvoker;
 import command.ConsoleService;
+import logger.LoggerContext;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScriptRunner {
 
     public void run(String filePath) {
         if(!fileExists(filePath)){
-            System.out.println("There's no File !");
+            logger.info("There's no File !");
             return;
         }
 
@@ -37,11 +41,11 @@ public class ScriptRunner {
         }
 
         if(!isValidScriptNames(scriptNames, invoker)){
-            System.out.println("Invalid Script Names!");
+            logger.info("Invalid Script Names!");
         }
 
         for(String script : scriptNames){
-            System.out.print(script + "  ___  Run...");
+            logger.result(script + "  ___  Run...", LoggerContext.CONSOLE_NO_NEWLINE);
             if(!invoker.execute(script)){
                 return;
             }

@@ -1,7 +1,7 @@
 package script;
 
-import command.Command;
-import command.ConsoleService;
+import static logger.LoggerHolder.logger;
+import command.*;
 
 public class Script2 extends Command {
     public static final int LOOP_COUNT = 30;
@@ -22,13 +22,13 @@ public class Script2 extends Command {
 
             for(int lba : LBA_TEST_SEQUENCE){
                 if(!service.readCompare(lba, TEST_VALUE)){
-                    System.out.println("FAIL");
+                    logger.result("FAIL");
                     return false;
                 }
             }
         }
 
-        System.out.println("PASS");
+        logger.result("PASS");
         return true;
     }
 }

@@ -1,6 +1,5 @@
-
 import command.*;
-import script.Script1;
+import script.*;
 import script.Script2;
 import script.Script3;
 import script.Script4;
