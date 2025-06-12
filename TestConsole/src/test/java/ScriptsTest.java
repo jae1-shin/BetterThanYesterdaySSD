@@ -28,7 +28,6 @@ class ScriptsTest {
         System.setOut(new java.io.PrintStream(outContent));
 
         script4.execute(new String[]{});
-
         assertTrue(outContent.toString().trim().equals("FAIL"));
     }
 
