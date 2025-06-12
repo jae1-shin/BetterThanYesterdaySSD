@@ -1,14 +1,9 @@
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import logger.LoggerContext;
 
-import java.util.List;
+import java.io.InputStream;
 import java.util.Scanner;
+import static logger.LoggerHolder.logger;
 
 public class TestConsole {
 
@@ -23,7 +18,6 @@ public class TestConsole {
     }
 
     public void run() {
-
         ConsoleService service = new ConsoleService();
         CommandInvoker invoker = new CommandInvoker();
 
