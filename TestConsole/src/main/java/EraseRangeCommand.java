@@ -11,7 +11,7 @@ public class EraseRangeCommand extends Command{
             service.erase_range(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 
         } catch (NumberFormatException e) {
-            System.out.println("ERROR NumberFormatException" + e.getMessage());
+            System.out.println("ERROR NumberFormainvoker.register(\"erase\",  new EraseCommand(service));tException" + e.getMessage());
         } catch (IndexOutOfBoundsException e) {
             System.out.println("ERROR IndexOutOfBoundsException" + e.getMessage());
         }
