@@ -33,6 +33,8 @@ public class TestConsole {
         invoker.register("2_",  new Script2(service));
         invoker.register("3_WriteReadAging",  new Script3(service));
         invoker.register("3_",  new Script3(service));
+        invoker.register("4_EraseAndWriteAging",  new Script4(service));
+        invoker.register("4_",  new Script4(service));
         invoker.register("exit",  new ExitCommand(service));
 
         while (true) {
