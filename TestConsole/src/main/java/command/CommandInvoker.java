@@ -1,10 +1,13 @@
 package command;
 
+import logger.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommandInvoker {
     private final Map<String, Command> commands = new HashMap<>();
+    Logger logger = Logger.getInstance();
 
     public void register(String name, Command command) {
         commands.put(name.toLowerCase(), command);
@@ -18,7 +21,7 @@ public class CommandInvoker {
         if (command != null) {
             return command.execute(parts);
         } else {
-            System.out.println("INVALID COMMAND");
+            logger.error("INVALID COMMAND");
             return false;
         }
     }

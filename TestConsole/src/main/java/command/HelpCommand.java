@@ -8,7 +8,7 @@ public class HelpCommand extends Command {
     @Override
     public boolean execute(String[] args) {
         if(!isValidArgumentNumber(args)){
-            System.out.println("Invalid number of argument");
+            logger.error("Invalid number of argument");
             return false;
         }
 

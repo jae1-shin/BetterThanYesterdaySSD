@@ -1,7 +1,10 @@
 package command;
 
+import logger.Logger;
+
 public abstract class Command implements ICommand {
-    public final ConsoleService service;
+    Logger logger = Logger.getInstance();
+    protected final ConsoleService service;
 
     public Command(ConsoleService service) {
         this.service =  service ;

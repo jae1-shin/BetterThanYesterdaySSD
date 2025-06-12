@@ -1,5 +1,7 @@
 package command;
 
+import logger.Logger;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,6 +13,8 @@ public class ConsoleService {
     public static final int MAX_ERASE_CHUNK = 10;
     public static final int MIN_LBA = 0;
 
+    Logger logger = Logger.getInstance();
+
     public String read(int address) {
         try {
             ProcessBuilder pb = new ProcessBuilder("java", "-jar", "../JarLibs/ssd.jar", "R", Integer.toString(address));
@@ -19,14 +23,16 @@ public class ConsoleService {
             process = pb.start();
             process.waitFor();
         } catch (IOException | InterruptedException e) {
-            return "ERROR process " + e.getMessage();
+            logger.debug("ERROR read service at process " + e.getMessage());
+            return "ERROR read service at process";
         }
 
         List<String> lines;
         try {
             lines = Files.readAllLines(Paths.get("ssd_output.txt"));
         } catch (IOException e) {
-            return "ERROR file " + e.getMessage();
+            logger.debug("ERROR read service at file " + e.getMessage());
+            return "ERROR read service at file";
         }
         return lines.get(0);
     }
@@ -46,10 +52,30 @@ public class ConsoleService {
             process.destroy(); // 또는 process.destroyForcibly();
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.debug("ERROR write service " + e.getMessage());
+            return false;
         }
 
         return false;
+    }
+
+    public void fullRead() {
+        for (int i = 0; i < TOTAL_LBA_COUNT; i++) {
+            System.out.println("LBA " + i + ": " + read(i));
+        }
+    }
+
+    public boolean fullWrite(String data) {
+        boolean eachResult = false;
+        for (int i = 0; i < TOTAL_LBA_COUNT; i++) {
+            eachResult = write(i, data);
+            if (eachResult == false) return false;
+        }
+        return true;
+    }
+
+    public boolean readCompare(int LBA, String value) {
+        return value.equals(this.read(LBA));
     }
 
     public void flush() {
@@ -62,7 +88,7 @@ public class ConsoleService {
             process.waitFor();
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.debug("ERROR flush service " + e.getMessage());
         }
 
     }
@@ -151,43 +177,24 @@ public class ConsoleService {
         }
     }
 
-    public void fullRead() {
-        for (int i = 0; i < TOTAL_LBA_COUNT; i++) {
-            System.out.println("LBA " + i + ": " + read(i));
-        }
-    }
-
-    public boolean fullWrite(String data) {
-        boolean eachResult = false;
-        for (int i = 0; i < TOTAL_LBA_COUNT; i++) {
-            eachResult = write(i, data);
-            if (eachResult == false) return false;
-        }
-        return true;
-    }
-
-    public boolean readCompare(int LBA, String value) {
-        return value.equals(this.read(LBA));
-    }
-
     public void help() {
-        System.out.println("Team: BetterThanYesterday");
-        System.out.println("Members: 신재원, 정혜원, 문영민, 조효민, 류지우, 서인규");
-        System.out.println();
-        System.out.println();
-        System.out.println("Available commands:");
-        System.out.println("write {lba} {data} - Write data to the specified LBA");
-        System.out.println("read {lba} - Read data from the specified LBA");
-        System.out.println("exit - Exit the console");
-        System.out.println("erase {lba} {size}- erase data from the specified LBA to size");
-        System.out.println("erase_range {start_lba} {end_lba}- erase data between the specified LBA");
-        System.out.println("flush - flushes the buffer stored in the SSD ");
-        System.out.println("help - Display this help message");
-        System.out.println("fullwrite {data} - Write the same data to all LBAs");
-        System.out.println("fullread - Read all LBAs and display their values");
-        System.out.println();
-        System.out.println("Note: ");
-        System.out.println("{lba} must be an integer between 0 and 99");
-        System.out.println("{data} must be 4-byte unsigned hexadecimal (0x00000000 - 0xFFFFFFFF)");
+        logger.result("Team: BetterThanYesterday");
+        logger.result("Members: 신재원, 정혜원, 문영민, 조효민, 류지우, 서인규");
+        logger.result("");
+        logger.result("");
+        logger.result("Available commands:");
+        logger.result("write {lba} {data} - Write data to the specified LBA");
+        logger.result("read {lba} - Read data from the specified LBA");
+        logger.result("exit - Exit the console");
+        logger.result("erase {lba} {size}- erase data from the specified LBA to size");
+        logger.result("erase_range {start_lba} {end_lba}- erase data between the specified LBA");
+        logger.result("flush - flushes the buffer stored in the SSD ");
+        logger.result("help - Display this help message");
+        logger.result("fullwrite {data} - Write the same data to all LBAs");
+        logger.result("fullread - Read all LBAs and display their values");
+        logger.result("");
+        logger.result("Note: ");
+        logger.result("{lba} must be an integer between 0 and 99");
+        logger.result("{data} must be 4-byte unsigned hexadecimal (0x00000000 - 0xFFFFFFFF)");
     }
 }

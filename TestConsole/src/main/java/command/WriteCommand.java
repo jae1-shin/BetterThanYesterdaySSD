@@ -9,26 +9,28 @@ public class WriteCommand extends Command {
     public boolean execute(String[] args)  {
         try {
             if (args.length != 3) {
-                System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
+                logger.error("ERROR Invalid argument format. Usage: write <address> 0x1234ABCD");
                 return false;
             }
             if (!args[2].startsWith("0x")) {
-                System.out.println("ERROR Value must be in hex format (e.g., 0x1234ABCD)");
+                logger.error("ERROR Value must be in hex format (e.g., 0x1234ABCD)");
                 return false;
             }
 
             if(service.write(Integer.parseInt(args[1]), args[2]) == false) {
-                System.out.println("ERROR Write failed");
+                logger.error("ERROR Write failed");
                 return false;
             }else{
-                System.out.println("[Write] Done");
+                logger.result("[Write] Done");
             }
 
 
         } catch (NumberFormatException e) {
-            System.out.println("ERROR NumberFormatException" + e.getMessage());
+            logger.error("ERROR NumberFormatException" + e.getMessage());
+            return false;
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("ERROR IndexOutOfBoundsException" + e.getMessage());
+            logger.error("ERROR IndexOutOfBoundsException" + e.getMessage());
+            return false;
         }
 
         return true;

@@ -9,7 +9,7 @@ public class ReadCommand extends Command {
     public boolean execute(String[] args) {
         try {
             if (args.length != 2) {
-                System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
+                logger.error("ERROR Invalid argument numbers. Usage: read <address>");
                 return false;
             }
 
@@ -19,12 +19,13 @@ public class ReadCommand extends Command {
                 System.out.println(result);
                 return false;
             }
-
-            System.out.println("[Read] LBA " + String.format("%02d", address) + " : " + result);
+            logger.result("[Read] LBA " + String.format("%02d", address) + " : " + result);
         } catch (NumberFormatException e) {
-            System.out.println("ERROR NumberFormatException" + e.getMessage());
+            logger.error("ERROR NumberFormatException" + e.getMessage());
+            return false;
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("ERROR IndexOutOfBoundsException" + e.getMessage());
+            logger.error("ERROR IndexOutOfBoundsException" + e.getMessage());
+            return false;
         }
 
         return true;

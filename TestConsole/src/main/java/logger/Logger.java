@@ -7,8 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Logger {
+    private static final Logger INSTANCE = new Logger();
     private final List<LogListener> listeners = new ArrayList<>();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd HH:mm");
+
+    private Logger() {
+        ConsoleLogListener  consoleListener = new ConsoleLogListener();
+        consoleListener.setThreshold(LogLevel.INFO); // 콘솔에 INFO 이상만 출력
+
+        this.addListener(consoleListener);
+        this.addListener(new RollingFileLogListener());
+    }
+
+    public static Logger getInstance() {
+        return INSTANCE;
+    }
 
     private StackTraceElement getCaller() {
         return Thread.currentThread().getStackTrace()[3];
