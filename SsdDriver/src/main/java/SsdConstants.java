@@ -11,12 +11,4 @@ public final class SsdConstants {
     public static final int BUFFER_SIZE = 5;
     public static final String DEFAULT_DATA = "0x00000000";
     public static final String ERROR = "ERROR";
-
-    public static String getBufferFilePrefix(int bufferNum) {
-        return bufferNum + "_";
-    }
-
-    public static String getBufferDefaultFileName(int bufferNum) {
-        return getBufferFilePrefix(bufferNum) + "empty";
-    }
 }
