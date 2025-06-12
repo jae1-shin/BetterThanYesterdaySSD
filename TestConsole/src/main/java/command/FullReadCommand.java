@@ -1,16 +1,19 @@
-public class FullReadCommand extends Command{
-    protected FullReadCommand(ConsoleService service) {
+package command;
+
+public class FullReadCommand extends Command {
+    public FullReadCommand(ConsoleService service) {
         super(service);
     }
 
     @Override
-    public void execute(String[] args) {
+    public boolean execute(String[] args) {
         if(!isValidArgumentNumber(args)){
             System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
-            return;
+            return false;
         }
 
         service.fullRead();
+        return true;
     }
 
     private static boolean isValidArgumentNumber(String[] args) {

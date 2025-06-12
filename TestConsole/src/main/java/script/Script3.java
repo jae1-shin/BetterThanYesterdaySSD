@@ -1,17 +1,22 @@
+package script;
+
+import command.Command;
+import command.ConsoleService;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class Script3 extends Command{
+public class Script3 extends Command {
     public static final int LOOP_COUNT = 200;
     public static final int[] targetLBA = new int[]{0, 99};
 
-    protected Script3(ConsoleService service) {
+    public Script3(ConsoleService service) {
         super(service);
     }
 
     @Override
-    public void execute(String[] args) {
+    public boolean execute(String[] args) {
         for (int i = 0; i < LOOP_COUNT; i++) {
             Map<Integer, String> writeData = createWriteData();
 
@@ -19,11 +24,12 @@ public class Script3 extends Command{
 
             if (!readCompareTargetLBA(writeData)) {
                 System.out.println("FAIL");
-                return;
+                return false;
             }
         }
 
         System.out.println("PASS");
+        return true;
     }
 
     private Map<Integer, String> createWriteData() {

@@ -1,21 +1,23 @@
-public class ReadCommand extends Command{
-    protected ReadCommand(ConsoleService service) {
+package command;
+
+public class ReadCommand extends Command {
+    public ReadCommand(ConsoleService service) {
         super(service);
     }
 
     @Override
-    public void execute(String[] args) {
+    public boolean execute(String[] args) {
         try {
             if (args.length != 2) {
                 System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
-                return;
+                return false;
             }
 
             int address = Integer.parseInt(args[1]);
             String result = service.read(address);
             if(result.startsWith("ERROR")) {
                 System.out.println(result);
-                return;
+                return false;
             }
 
             System.out.println("[Read] LBA " + String.format("%02d", address) + " : " + result);
@@ -24,5 +26,7 @@ public class ReadCommand extends Command{
         } catch (IndexOutOfBoundsException e) {
             System.out.println("ERROR IndexOutOfBoundsException" + e.getMessage());
         }
+
+        return true;
     }
 }

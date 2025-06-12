@@ -1,16 +1,19 @@
-public class HelpCommand extends Command{
-    protected HelpCommand(ConsoleService service) {
+package command;
+
+public class HelpCommand extends Command {
+    public HelpCommand(ConsoleService service) {
         super(service);
     }
 
     @Override
-    public void execute(String[] args) {
+    public boolean execute(String[] args) {
         if(!isValidArgumentNumber(args)){
             System.out.println("Invalid number of argument");
-            return;
+            return false;
         }
 
         service.help();
+        return true;
     }
 
     private static boolean isValidArgumentNumber(String[] args) {
