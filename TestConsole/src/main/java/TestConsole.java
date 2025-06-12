@@ -18,6 +18,23 @@ public class TestConsole {
     }
 
     public void run() {
+        // 콘솔엔 안 나옴
+        logger.debug("디버그 메시지");
+        // 콘솔에 출력됨
+        logger.info("정보 메시지");
+        // 줄바꿈 없이 콘솔 출력
+        logger.result("결과 메시지", false);
+        logger.result(" ← 이어짐");
+        logger.error("에러 발생!");
+
+        // Console 끄고 파일에만 기록
+        logger.result("콘솔 출력 없이 파일만 기록됨", LoggerContext.FILE_ONLY);
+
+        // Console ON + 줄바꿈 OFF
+        logger.result("줄바꿈 없이 출력됨", LoggerContext.CONSOLE_NO_NEWLINE);
+        logger.result(" ← 이어짐");
+
+
         ConsoleService service = new ConsoleService();
         CommandInvoker invoker = new CommandInvoker();
 
