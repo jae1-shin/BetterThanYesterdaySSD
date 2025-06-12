@@ -54,7 +54,7 @@ public class BufferUtil {
         }
     }
 
-    private static void deleteBufferDirAndFiles() {
+    public static void deleteBufferDirAndFiles() {
         Path folder = Paths.get(SsdConstants.BUFFER_PATH);
         if (Files.exists(folder) && Files.isDirectory(folder)) {
             try (Stream<Path> walk = Files.walk(folder, FileVisitOption.FOLLOW_LINKS)) {
@@ -92,18 +92,18 @@ public class BufferUtil {
         }
     }
 
-    public static boolean existBufferFile(File bufferDir, int bufferNum) {
+    private static boolean existBufferFile(File bufferDir, int bufferNum) {
         final String bufferPrefix = getBufferFilePrefix(bufferNum);
         File[] bufferFiles = bufferDir.listFiles((dir, name) -> name.startsWith(bufferPrefix));
 
         return bufferFiles != null && bufferFiles.length > 0;
     }
 
-    public static String getBufferFilePrefix(int bufferNum) {
+    private static String getBufferFilePrefix(int bufferNum) {
         return bufferNum + "_";
     }
 
-    public static String getBufferDefaultFileName(int bufferNum) {
+    private static String getBufferDefaultFileName(int bufferNum) {
         return getBufferFilePrefix(bufferNum) + "empty";
     }
 }
