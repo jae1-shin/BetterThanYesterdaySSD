@@ -8,7 +8,7 @@ public class ReadCommand extends Command{
         try {
             if (args.length != 2) {
                 System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
-                return false;;
+                return false;
             }
 
             int address = Integer.parseInt(args[1]);
