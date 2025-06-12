@@ -1,10 +1,15 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BufferUtil {
 
-    public static List<Command> getCommandList(File[] files) {
+    public static List<Command> getCommandList() {
+        File bufferDir = new File(SsdConstants.BUFFER_PATH);
+        File[] files = bufferDir.listFiles();
+        if (files == null) return Collections.emptyList();
+
         List<Command> commandList = new ArrayList<>();
 
         for (File file : files) {

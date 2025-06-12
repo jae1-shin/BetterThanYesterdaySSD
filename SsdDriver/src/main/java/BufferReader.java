@@ -5,11 +5,7 @@ import java.util.List;
 public class BufferReader {
 
     public String read(int targetLBA) {
-        File bufferDir = new File(SsdConstants.BUFFER_PATH);
-        File[] files = bufferDir.listFiles();
-        if (files == null) return "";
-
-        List<Command> commandList = BufferUtil.getCommandList(files);
+        List<Command> commandList = BufferUtil.getCommandList();
 
         // 최신 명령 부터 확인
         commandList.sort(Comparator.comparingInt((Command c) -> c.order).reversed());
