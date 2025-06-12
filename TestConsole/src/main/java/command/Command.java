@@ -3,7 +3,7 @@ package command;
 import logger.Logger;
 
 public abstract class Command implements ICommand {
-    Logger logger = Logger.getInstance();
+    protected Logger logger = Logger.getInstance();
     protected final ConsoleService service;
 
     public Command(ConsoleService service) {

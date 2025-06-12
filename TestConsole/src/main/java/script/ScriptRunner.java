@@ -1,9 +1,8 @@
 package script;
 
-import static logger.LoggerHolder.logger;
-
 import command.CommandInvoker;
 import command.ConsoleService;
+import logger.Logger;
 import logger.LoggerContext;
 
 import java.io.File;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScriptRunner {
+    Logger logger = Logger.getInstance();
 
     public void run(String filePath) {
         if(!fileExists(filePath)){
