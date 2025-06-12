@@ -1,10 +1,12 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class Ssd {
-
-
     public static final String DATA_FORMAT = "^0x[0-9A-Fa-f]{8}$";
     public static final String WRITE_COMMAND = "W";
     public static final String READ_COMMAND = "R";
@@ -13,9 +15,16 @@ public class Ssd {
     public static final int ARGUMENT_DATA_INDEX = 2;
     public static final int LBA_MIN = 0;
     public static final int LBA_MAX = 99;
+    public static final int LBA_MAX_COUNT = 100;
     public static final int ARGUMENT_MAX_COUNT = 3;
 
     public void processCommand(String[] args) {
+        try  {
+            initFiles();
+        } catch (IOException e) {
+            // Ignore?
+        }
+
         if (!checkPreCondition(args)) {
             writeError();
             return;
@@ -26,6 +35,38 @@ public class Ssd {
         } else if (isReadCommand(args)) {
             processReadCommand(args);
         }
+    }
+
+    void initFiles() throws IOException {
+        // SsdConstants.OUTPUT_FILE_PATH
+        Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH), "");
+
+        // SsdConstants.SSD_NAND_FILE
+        checkFileAndWriteDefaultData();
+
+        // buffer
+        File bufferDir = new File("buffer");
+        if (!bufferDir.exists()) {
+            bufferDir.mkdirs();
+        }
+
+        for (int bufferNum = 1; bufferNum <= SsdConstants.BUFFER_SIZE; bufferNum++) {
+            String bufferPrefix = bufferNum + "_";
+            File[] bufferFiles = bufferDir.listFiles((dir, name) -> name.startsWith(bufferPrefix));
+            if (bufferFiles == null || bufferFiles.length == 0) {
+                Files.writeString(Paths.get(bufferDir.getPath(), bufferPrefix + "empty"), "");
+            }
+        }
+    }
+
+    private void checkFileAndWriteDefaultData() throws IOException {
+        File file = new File(SsdConstants.SSD_NAND_FILE);
+        if (file.exists()) return;
+        writeDefaultData();
+    }
+
+    private void writeDefaultData() throws IOException {
+        Files.writeString(Paths.get(SsdConstants.SSD_NAND_FILE), (SsdConstants.DEFAULT_DATA).repeat(LBA_MAX_COUNT));
     }
 
     private void processWriteCommand(String[] args) {
