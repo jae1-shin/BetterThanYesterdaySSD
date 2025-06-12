@@ -20,12 +20,12 @@ public class BufferReader {
     }
 
     private boolean isTargetLBAErased(int targetLBA, Command cmd) {
-        return cmd.type == Command.Type.ERASE &&
+        return cmd.type == CommandType.ERASE &&
                 targetLBA >= cmd.lba && targetLBA < (cmd.lba + cmd.size);
     }
 
     private boolean isTargetLBAWrited(int targetLBA, Command cmd) {
-        return cmd.type == Command.Type.WRITE && cmd.lba == targetLBA;
+        return cmd.type == CommandType.WRITE && cmd.lba == targetLBA;
     }
 
 }

@@ -25,10 +25,10 @@ public class BufferUtil {
 
                 if (cmdType.equals("W")) {
                     String data = parts[3];
-                    commandList.add(new Command(order, Command.Type.WRITE, lba, 1, data));
+                    commandList.add(new Command(order, CommandType.WRITE, lba, 1, data));
                 } else if (cmdType.equals("E")) {
                     int size = Integer.parseInt(parts[3]);
-                    commandList.add(new Command(order, Command.Type.ERASE, lba, size, null));
+                    commandList.add(new Command(order, CommandType.ERASE, lba, size, null));
                 }
             } catch (Exception e) {
                 // ignore
