@@ -1,16 +1,47 @@
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BufferControllerTest {
 
+    void deleteBufferFolder() {
+        Path folder = Paths.get("buffer");
+        try (Stream<Path> walk = Files.walk(folder)) {
+            walk.sorted(Comparator.reverseOrder())
+                    .forEach(path -> {
+                        try {
+                            Files.delete(path);
+                        } catch (IOException e) {
+                            // ignore
+                        }
+                    });
+        } catch (IOException e) {
+            // ignore
+        }
+    }
+
+    @BeforeEach
+    void setUp() {
+        deleteBufferFolder();
+    }
+
     @Test
-    void Ignore_command_1번_케이스_검증() {
-        String cmd_1 = "W_20_0xABCDABCD";
-        String cmd_2 = "W_21_0x12341234";
-        String cmd_3 = "W_20_0xEEEEFFFF";
+    void Ignore_command_1번_케이스_검증() throws IOException {
+        Path folder = Paths.get("buffer");
+        Files.createDirectories(folder);
+        Files.createFile(folder.resolve("1_W_20_0xABCDABCD"));
+        Files.createFile(folder.resolve("2_W_21_0x12341234"));
+        Files.createFile(folder.resolve("3_W_20_0xEEEEFFFF"));
 
         BufferController bufferController = new BufferController();
         bufferController.optimizeBuffer();
@@ -22,10 +53,12 @@ class BufferControllerTest {
     }
 
     @Test
-    void Ignore_command_2번_케이스_검증() {
-        String cmd_1 = "E_18_3";
-        String cmd_2 = "W_21_12341234";
-        String cmd_3 = "E_18_5";
+    void Ignore_command_2번_케이스_검증() throws IOException {
+        Path folder = Paths.get("buffer");
+        Files.createDirectories(folder);
+        Files.createFile(folder.resolve("1_E_18_3"));
+        Files.createFile(folder.resolve("2_W_21_12341234"));
+        Files.createFile(folder.resolve("3_E_18_5"));
 
         BufferController bufferController = new BufferController();
         bufferController.optimizeBuffer();
@@ -36,10 +69,12 @@ class BufferControllerTest {
     }
 
     @Test
-    void merge_command_케이스_검증() {
-        String cmd_1 = "W_20_0xABCDABCD";
-        String cmd_2 = "E_10_4";
-        String cmd_3 = "E_12_3";
+    void merge_command_케이스_검증() throws IOException {
+        Path folder = Paths.get("buffer");
+        Files.createDirectories(folder);
+        Files.createFile(folder.resolve("1_W_20_0xABCDABCD"));
+        Files.createFile(folder.resolve("2_E_10_4"));
+        Files.createFile(folder.resolve("3_E_12_3"));
 
         BufferController bufferController = new BufferController();
         bufferController.optimizeBuffer();
