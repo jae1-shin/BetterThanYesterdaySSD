@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class BufferUtil {
             if (name.contains("empty")) continue;
 
             String[] parts = name.split("_");
+            String commandFullName = String.join("_", Arrays.copyOfRange(parts, 1, parts.length));
 
             try {
                 int order = Integer.parseInt(parts[0]);
@@ -25,10 +27,10 @@ public class BufferUtil {
 
                 if (cmdType.equals("W")) {
                     String data = parts[3];
-                    commandList.add(new Command(order, CommandType.WRITE, lba, 1, data));
+                    commandList.add(new Command(order, CommandType.WRITE, lba, 1, data, commandFullName));
                 } else if (cmdType.equals("E")) {
                     int size = Integer.parseInt(parts[3]);
-                    commandList.add(new Command(order, CommandType.ERASE, lba, size, null));
+                    commandList.add(new Command(order, CommandType.ERASE, lba, size, null, commandFullName));
                 }
             } catch (Exception e) {
                 // ignore
