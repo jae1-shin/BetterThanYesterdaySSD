@@ -1,5 +1,7 @@
-public class EraseCommand extends Command{
-    protected EraseCommand(ConsoleService service) {
+package command;
+
+public class EraseCommand extends Command {
+    public EraseCommand(ConsoleService service) {
         super(service);
     }
 
@@ -21,7 +23,7 @@ public class EraseCommand extends Command{
 
     private static boolean InvalidCheck(String[] args) {
 
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.out.println("ERROR Invalid argument numbers. ");
             System.out.println("Usage: erase <LBA> <SIZE> or erase_range <Start LBA> <End LBA>");
             return true;

@@ -1,5 +1,7 @@
-public class EraseRangeCommand extends Command{
-    protected EraseRangeCommand(ConsoleService service) {
+package command;
+
+public class EraseRangeCommand extends Command {
+    public EraseRangeCommand(ConsoleService service) {
         super(service);
     }
 
@@ -11,7 +13,7 @@ public class EraseRangeCommand extends Command{
             service.erase_range(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 
         } catch (NumberFormatException e) {
-            System.out.println("ERROR NumberFormainvoker.register(\"erase\",  new EraseCommand(service));tException" + e.getMessage());
+            System.out.println("ERROR NumberFormainvoker.register(\"erase\",  new command.EraseCommand(service));tException" + e.getMessage());
         } catch (IndexOutOfBoundsException e) {
             System.out.println("ERROR IndexOutOfBoundsException" + e.getMessage());
         }
@@ -21,7 +23,7 @@ public class EraseRangeCommand extends Command{
 
     private static boolean InvalidCheck(String[] args) {
 
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.out.println("ERROR Invalid argument numbers. ");
             System.out.println("Usage: erase <LBA> <SIZE> or erase_range <Start LBA> <End LBA>");
             return true;

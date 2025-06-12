@@ -1,3 +1,5 @@
+package command;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -48,6 +50,21 @@ public class ConsoleService {
         }
 
         return false;
+    }
+
+    public void flush() {
+        try {
+            ProcessBuilder pb = new ProcessBuilder(
+                    "java", "-jar", "../JarLibs/ssd.jar", "F"
+            );
+            pb.inheritIO(); // 콘솔 출력 연결
+            Process process = pb.start();
+            process.waitFor();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void erase(int lba, int size) {
@@ -164,6 +181,7 @@ public class ConsoleService {
         System.out.println("exit - Exit the console");
         System.out.println("erase {lba} {size}- erase data from the specified LBA to size");
         System.out.println("erase_range {start_lba} {end_lba}- erase data between the specified LBA");
+        System.out.println("flush - flushes the buffer stored in the SSD ");
         System.out.println("help - Display this help message");
         System.out.println("fullwrite {data} - Write the same data to all LBAs");
         System.out.println("fullread - Read all LBAs and display their values");

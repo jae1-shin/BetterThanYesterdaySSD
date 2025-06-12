@@ -1,9 +1,12 @@
 
-import logger.LoggerContext;
+import command.*;
+import script.Script1;
+import script.Script2;
+import script.Script3;
+import script.Script4;
 
 import java.io.InputStream;
 import java.util.Scanner;
-import static logger.LoggerHolder.logger;
 
 public class TestConsole {
 
@@ -18,23 +21,6 @@ public class TestConsole {
     }
 
     public void run() {
-        // 콘솔엔 안 나옴
-        logger.debug("디버그 메시지");
-        // 콘솔에 출력됨
-        logger.info("정보 메시지");
-        // 줄바꿈 없이 콘솔 출력
-        logger.result("결과 메시지", false);
-        logger.result(" ← 이어짐");
-        logger.error("에러 발생!");
-
-        // Console 끄고 파일에만 기록
-        logger.result("콘솔 출력 없이 파일만 기록됨", LoggerContext.FILE_ONLY);
-
-        // Console ON + 줄바꿈 OFF
-        logger.result("줄바꿈 없이 출력됨", LoggerContext.CONSOLE_NO_NEWLINE);
-        logger.result(" ← 이어짐");
-
-
         ConsoleService service = new ConsoleService();
         CommandInvoker invoker = new CommandInvoker();
 
@@ -42,6 +28,7 @@ public class TestConsole {
         invoker.register("write",  new WriteCommand(service));
         invoker.register("erase",  new EraseCommand(service));
         invoker.register("erase_range",  new EraseRangeCommand(service));
+        invoker.register("flush",  new FlushCommand(service));
         invoker.register("fullread",  new FullReadCommand(service));
         invoker.register("fullwrite",  new FullWriteCommand(service));
         invoker.register("1_FullWriteAndReadCompare",  new Script1(service));
@@ -53,6 +40,7 @@ public class TestConsole {
         invoker.register("4_EraseAndWriteAging",  new Script4(service));
         invoker.register("4_",  new Script4(service));
         invoker.register("exit",  new ExitCommand(service));
+        invoker.register("help",  new HelpCommand(service));
 
         while (true) {
             System.out.print("Shell> ");
