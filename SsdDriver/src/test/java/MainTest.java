@@ -92,15 +92,14 @@ class MainTest {
         // arrange
 
         // act
-        Main.main(new String[]{"R", "0"});
-        RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
-        raf.seek(0 * SsdConstants.BLOCK_SIZE);
-        byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
-        raf.readFully(buf);
-        raf.close();
+        Main.main(new String[]{"W", "3", "0x1234ABCD"});
+        Main.main(new String[]{"R", "3"});
+        BufferedReader br = new BufferedReader(new FileReader(SsdConstants.OUTPUT_FILE_PATH));
+        String result = br.readLine();
+        br.close();
 
         // assert
-        assertThat(new String(buf)).isEqualTo("0xAAAABBBB");
+        assertThat(result).isEqualTo("0x1234ABCD");
     }
 
 }
