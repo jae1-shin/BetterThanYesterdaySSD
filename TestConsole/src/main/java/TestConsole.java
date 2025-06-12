@@ -40,6 +40,7 @@ public class TestConsole {
         invoker.register("4_EraseAndWriteAging",  new Script4(service));
         invoker.register("4_",  new Script4(service));
         invoker.register("exit",  new ExitCommand(service));
+        invoker.register("help",  new HelpCommand(service));
 
         while (true) {
             System.out.print("Shell> ");
