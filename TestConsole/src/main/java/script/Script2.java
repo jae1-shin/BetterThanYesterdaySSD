@@ -1,6 +1,5 @@
 package script;
 
-import static logger.LoggerHolder.logger;
 import command.*;
 
 public class Script2 extends Command {

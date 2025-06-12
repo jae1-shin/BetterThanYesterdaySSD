@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import static logger.LoggerHolder.logger;
 import command.*;
 
 public class Script3 extends Command{
