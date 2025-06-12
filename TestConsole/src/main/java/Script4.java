@@ -22,7 +22,7 @@ public class Script4 extends Command {
                 int count = BASE_COUNT;
                 if (startLBA == 98) count = EXCEPT_COUNT;
 
-                for (int LBA = startLBA; LBA < LBA + count; LBA++) {
+                for (int LBA = startLBA; LBA < startLBA + count; LBA++) {
                     service.erase(LBA, 1);
                     if (!service.readCompare(LBA, ERASED_VALUE)) {
                         System.out.println("FAIL");
