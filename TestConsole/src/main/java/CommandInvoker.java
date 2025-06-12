@@ -14,12 +14,11 @@ public class CommandInvoker {
 
         Command command = commands.get(parts[0].toLowerCase());
         if (command != null) {
-            command.execute(parts);
+            return command.execute(parts);
         } else {
             System.out.println("INVALID COMMAND");
+            return false;
         }
-
-        return true;
     }
 
     public boolean hasCommand(String commandName) {
