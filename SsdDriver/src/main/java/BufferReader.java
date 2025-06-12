@@ -4,10 +4,8 @@ import java.util.List;
 
 public class BufferReader {
 
-    private final String BUFFER_PATH = "buffer";
-
     public String read(int targetLBA) {
-        File bufferDir = new File(BUFFER_PATH);
+        File bufferDir = new File(SsdConstants.BUFFER_PATH);
         File[] files = bufferDir.listFiles();
         if (files == null) return "";
 
