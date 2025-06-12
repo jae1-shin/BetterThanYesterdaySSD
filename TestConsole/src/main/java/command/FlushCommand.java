@@ -1,3 +1,5 @@
+package command;
+
 public class FlushCommand extends Command {
     public FlushCommand(ConsoleService service) {
         super(service);
@@ -5,6 +7,7 @@ public class FlushCommand extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        return false;
+        service.flush();
+        return true;
     }
 }

@@ -8,7 +8,7 @@ public class FullReadCommand extends Command {
     @Override
     public boolean execute(String[] args) {
         if(!isValidArgumentNumber(args)){
-            System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
+            logger.error("ERROR Invalid argument numbers. Usage: read <address>");
             return false;
         }
 

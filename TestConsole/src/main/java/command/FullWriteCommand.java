@@ -9,12 +9,13 @@ public class FullWriteCommand extends Command {
     @Override
     public boolean execute(String[] args) {
         if(!isValidArgumentNumber(args)){
-            System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
+            logger.error("ERROR Invalid argument numbers. Usage: read <address>");
             return false;
         }
 
         if(!isValidData(args[1])){
-            System.out.println("ERROR Value must be in hex format (e.g., 0x1234ABCD)");
+            logger.error("ERROR Value must be in hex format (e.g., 0x1234ABCD)");
+            return false;
         }
         service.fullWrite(args[1]);
         return true;
