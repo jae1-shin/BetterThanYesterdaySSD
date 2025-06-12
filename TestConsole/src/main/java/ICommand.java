@@ -1,3 +1,3 @@
 public interface ICommand {
-    void execute(String[] args);
+    boolean execute(String[] args);
 }
