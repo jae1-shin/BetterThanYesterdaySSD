@@ -1,4 +1,7 @@
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,4 +43,41 @@ public class BufferUtil {
         return commandList;
     }
 
+    public static void clearBuffer() {
+        try {
+            deleteBufferDirAndFiles();
+
+            File bufferDir = checkAndCreateBufferDir();
+            checkAndCreateEmptyBufferFiles(bufferDir);
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
+    private static void deleteBufferDirAndFiles() {
+        File bufferDir = new File(SsdConstants.BUFFER_PATH);
+        bufferDir.delete();
+    }
+
+    public static File checkAndCreateBufferDir() {
+        File bufferDir = new File(SsdConstants.BUFFER_PATH);
+        if (!bufferDir.exists()) {
+            bufferDir.mkdirs();
+        }
+        return bufferDir;
+    }
+
+    public static void checkAndCreateEmptyBufferFiles(File bufferDir) throws IOException {
+        for (int bufferNum = 1; bufferNum <= SsdConstants.BUFFER_SIZE; bufferNum++) {
+            if (existBufferFile(bufferDir, bufferNum)) continue;
+            Files.writeString(Paths.get(bufferDir.getPath(), SsdConstants.getBufferDefaultFileName(bufferNum)), "");
+        }
+    }
+
+    public static boolean existBufferFile(File bufferDir, int bufferNum) {
+        final String bufferPrefix = SsdConstants.getBufferFilePrefix(bufferNum);
+        File[] bufferFiles = bufferDir.listFiles((dir, name) -> name.startsWith(bufferPrefix));
+
+        return bufferFiles != null && bufferFiles.length > 0;
+    }
 }

@@ -22,7 +22,7 @@ public class Ssd {
         try  {
             initFiles();
         } catch (IOException e) {
-            // Ignore?
+            // ignore
         }
 
         if (!checkPreCondition(args)) {
@@ -40,12 +40,12 @@ public class Ssd {
     }
 
     void initFiles() throws IOException {
-        checkAndCreateOutputFile();
+        checkAndClearOutputFile();
         checkAndCreateNandFile();
         checkAndCreateBuffer();
     }
 
-    private void checkAndCreateOutputFile() throws IOException {
+    private void checkAndClearOutputFile() throws IOException {
         Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH), "");
     }
 
@@ -60,25 +60,8 @@ public class Ssd {
     }
 
     private void checkAndCreateBuffer() throws IOException {
-        File bufferDir = new File(SsdConstants.BUFFER_DIR_NAME);
-        if (!bufferDir.exists()) {
-            bufferDir.mkdirs();
-            createEmptyBufferFiles(bufferDir);
-        }
-    }
-
-    private void createEmptyBufferFiles(File bufferDir) throws IOException {
-        for (int bufferNum = 1; bufferNum <= SsdConstants.BUFFER_SIZE; bufferNum++) {
-            if (existBufferFile(bufferDir, bufferNum)) continue;
-            Files.writeString(Paths.get(bufferDir.getPath(), SsdConstants.getBufferDefaultFileName(bufferNum)), "");
-        }
-    }
-
-    private boolean existBufferFile(File bufferDir, int bufferNum) {
-        final String bufferPrefix = SsdConstants.getBufferFilePrefix(bufferNum);
-        File[] bufferFiles = bufferDir.listFiles((dir, name) -> name.startsWith(bufferPrefix));
-
-        return bufferFiles != null && bufferFiles.length > 0;
+        File bufferDir = BufferUtil.checkAndCreateBufferDir();
+        BufferUtil.checkAndCreateEmptyBufferFiles(bufferDir);
     }
 
     private void processWriteCommand(String[] args) {
