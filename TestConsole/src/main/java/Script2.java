@@ -8,7 +8,7 @@ public class Script2 extends Command {
     }
 
     @Override
-    public void execute(String[] args) {
+    public boolean execute(String[] args) {
 
         for(int i = 0; i< LOOP_COUNT; i++){
             for(int lba : LBA_TEST_SEQUENCE){
@@ -18,11 +18,12 @@ public class Script2 extends Command {
             for(int lba : LBA_TEST_SEQUENCE){
                 if(!service.readCompare(lba, TEST_VALUE)){
                     System.out.println("FAIL");
-                    return;
+                    return false;
                 }
             }
         }
 
         System.out.println("PASS");
+        return true;
     }
 }

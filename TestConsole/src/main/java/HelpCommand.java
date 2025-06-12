@@ -4,13 +4,14 @@ public class HelpCommand extends Command{
     }
 
     @Override
-    public void execute(String[] args) {
+    public boolean execute(String[] args) {
         if(!isValidArgumentNumber(args)){
             System.out.println("Invalid number of argument");
-            return;
+            return false;
         }
 
         service.help();
+        return true;
     }
 
     private static boolean isValidArgumentNumber(String[] args) {
