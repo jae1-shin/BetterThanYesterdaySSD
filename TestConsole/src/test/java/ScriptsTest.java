@@ -12,6 +12,27 @@ class ScriptsTest {
     private ConsoleService service;
 
     @Test
+    void script4_실행횟수_정상() {
+        Script4 script4 = new Script4(service);
+        script4.execute(new String[]{});
+        int ERASE_CALL_COUNT = 146;
+
+        verify(service, times(script4.LOOP_COUNT* ERASE_CALL_COUNT)).erase(anyInt(), anyInt());
+    }
+
+    @Test
+    void script4_fail_처리_정상() {
+        Script4 script4 = new Script4(service);
+        doReturn(false).when(service).readCompare(anyInt(), anyString());
+        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(outContent));
+
+        script4.execute(new String[]{});
+
+        assertTrue(outContent.toString().trim().equals("FAIL"));
+    }
+
+    @Test
     void script3_write_readCompare_실행횟수_정상() {
         Script3 script3 = new Script3(service);
         for (int lba : script3.targetLBA) {
