@@ -12,6 +12,21 @@ public class BufferReader {
         File[] files = bufferDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
         if (files == null) return "";
 
+        List<Command> commandList = getCommandList(files);
+
+        // 최신 명령 부터 확인
+        commandList.sort(Comparator.comparingInt((Command c) -> c.order).reversed());
+
+        for (Command cmd : commandList) {
+            if (isTargetLBAWrited(targetLBA, cmd)) return cmd.data;
+            if (isTargetLBAErased(targetLBA, cmd)) return "0x00000000";
+        }
+
+        // 못찾은 경우
+        return "";
+    }
+
+    private static List<Command> getCommandList(File[] files) {
         List<Command> commandList = new ArrayList<>();
 
         for (File file : files) {
@@ -37,35 +52,26 @@ public class BufferReader {
             }
 
         }
+        return commandList;
+    }
 
-        // 최신 명령 부터 확인
-        commandList.sort(Comparator.comparingInt((Command c) -> c.order).reversed());
+    private boolean isTargetLBAErased(int targetLBA, Command cmd) {
+        return cmd.type == Command.Type.ERASE &&
+                targetLBA >= cmd.lba && targetLBA < (cmd.lba + cmd.size);
+    }
 
-        for (Command cmd : commandList) {
-            // 찾는 LBA에 쓰여진 경우
-            if (cmd.type == Command.Type.WRITE && cmd.lba == targetLBA) {
-                return cmd.data;
-            }
-            
-            // 찾는 LBA에 지워진 경우
-            if (cmd.type == Command.Type.ERASE &&
-                    targetLBA >= cmd.lba && targetLBA < (cmd.lba + cmd.size)) {
-                return "0x00000000";
-            }
-        }
-
-        // 못찾은 경우
-        return "";
+    private boolean isTargetLBAWrited(int targetLBA, Command cmd) {
+        return cmd.type == Command.Type.WRITE && cmd.lba == targetLBA;
     }
 
     static class Command {
         enum Type { WRITE, ERASE }
 
-        int order;     // 파일명 앞 숫자
+        int order;
         Type type;
         int lba;
-        int size;      // only for ERASE
-        String data;   // only for WRITE
+        int size;
+        String data;
 
         Command(int order, Type type, int lba, int size, String data) {
             this.order = order;
