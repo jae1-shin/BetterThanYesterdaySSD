@@ -14,4 +14,28 @@ public class Command {
         this.data = data;
         this.commandFullName = commandFullName;
     }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public CommandType getType() {
+        return type;
+    }
+
+    public int getLba() {
+        return lba;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public String getCommandFullName() {
+        return commandFullName;
+    }
 }
