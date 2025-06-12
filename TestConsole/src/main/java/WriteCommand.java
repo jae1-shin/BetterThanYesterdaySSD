@@ -8,11 +8,11 @@ public class WriteCommand extends Command{
         try {
             if (args.length != 3) {
                 System.out.println("ERROR Invalid argument numbers. Usage: read <address>");
-                return false;;
+                return false;
             }
             if (!args[2].startsWith("0x")) {
                 System.out.println("ERROR Value must be in hex format (e.g., 0x1234ABCD)");
-                return false;;
+                return false;
             }
 
             if(service.write(Integer.parseInt(args[1]), args[2]) == false) {
