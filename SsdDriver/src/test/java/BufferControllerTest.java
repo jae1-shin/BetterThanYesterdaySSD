@@ -1,4 +1,3 @@
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +9,6 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class BufferControllerTest {
 
@@ -36,52 +34,113 @@ class BufferControllerTest {
     }
 
     @Test
-    void Ignore_command_1번_케이스_검증() throws IOException {
+    void BufferFull시_Flush_후_명령_추가() throws IOException {
         Path folder = Paths.get("buffer");
         Files.createDirectories(folder);
         Files.createFile(folder.resolve("1_W_20_0xABCDABCD"));
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
-        Files.createFile(folder.resolve("3_W_20_0xEEEEFFFF"));
+        Files.createFile(folder.resolve("3_W_22_0x12341234"));
+        Files.createFile(folder.resolve("4_W_23_0x12341234"));
+        Files.createFile(folder.resolve("5_W_24_0x12341234"));
 
         BufferController bufferController = new BufferController();
-        bufferController.optimizeBuffer();
+        bufferController.processCommand(new Command(1, CommandType.WRITE, 20, 0, "0xEEEEFFFF", "W_20_0xEEEEFFFF"));
 
-        assertThat(bufferController.getBufCmdList()).isEqualTo(2);
-        assertThat(bufferController.getBufCmdList().get(0).toString()).isEqualTo("W_21_0x12341234");
-        assertThat(bufferController.getBufCmdList().get(1).toString()).isEqualTo("W_20_0xEEEEFFFF");
-
+        assertThat(bufferController.getBuffer().size()).isEqualTo(1);
+        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_20_0xEEEEFFFF");
     }
 
     @Test
-    void Ignore_command_2번_케이스_검증() throws IOException {
+    void IgnoreWrite_중복_제거_정상() throws IOException {
+        Path folder = Paths.get("buffer");
+        Files.createDirectories(folder);
+        Files.createFile(folder.resolve("1_W_20_0xABCDABCD"));
+        Files.createFile(folder.resolve("2_W_21_0x12341234"));
+
+        BufferController bufferController = new BufferController();
+        bufferController.processCommand(new Command(3, CommandType.WRITE, 20, 0, "0xEEEEFFFF", "W_20_0xEEEEFFFF"));
+
+        assertThat(bufferController.getBuffer().size()).isEqualTo(2);
+        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_21_0x12341234");
+        assertThat(bufferController.getBuffer().get(1).getCommandFullName()).isEqualTo("W_20_0xEEEEFFFF");
+    }
+
+    @Test
+    void IgnoreWrite_중복_없음() throws IOException {
+        Path folder = Paths.get("buffer");
+        Files.createDirectories(folder);
+        Files.createFile(folder.resolve("1_W_20_0xABCDABCD"));
+        Files.createFile(folder.resolve("2_W_21_0x12341234"));
+
+        BufferController bufferController = new BufferController();
+        bufferController.processCommand(new Command(3, CommandType.WRITE, 23, 0, "0xEEEEFFFF", "W_23_0xEEEEFFFF"));
+
+        assertThat(bufferController.getBuffer().size()).isEqualTo(3);
+        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_20_0xABCDABCD");
+        assertThat(bufferController.getBuffer().get(1).getCommandFullName()).isEqualTo("W_21_0x12341234");
+        assertThat(bufferController.getBuffer().get(2).getCommandFullName()).isEqualTo("W_23_0xEEEEFFFF");
+    }
+
+    @Test
+    void IgnoreErase_중복_제거_정상() throws IOException {
         Path folder = Paths.get("buffer");
         Files.createDirectories(folder);
         Files.createFile(folder.resolve("1_E_18_3"));
-        Files.createFile(folder.resolve("2_W_21_12341234"));
-        Files.createFile(folder.resolve("3_E_18_5"));
+        Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
         BufferController bufferController = new BufferController();
-        bufferController.optimizeBuffer();
+        bufferController.processCommand(new Command(3, CommandType.ERASE, 18, 5, null, "E_18_5"));
 
-        assertThat(bufferController.getBufCmdList()).isEqualTo(1);
-        assertThat(bufferController.getBufCmdList().get(0).toString()).isEqualTo("E_18_5");
-
+        assertThat(bufferController.getBuffer().size()).isEqualTo(1);
+        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("E_18_5");
     }
 
     @Test
-    void merge_command_케이스_검증() throws IOException {
+    void IgnoreErase_중복_없음() throws IOException {
+        Path folder = Paths.get("buffer");
+        Files.createDirectories(folder);
+        Files.createFile(folder.resolve("1_E_10_3"));
+        Files.createFile(folder.resolve("2_W_21_0x12341234"));
+
+        BufferController bufferController = new BufferController();
+        bufferController.processCommand(new Command(3, CommandType.ERASE, 11, 5, null, "E_11_5"));
+
+        assertThat(bufferController.getBuffer().size()).isEqualTo(3);
+        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("E_10_3");
+        assertThat(bufferController.getBuffer().get(1).getCommandFullName()).isEqualTo("W_21_0x12341234");
+        assertThat(bufferController.getBuffer().get(2).getCommandFullName()).isEqualTo("E_11_5");
+    }
+
+    @Test
+    void MergeWrite_중복_제거_정상() throws IOException {
         Path folder = Paths.get("buffer");
         Files.createDirectories(folder);
         Files.createFile(folder.resolve("1_W_20_0xABCDABCD"));
         Files.createFile(folder.resolve("2_E_10_4"));
-        Files.createFile(folder.resolve("3_E_12_3"));
 
         BufferController bufferController = new BufferController();
-        bufferController.optimizeBuffer();
+        bufferController.processCommand(new Command(3, CommandType.ERASE, 12, 3, null, "E_12_3"));
 
-        assertThat(bufferController.getBufCmdList()).isEqualTo(2);
-        assertThat(bufferController.getBufCmdList().get(0).toString()).isEqualTo("W_20_0xABCDABCD");
-        assertThat(bufferController.getBufCmdList().get(1).toString()).isEqualTo("E_10_5");
+        assertThat(bufferController.getBuffer().size()).isEqualTo(2);
+        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_20_0xABCDABCD");
+        assertThat(bufferController.getBuffer().get(1).getCommandFullName()).isEqualTo("E_10_5");
+    }
 
+    @Test
+    void IgnoreErase_후_MergeWrite_중복_제거_정상() throws IOException {
+        Path folder = Paths.get("buffer");
+        Files.createDirectories(folder);
+        Files.createFile(folder.resolve("1_W_5_0x1234ABCD"));
+        Files.createFile(folder.resolve("2_W_7_0xABCDABCD"));
+        Files.createFile(folder.resolve("3_E_10_2"));
+        Files.createFile(folder.resolve("4_W_12_0xABCDEEEE"));
+
+        BufferController bufferController = new BufferController();
+        bufferController.processCommand(new Command(5, CommandType.ERASE, 12, 3, null, "E_12_3"));
+
+        assertThat(bufferController.getBuffer().size()).isEqualTo(3);
+        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_5_0x1234ABCD");
+        assertThat(bufferController.getBuffer().get(1).getCommandFullName()).isEqualTo("W_7_0xABCDABCD");
+        assertThat(bufferController.getBuffer().get(2).getCommandFullName()).isEqualTo("E_10_5");
     }
 }
