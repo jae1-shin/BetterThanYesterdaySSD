@@ -15,11 +15,6 @@ public class SsdReader {
             byte[] buffer = new byte[SsdConstants.BLOCK_SIZE];
             int bytesRead = raf.read(buffer);
 
-            if (bytesRead == -1) {
-                writeError();
-                return;
-            }
-
             String readStr = new String(buffer, 0, bytesRead);
 
             Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH),
@@ -27,17 +22,6 @@ public class SsdReader {
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING
             );
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-    }
-
-    private static void writeError() throws IOException {
-        Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH),
-                "ERROR",
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING
-        );
     }
 }
