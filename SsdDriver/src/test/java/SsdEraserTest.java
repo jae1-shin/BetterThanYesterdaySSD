@@ -20,7 +20,7 @@ class SsdEraserTest {
     }
 
     @Test
-    void erase() {
+    void 다섯개_write_직후_세개_일부_erase() {
         SsdReader reader = new SsdReader();
         SsdWriter writer = new SsdWriter();
         SsdEraser eraser = new SsdEraser();
@@ -34,7 +34,6 @@ class SsdEraserTest {
                 assertThat(output).isEqualTo(expected);
             }
 
-            // Erase the data at LBA 0
             eraser.erase(1, 3);
             for (int i : new int[]{1, 2, 3}) {
                 reader.read(i);
