@@ -41,7 +41,10 @@ tasks.named<Jar>("jar") {
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
 
+    destinationDirectory = file("../JarLibs")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     archiveFileName.set("ssd.jar") // 원하는 jar 이름
+
+
 }
 
