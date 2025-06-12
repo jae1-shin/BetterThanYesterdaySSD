@@ -9,7 +9,7 @@ public class WriteCommand extends Command {
     public boolean execute(String[] args)  {
         try {
             if (args.length != 3) {
-                logger.error("ERROR Invalid argument numbers. Usage: read <address>");
+                logger.error("ERROR Invalid argument format. Usage: write <address> 0x1234ABCD");
                 return false;
             }
             if (!args[2].startsWith("0x")) {
