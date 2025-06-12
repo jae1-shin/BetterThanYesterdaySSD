@@ -101,9 +101,7 @@ class ConsoleServiceTest {
         int start = random.nextInt(100);               // 0 ~ 99
         int end = random.nextInt(100);          // -1000 ~ +1000
 
-        System.out.println("Testing: erase_range(" + start + ", " + end + ")");
         cs.erase_range(start, end);
-        System.out.println("----------");
 
         assertDoesNotThrow(() -> cs.erase_range(start, end));
     }
