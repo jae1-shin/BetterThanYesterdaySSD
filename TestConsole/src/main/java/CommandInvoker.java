@@ -8,9 +8,9 @@ public class CommandInvoker {
         commands.put(name.toLowerCase(), command);
     }
 
-    public void execute(String inputLine) {
+    public boolean execute(String inputLine) {
         String[] parts = inputLine.trim().split("\\s+");
-        if (parts.length == 0) return;
+        if (parts.length == 0) return false;
 
         Command command = commands.get(parts[0].toLowerCase());
         if (command != null) {
@@ -18,6 +18,8 @@ public class CommandInvoker {
         } else {
             System.out.println("INVALID COMMAND");
         }
+
+        return true;
     }
 
     public boolean hasCommand(String commandName) {
