@@ -28,7 +28,7 @@ class SsdTest {
     }
 
     @Test
-    void initFiles() {
+    void 실행_전_파일_정상_생성_확인() {
         Ssd ssd = spy(new Ssd());
 
         try {

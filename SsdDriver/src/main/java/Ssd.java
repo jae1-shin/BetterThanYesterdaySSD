@@ -4,7 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 public class Ssd {
     public static final String DATA_FORMAT = "^0x[0-9A-Fa-f]{8}$";
@@ -38,28 +37,16 @@ public class Ssd {
     }
 
     void initFiles() throws IOException {
-        // SsdConstants.OUTPUT_FILE_PATH
-        Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH), "");
-
-        // SsdConstants.SSD_NAND_FILE
-        checkFileAndWriteDefaultData();
-
-        // buffer
-        File bufferDir = new File("buffer");
-        if (!bufferDir.exists()) {
-            bufferDir.mkdirs();
-        }
-
-        for (int bufferNum = 1; bufferNum <= SsdConstants.BUFFER_SIZE; bufferNum++) {
-            String bufferPrefix = bufferNum + "_";
-            File[] bufferFiles = bufferDir.listFiles((dir, name) -> name.startsWith(bufferPrefix));
-            if (bufferFiles == null || bufferFiles.length == 0) {
-                Files.writeString(Paths.get(bufferDir.getPath(), bufferPrefix + "empty"), "");
-            }
-        }
+        checkAndCreateOutputFile();
+        checkAndCreateNandFile();
+        checkAndCreateBuffer();
     }
 
-    private void checkFileAndWriteDefaultData() throws IOException {
+    private void checkAndCreateOutputFile() throws IOException {
+        Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH), "");
+    }
+
+    private void checkAndCreateNandFile() throws IOException {
         File file = new File(SsdConstants.SSD_NAND_FILE);
         if (file.exists()) return;
         writeDefaultData();
@@ -67,6 +54,28 @@ public class Ssd {
 
     private void writeDefaultData() throws IOException {
         Files.writeString(Paths.get(SsdConstants.SSD_NAND_FILE), (SsdConstants.DEFAULT_DATA).repeat(LBA_MAX_COUNT));
+    }
+
+    private void checkAndCreateBuffer() throws IOException {
+        File bufferDir = new File(SsdConstants.BUFFER_DIR_NAME);
+        if (!bufferDir.exists()) {
+            bufferDir.mkdirs();
+            createEmptyBufferFiles(bufferDir);
+        }
+    }
+
+    private void createEmptyBufferFiles(File bufferDir) throws IOException {
+        for (int bufferNum = 1; bufferNum <= SsdConstants.BUFFER_SIZE; bufferNum++) {
+            if (existBufferFile(bufferDir, bufferNum)) continue;
+            Files.writeString(Paths.get(bufferDir.getPath(), SsdConstants.getBufferDefaultFileName(bufferNum)), "");
+        }
+    }
+
+    private boolean existBufferFile(File bufferDir, int bufferNum) {
+        final String bufferPrefix = SsdConstants.getBufferFilePrefix(bufferNum);
+        File[] bufferFiles = bufferDir.listFiles((dir, name) -> name.startsWith(bufferPrefix));
+
+        return bufferFiles != null && bufferFiles.length > 0;
     }
 
     private void processWriteCommand(String[] args) {
