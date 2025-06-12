@@ -19,4 +19,8 @@ public class CommandInvoker {
             System.out.println("INVALID COMMAND");
         }
     }
+
+    public boolean hasCommand(String commandName) {
+        return commands.containsKey(commandName);
+    }
 }
