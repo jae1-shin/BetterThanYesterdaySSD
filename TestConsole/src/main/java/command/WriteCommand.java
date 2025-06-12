@@ -1,5 +1,7 @@
-public class WriteCommand extends Command{
-    protected WriteCommand(ConsoleService service) {
+package command;
+
+public class WriteCommand extends Command {
+    public WriteCommand(ConsoleService service) {
         super(service);
     }
 

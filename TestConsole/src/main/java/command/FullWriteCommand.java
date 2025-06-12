@@ -1,5 +1,7 @@
-public class FullWriteCommand extends Command{
-    protected FullWriteCommand(ConsoleService service) {
+package command;
+
+public class FullWriteCommand extends Command {
+    public FullWriteCommand(ConsoleService service) {
         super(service);
     }
     public static final String DATA_FORMAT = "^0x[0-9A-Fa-f]{8}$";

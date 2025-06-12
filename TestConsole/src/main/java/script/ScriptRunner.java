@@ -1,13 +1,17 @@
+package script;
+
+import command.CommandInvoker;
+import command.ConsoleService;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ScriptRunner {
 
-    void run(String filePath) {
+    public void run(String filePath) {
         if(!fileExists(filePath)){
             System.out.println("There's no File !");
             return;
