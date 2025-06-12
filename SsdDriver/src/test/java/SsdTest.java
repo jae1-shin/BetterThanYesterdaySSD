@@ -32,7 +32,7 @@ class SsdTest {
     }
 
     @Test
-    void initFiles() {
+    void initFiles_뒤_파일_정상_초기화_및_생성_확인() {
         Ssd ssd = spy(new Ssd());
 
         try {
@@ -60,7 +60,7 @@ class SsdTest {
     }
 
     @Test
-    void SsdEraserTest와_같은_테스트를_processCommand로_진행() {
+    void 다섯개_write_직후_세개_일부_erase_ssd_processCommand() {
         SsdReader reader = new SsdReader();
         SsdWriter writer = new SsdWriter();
         Ssd ssd = new Ssd();
@@ -93,7 +93,7 @@ class SsdTest {
     }
 
     @Test
-    void processCommand_삭제_유효성검사_걸러내는지_확인() {
+    void 삭제_args_유효성검사_정상1() {
         Ssd ssd = new Ssd();
         String output;
 
@@ -102,22 +102,77 @@ class SsdTest {
             output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
             assertThat(output).isEqualTo("");
 
-            ssd.processCommand(new String[]{"E", "0", "-1"});
-            output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
-            assertThat(output).isEqualTo(SsdConstants.ERROR); // 음수개 못 지움
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    @Test
+    void 삭제_args_유효성검사_정상2() {
+        Ssd ssd = new Ssd();
+        String output;
+
+        try {
             ssd.processCommand(new String[]{"E", "99", "0"});
             output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
             assertThat(output).isEqualTo("");
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void 삭제_args_유효성검사_정상3() {
+        Ssd ssd = new Ssd();
+        String output;
+
+        try {
             ssd.processCommand(new String[]{"E", "99", "1"});
             output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
             assertThat(output).isEqualTo("");
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void 삭제_args_유효성검사_비정상_음수개() {
+        Ssd ssd = new Ssd();
+        String output;
+
+        try {
+            ssd.processCommand(new String[]{"E", "0", "-1"});
+            output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
+            assertThat(output).isEqualTo(SsdConstants.ERROR); // 음수개 못 지움
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void 삭제_args_유효성검사_비정상_10개_초과() {
+        Ssd ssd = new Ssd();
+        String output;
+
+        try {
             ssd.processCommand(new String[]{"E", "91", "20"});
             output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
             assertThat(output).isEqualTo(SsdConstants.ERROR); // 10개 초과 못 지움
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void 삭제_args_유효성검사_비정상_범위_초과() {
+        Ssd ssd = new Ssd();
+        String output;
+
+        try {
             ssd.processCommand(new String[]{"E", "95", "10"});
             output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
             assertThat(output).isEqualTo(SsdConstants.ERROR); // 99 LBA 넘어서 못 자움
@@ -125,6 +180,5 @@ class SsdTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
