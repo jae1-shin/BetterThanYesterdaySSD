@@ -20,7 +20,7 @@ class SsdEraserTest {
     }
 
     @Test
-    void 다섯개_write_직후_세개_일부_erase() {
+    void 다섯개_write_직후_세개_일부_erase_ssdEraserTest_erase() {
         SsdReader reader = new SsdReader();
         SsdWriter writer = new SsdWriter();
         SsdEraser eraser = new SsdEraser();
