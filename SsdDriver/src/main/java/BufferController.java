@@ -8,7 +8,7 @@ public class BufferController {
     private List<Command> buffer = Collections.emptyList();
 
     private BufferController() {
-
+        // 외부 객체 생성 금지
     }
 
     public static BufferController getInstance() {
