@@ -1,6 +1,7 @@
 import command.CommandContext;
 import command.CommandFactory;
-import command.validator.ArgsValidator;
+import command.validation.CommandValidator;
+import command.validation.CommandValidatorFactory;
 import common.SSDConstants;
 import common.util.BufferUtil;
 
@@ -21,7 +22,7 @@ public class SSD {
             // ignore
         }
 
-        if (!ArgsValidator.checkPreCondition(args)) {
+        if (!checkPreCondition(args)) {
             writeError();
             return;
         }
@@ -57,6 +58,14 @@ public class SSD {
     private void checkAndCreateBuffer() throws IOException {
         File bufferDir = BufferUtil.checkAndCreateBufferDir();
         BufferUtil.checkAndCreateEmptyBufferFiles(bufferDir);
+    }
+
+    private boolean checkPreCondition(String[] args) {
+        if (args.length == 0) return false;
+        CommandValidator validator = CommandValidatorFactory.getValidator(args[0]);
+        if (validator == null) return false;
+
+        return validator.validate(args);
     }
 
     private void writeError() {
