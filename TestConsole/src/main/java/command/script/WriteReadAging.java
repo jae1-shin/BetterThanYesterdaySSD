@@ -9,17 +9,12 @@ import command.common.CommandResult;
 import command.common.ConsoleService;
 
 //3_WriteReadAging
-public class WriteReadAging extends Command {
+public class WriteReadAging extends TestScript {
     public static final int LOOP_COUNT = 200;
     public static final int[] targetLBA = new int[]{0, 99};
 
     public WriteReadAging(ConsoleService service) {
         super(service);
-    }
-
-    @Override
-    public String argumentsValidCheck(String[] args) {
-        return NO_NEED_TO_VALID_CHECK;
     }
 
     @Override

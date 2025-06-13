@@ -1,29 +1,17 @@
-package command.console;
+package command.console.validator;
 
-import command.common.Command;
-import command.common.CommandResult;
-import command.common.ConsoleService;
+import command.common.CommandValidator;
 
-public class EraseCommand extends Command {
+public class EraseCommandValidator extends CommandValidator {
     public static final int EXPECTED_ARGUMENT_COUNT = 3;
     public static final String ERROR_RANGE_IS_NOT_INTEGER = "ERROR : Range is not integer";
 
-    public EraseCommand(ConsoleService service) {
-        super(service);
-    }
-
     @Override
-    public String argumentsValidCheck(String[] args) {
+    public String validCheck(String[] args) {
         if(isInValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
         if(!addressValidCheck(args[1]).equals(VALID_ADDRESS)) return INVALID_ADDRESS_FORMAT_MSG;
         if(isInValidRange(args[2])) return ERROR_RANGE_IS_NOT_INTEGER;
-        return VALID_ARGUMENT;
-    }
-
-    @Override
-    public CommandResult doExecute(String[] args) {
-        service.erase(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
-        return CommandResult.PASS;
+        return VALID_CHECK_PASS;
     }
 
     public boolean isInValidRange(String range) {

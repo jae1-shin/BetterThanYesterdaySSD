@@ -5,18 +5,13 @@ import command.common.CommandResult;
 import command.common.ConsoleService;
 
 //1_FullWriteAndReadCompare
-public class FullWriteAndReadCompare extends Command {
+public class FullWriteAndReadCompare extends TestScript {
     public static final String TEST_VALUE = "0xFFFFFFFF";
     public static final int LAST_LBA = 100;
     public static final int DIV_NUM = 5;
 
     public FullWriteAndReadCompare(ConsoleService service) {
         super(service);
-    }
-
-    @Override
-    public String argumentsValidCheck(String[] args) {
-        return NO_NEED_TO_VALID_CHECK;
     }
 
     @Override
