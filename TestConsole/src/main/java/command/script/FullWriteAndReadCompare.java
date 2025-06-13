@@ -4,12 +4,13 @@ import command.common.Command;
 import command.common.CommandResult;
 import command.common.ConsoleService;
 
-public class Script1 extends Command {
+//1_FullWriteAndReadCompare
+public class FullWriteAndReadCompare extends Command {
     public static final String TEST_VALUE = "0xFFFFFFFF";
     public static final int LAST_LBA = 100;
     public static final int DIV_NUM = 5;
 
-    public Script1(ConsoleService service) {
+    public FullWriteAndReadCompare(ConsoleService service) {
         super(service);
     }
 

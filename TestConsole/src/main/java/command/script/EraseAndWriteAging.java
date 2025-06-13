@@ -4,7 +4,9 @@ import command.common.Command;
 import command.common.CommandResult;
 import command.common.ConsoleService;
 
-public class Script4 extends Command {
+//4_EraseAndWriteAging
+
+public class EraseAndWriteAging extends Command {
     public static final int LOOP_COUNT = 30;
     public static final String WRITE_VALUE = "0x11111111";
     public static final String OVERWRITE_VALUE = "0x22222222";
@@ -12,7 +14,7 @@ public class Script4 extends Command {
     public static final int BASE_COUNT = 3;
     public static final int EXCEPT_COUNT = 2;
 
-    public Script4(ConsoleService service) {
+    public EraseAndWriteAging(ConsoleService service) {
         super(service);
     }
 

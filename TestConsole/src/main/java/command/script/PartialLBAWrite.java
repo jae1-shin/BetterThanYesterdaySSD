@@ -4,12 +4,13 @@ import command.common.Command;
 import command.common.CommandResult;
 import command.common.ConsoleService;
 
-public class Script2 extends Command {
+//2_PartialLBAWrite
+public class PartialLBAWrite extends Command {
     public static final int LOOP_COUNT = 30;
     public static final String TEST_VALUE = "0x12345678";
     public static final int[] LBA_TEST_SEQUENCE = new int[]{4, 0, 3, 1, 2};
 
-    public Script2(ConsoleService service) {
+    public PartialLBAWrite(ConsoleService service) {
         super(service);
     }
 

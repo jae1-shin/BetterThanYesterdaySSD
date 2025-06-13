@@ -3,11 +3,11 @@ package command.console;
 import command.common.CommandInvoker;
 import command.common.ConsoleService;
 import command.common.RunMode;
-import command.script.Script1;
+import command.script.FullWriteAndReadCompare;
 import logger.Logger;
-import command.script.Script2;
-import command.script.Script3;
-import command.script.Script4;
+import command.script.PartialLBAWrite;
+import command.script.WriteReadAging;
+import command.script.EraseAndWriteAging;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -36,14 +36,14 @@ public class TestConsole implements RunMode {
         invoker.register("flush",  new FlushCommand(service));
         invoker.register("fullread",  new FullReadCommand(service));
         invoker.register("fullwrite",  new FullWriteCommand(service));
-        invoker.register("1_FullWriteAndReadCompare",  new Script1(service));
-        invoker.register("1_",  new Script1(service));
-        invoker.register("2_PartialLBAWrite",  new Script2(service));
-        invoker.register("2_",  new Script2(service));
-        invoker.register("3_WriteReadAging",  new Script3(service));
-        invoker.register("3_",  new Script3(service));
-        invoker.register("4_EraseAndWriteAging",  new Script4(service));
-        invoker.register("4_",  new Script4(service));
+        invoker.register("1_FullWriteAndReadCompare",  new FullWriteAndReadCompare(service));
+        invoker.register("1_",  new FullWriteAndReadCompare(service));
+        invoker.register("2_PartialLBAWrite",  new PartialLBAWrite(service));
+        invoker.register("2_",  new PartialLBAWrite(service));
+        invoker.register("3_WriteReadAging",  new WriteReadAging(service));
+        invoker.register("3_",  new WriteReadAging(service));
+        invoker.register("4_EraseAndWriteAging",  new EraseAndWriteAging(service));
+        invoker.register("4_",  new EraseAndWriteAging(service));
         invoker.register("exit",  new ExitCommand(service));
         invoker.register("help",  new HelpCommand(service));
 

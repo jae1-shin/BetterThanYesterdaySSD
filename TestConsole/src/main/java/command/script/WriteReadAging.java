@@ -8,11 +8,12 @@ import command.common.Command;
 import command.common.CommandResult;
 import command.common.ConsoleService;
 
-public class Script3 extends Command {
+//3_WriteReadAging
+public class WriteReadAging extends Command {
     public static final int LOOP_COUNT = 200;
     public static final int[] targetLBA = new int[]{0, 99};
 
-    public Script3(ConsoleService service) {
+    public WriteReadAging(ConsoleService service) {
         super(service);
     }
 
