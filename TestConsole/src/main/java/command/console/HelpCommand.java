@@ -33,6 +33,10 @@ public class HelpCommand extends Command {
         logger.result("help - Display this help message");
         logger.result("fullwrite {data} - Write the same data to all LBAs");
         logger.result("fullread - Read all LBAs and display their values");
+        logger.result("1_FullWriteAndReadCompare");
+        logger.result("2_PartialLBAWrite");
+        logger.result("3_WriteReadAging");
+        logger.result("4_EraseAndWriteAging");
         logger.result("");
         logger.result("Note: ");
         logger.result("{lba} must be an integer between 0 and 99");
