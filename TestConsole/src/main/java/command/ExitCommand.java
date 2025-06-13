@@ -6,12 +6,12 @@ public class ExitCommand extends Command {
     }
 
     @Override
-    public boolean isValid(String[] args) {
+    public boolean isValidArguments(String[] args) {
         throw new RuntimeException("아직 구현 안됐어요");
     }
 
     @Override
-    public boolean doExecute(String[] args) {
-        throw new RuntimeException("아직 구현 안됐어요");
+    public CommandResult doExecute(String[] args) {
+        return CommandResult.EXIT;
     }
 }

@@ -7,7 +7,7 @@ public class FullWriteCommand extends Command {
     public static final String DATA_FORMAT = "^0x[0-9A-Fa-f]{8}$";
 
     @Override
-    public boolean isValid(String[] args) {
+    public boolean isValidArguments(String[] args) {
         if(!isValidArgumentNumber(args)){
             logger.error("ERROR Invalid argument numbers. Usage: fullwrite");
             return false;
@@ -22,7 +22,7 @@ public class FullWriteCommand extends Command {
     }
 
     @Override
-    public boolean doExecute(String[] args) {
+    public CommandResult doExecute(String[] args) {
         service.fullWrite(args[1]);
         return true;
     }

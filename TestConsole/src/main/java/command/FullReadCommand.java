@@ -6,7 +6,7 @@ public class FullReadCommand extends Command {
     }
     
     @Override
-    public boolean isValid(String[] args) {
+    public boolean isValidArguments(String[] args) {
         if(!isValidArgumentNumber(args)){
             logger.error("ERROR Invalid argument numbers. Usage: read <address>");
             return false;
@@ -15,7 +15,7 @@ public class FullReadCommand extends Command {
     }
 
     @Override
-    public boolean doExecute(String[] args) {
+    public CommandResult doExecute(String[] args) {
         service.fullRead();
         return true;
     }

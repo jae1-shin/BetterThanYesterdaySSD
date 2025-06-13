@@ -6,13 +6,13 @@ public class FlushCommand extends Command {
     }
 
     @Override
-    public boolean isValid(String[] args) {
+    public boolean isValidArguments(String[] args) {
         return true;
     }
 
     @Override
-    public boolean doExecute(String[] args) {
+    public CommandResult doExecute(String[] args) {
         service.flush();
-        return true;
+        return CommandResult.PASS;
     }
 }

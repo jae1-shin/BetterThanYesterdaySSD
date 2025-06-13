@@ -39,5 +39,15 @@ public class Script4 extends Command {
         logger.result("PASS");
         return true;
     }
+
+    @Override
+    public boolean isValidArguments(String[] args) {
+        return false;
+    }
+
+    @Override
+    public CommandResult doExecute(String[] args) {
+        return false;
+    }
 }
 

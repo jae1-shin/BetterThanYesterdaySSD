@@ -1,15 +1,22 @@
 package command;
 
 public class EraseRangeCommand extends Command {
+
+    public static final int EXPECTED_ARGUMENT_COUNT = 3;
+
     public EraseRangeCommand(ConsoleService service) {
         super(service);
     }
 
     @Override
-    public boolean isValid(String[] args) {
-        if (args.length != 3) {
+    public boolean isValidArguments(String[] args) {
+        if (!isValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
             System.out.println("ERROR Invalid argument numbers. ");
             System.out.println("Usage: erase <LBA> <SIZE> or erase_range <Start LBA> <End LBA>");
+            return false;
+        }
+
+        if(!isValidAddress(args[1]) || !isValidAddress(args[2])){
             return false;
         }
 
@@ -29,8 +36,9 @@ public class EraseRangeCommand extends Command {
     }
 
     @Override
-    public boolean doExecute(String[] args) {
+    public CommandResult doExecute(String[] args) {
         service.erase_range(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
         return true;
     }
+
 }
