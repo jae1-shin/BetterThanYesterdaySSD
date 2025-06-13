@@ -10,21 +10,20 @@ public class EraseCommand extends Command {
     @Override
     public String isValidArguments(String[] args) {
         if (!isValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
-            System.out.println("ERROR Invalid argument numbers. ");
-            return false;
+            return INVALID_ARGUMENT_NUMBER_MSG;
         }
 
         if(!isValidAddress(args[1])){
-            return false;
+            return INVALID_ADDRESS_FORMAT_MSG;
         }
 
-        return true;
+        return "";
     }
 
     @Override
     public CommandResult doExecute(String[] args) {
         service.erase(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
-        return true;
+        return CommandResult.PASS;
     }
 
 

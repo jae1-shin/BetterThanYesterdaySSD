@@ -1,27 +1,25 @@
 package command;
 
 public class FullReadCommand extends Command {
+    public static final int EXPECTED_ARGUMENT_COUNT = 1;
+
     public FullReadCommand(ConsoleService service) {
         super(service);
     }
     
     @Override
     public String isValidArguments(String[] args) {
-        if(!isValidArgumentNumber(args)){
-            logger.error("ERROR Invalid argument numbers. Usage: read <address>");
-            return false;
+        if (!isValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
+            return INVALID_ARGUMENT_NUMBER_MSG;
         }
-        return true;
+        return "";
     }
 
     @Override
     public CommandResult doExecute(String[] args) {
         service.fullRead();
-        return true;
+        return CommandResult.PASS;
     }
 
-    private static boolean isValidArgumentNumber(String[] args) {
-        return args.length == 1;
-    }
 
 }

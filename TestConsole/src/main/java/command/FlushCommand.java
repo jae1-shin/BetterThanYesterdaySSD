@@ -1,13 +1,20 @@
 package command;
 
 public class FlushCommand extends Command {
+
+    public static final int EXPECTED_ARGUMENT_COUNT = 1;
+
     public FlushCommand(ConsoleService service) {
         super(service);
     }
 
     @Override
     public String isValidArguments(String[] args) {
-        return true;
+        if (!isValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
+            return INVALID_ARGUMENT_NUMBER_MSG;
+        }
+
+        return "";
     }
 
     @Override

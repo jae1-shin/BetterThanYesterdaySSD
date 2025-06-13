@@ -6,6 +6,7 @@ public class CommandResult {
     private final boolean shouldExit;
     private final String message;
 
+
     public CommandResult() {
         this.shouldExit = false;
         this.message = "";

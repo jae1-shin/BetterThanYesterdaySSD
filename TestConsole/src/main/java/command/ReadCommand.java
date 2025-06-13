@@ -4,19 +4,19 @@ public class ReadCommand extends Command {
     public ReadCommand(ConsoleService service) {
         super(service);
     }
+    public static final int EXCEPTED_ARGUMENT_COUNT = 2;
 
     @Override
     public String isValidArguments(String[] args) {
-        if (args.length != 2) {
-            logger.error("ERROR Invalid argument numbers. Usage: read <address>");
-            return false;
+        if(!isValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)){
+            return INVALID_ARGUMENT_NUMBER_MSG;
         }
 
         if(!isValidAddress(args[1])){
-            return false;
+            return INVALID_ADDRESS_FORMAT_MSG;
         }
 
-        return true;
+        return "";
     }
 
     @Override
@@ -25,26 +25,11 @@ public class ReadCommand extends Command {
         String result = service.read(address);
         if(result.startsWith("ERROR")) {
             logger.result(result);
-            return false;
+            return CommandResult.error("ERROR");
         }
         logger.result("[Read] LBA " + String.format("%02d", address) + " : " + result);
 
-        return true;
+        return CommandResult.PASS;
     }
 
-    private boolean isValidAddress(String address) {
-        try {
-            int lba = Integer.parseInt(address);
-            if (lba < 0 || lba > 99) {
-                logger.result("ERROR LBA must be between 0 and 99.");
-                return false;
-            }
-        }
-        catch (NumberFormatException e) {
-            logger.error("ERROR NumberFormatException" + e.getMessage());
-            return false;
-        }
-
-        return true;
-    }
 }

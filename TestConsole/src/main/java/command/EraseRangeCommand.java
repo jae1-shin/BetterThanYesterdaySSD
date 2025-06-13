@@ -11,34 +11,30 @@ public class EraseRangeCommand extends Command {
     @Override
     public String isValidArguments(String[] args) {
         if (!isValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
-            System.out.println("ERROR Invalid argument numbers. ");
-            System.out.println("Usage: erase <LBA> <SIZE> or erase_range <Start LBA> <End LBA>");
-            return false;
+            return INVALID_ARGUMENT_NUMBER_MSG;
         }
 
         if(!isValidAddress(args[1]) || !isValidAddress(args[2])){
-            return false;
+            return INVALID_ADDRESS_FORMAT_MSG;
         }
 
         int start_lba = Integer.parseInt(args[1]);
         if (start_lba < 0 || start_lba > 99) {
-            System.out.println("ERROR Start LBA must be between 0 and 99.");
-            return false;
+            return "ERROR Start LBA must be between 0 and 99.";
         }
 
         int end_lba = Integer.parseInt(args[2]);
         if (end_lba < 0 || end_lba > 99) {
-            System.out.println("ERROR End LBA must be between 0 and 99.");
-            return false;
+            return "ERROR Start LBA must be between 0 and 99.";
         }
 
-        return true;
+        return "";
     }
 
     @Override
     public CommandResult doExecute(String[] args) {
         service.erase_range(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
-        return true;
+        return CommandResult.PASS;
     }
 
 }
