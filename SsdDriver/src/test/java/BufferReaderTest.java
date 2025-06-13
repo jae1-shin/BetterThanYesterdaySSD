@@ -12,7 +12,6 @@ import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BufferReaderTest {
-    private final String bufferPath = "buffer";
     private BufferReader reader;
 
     @BeforeEach
@@ -33,7 +32,7 @@ class BufferReaderTest {
     }
 
     void createFile(String fileName) throws Exception {
-        File file = new File(bufferPath, fileName);
+        File file = new File(SsdConstants.BUFFER_PATH, fileName);
         try (FileWriter fw = new FileWriter(file)) {
             fw.write("");
         }
@@ -52,7 +51,7 @@ class BufferReaderTest {
 
     @AfterEach
     void cleanup() {
-        File dir = new File(bufferPath);
+        File dir = new File(SsdConstants.BUFFER_PATH);
         File[] files = dir.listFiles();
         if (files != null) {
             for (File f : files) {
