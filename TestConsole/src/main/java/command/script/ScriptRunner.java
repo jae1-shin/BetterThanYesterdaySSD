@@ -1,8 +1,6 @@
 package command.script;
 
-import command.common.CommandInvoker;
-import command.common.ConsoleService;
-import command.common.RunMode;
+import command.common.*;
 import logger.Logger;
 import logger.LoggerContext;
 
@@ -28,16 +26,10 @@ public class ScriptRunner implements RunMode {
         }
 
         ConsoleService service = new ConsoleService();
+        CommandFactory factory = new CommandFactory();
         CommandInvoker invoker = new CommandInvoker();
 
-        invoker.register("1_FullWriteAndReadCompare", new FullWriteAndReadCompare(service));
-        invoker.register("1_", new FullWriteAndReadCompare(service));
-        invoker.register("2_PartialLBAWrite", new PartialLBAWrite(service));
-        invoker.register("2_", new PartialLBAWrite(service));
-        invoker.register("3_WriteReadAging", new WriteReadAging(service));
-        invoker.register("3_", new WriteReadAging(service));
-        invoker.register("4_EraseAndWriteAging", new EraseAndWriteAging(service));
-        invoker.register("4_", new EraseAndWriteAging(service));
+        CommandRegistrar.registerConsoleCommands(invoker, factory, service);
 
         List<String> scriptNames;
         try {

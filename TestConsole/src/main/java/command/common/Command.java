@@ -18,7 +18,7 @@ public abstract class Command implements ICommand {
     public CommandResult execute(String[] args){
         String validCheckResult = isValidArguments(args);
         if(!validCheckResult.isEmpty()){
-            CommandResult.error(validCheckResult);
+            return CommandResult.error(validCheckResult);
         }
 
         return doExecute(args);
