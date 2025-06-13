@@ -5,10 +5,10 @@ public class SsdFlush implements SsdCommand {
 
     @Override
     public void execute(Command command) throws IOException {
-        plush();
+        flush();
     }
 
-    public void plush() throws IOException {
+    public void flush() throws IOException {
         List<Command> commandList = BufferUtil.getCommandList();
         for (Command cmd : commandList) {
             if (cmd.type == CommandType.WRITE) {

@@ -25,7 +25,7 @@ public class BufferController {
     private void flushBufferIfNeeded() throws IOException {
         if (buffer.size() != 5) return;
         SsdFlush ssdFlush = new SsdFlush();
-        ssdFlush.plush();
+        ssdFlush.flush();
         getBufferFromDisk();
     }
 
