@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.*;
 class BufferOptimizerTest {
 
     Path folder = Paths.get("buffer");
+    BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
 
     @BeforeEach
     void setUp() throws IOException {
@@ -31,7 +32,6 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("4_W_23_0x12341234"));
         Files.createFile(folder.resolve("5_W_24_0x12341234"));
 
-        BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
         bufferOptimizer.processCommand(new CommandContext(1, CommandType.WRITE, 20, 0, "0xEEEEFFFF", "W_20_0xEEEEFFFF"));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(1);
@@ -43,7 +43,6 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("1_W_20_0xABCDABCD"));
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
-        BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
         bufferOptimizer.processCommand(new CommandContext(3, CommandType.WRITE, 20, 0, "0xEEEEFFFF", "W_20_0xEEEEFFFF"));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(2);
@@ -56,7 +55,6 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("1_W_20_0xABCDABCD"));
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
-        BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
         bufferOptimizer.processCommand(new CommandContext(3, CommandType.WRITE, 23, 0, "0xEEEEFFFF", "W_23_0xEEEEFFFF"));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(3);
@@ -70,7 +68,6 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("1_E_18_3"));
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
-        BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
         bufferOptimizer.processCommand(new CommandContext(3, CommandType.ERASE, 18, 5, null, "E_18_5"));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(1);
@@ -82,7 +79,6 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("1_E_10_3"));
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
-        BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
         bufferOptimizer.processCommand(new CommandContext(3, CommandType.ERASE, 11, 5, null, "E_11_5"));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(3);
@@ -96,7 +92,6 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("1_W_20_0xABCDABCD"));
         Files.createFile(folder.resolve("2_E_10_4"));
 
-        BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
         bufferOptimizer.processCommand(new CommandContext(3, CommandType.ERASE, 12, 3, null, "E_12_3"));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(2);
@@ -111,7 +106,6 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("3_E_10_2"));
         Files.createFile(folder.resolve("4_W_12_0xABCDEEEE"));
 
-        BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
         bufferOptimizer.processCommand(new CommandContext(5, CommandType.ERASE, 12, 3, null, "E_12_3"));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(3);
@@ -120,39 +114,39 @@ class BufferOptimizerTest {
         assertThat(bufferOptimizer.getBuffer().get(2).getCommandFullName()).isEqualTo("E_10_5");
     }
 
-//    @Test
-//    void Flush후_MergeErase후_IgnoreWrite() throws IOException {
-//        Files.createFile(folder.resolve("1_E_10_1"));
-//        Files.createFile(folder.resolve("2_E_11_1"));
-//        Files.createFile(folder.resolve("3_E_12_1"));
-//        Files.createFile(folder.resolve("4_E_13_1"));
-//        Files.createFile(folder.resolve("5_E_14_1"));
-//
-//        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_15_1"));
-//        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_14_2"));
-//        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_16_1"));
-//        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_14_3"));
-//        bufferController.processCommand(new Command(0, CommandType.WRITE, 15, 1, null, "W_14_0x12345678"));
-//        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_14_3"));
-//
-//        assertThat(bufferController.getBuffer().size()).isEqualTo(1);
-//        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("E_14_3");
-//    }
-//
-//    @Test
-//    void IgnoreWrite후_IgnoreErase() throws IOException {
-//        Files.createFile(folder.resolve("1_W_10_0x12345678"));
-//
-//        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_10_2"));
-//        bufferController.processCommand(new Command(0, CommandType.WRITE, 15, 1, null, "W_11_0x12345678"));
-//        bufferController.processCommand(new Command(0, CommandType.WRITE, 15, 1, null, "W_10_0x12345678"));
-//
-//        assertThat(bufferController.getBuffer().size()).isEqualTo(3);
-//
-//        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_11_0x12345678");
-//        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_10_0x12345678");
-//
-//    }
+    @Test
+    void Flush후_MergeErase후_IgnoreWrite() throws IOException {
+        Files.createFile(folder.resolve("1_E_10_1"));
+        Files.createFile(folder.resolve("2_E_11_1"));
+        Files.createFile(folder.resolve("3_E_12_1"));
+        Files.createFile(folder.resolve("4_E_13_1"));
+        Files.createFile(folder.resolve("5_E_14_1"));
+
+        bufferOptimizer.processCommand(new CommandContext(0, CommandType.ERASE, 15, 1, null, "E_15_1"));
+        bufferOptimizer.processCommand(new CommandContext(0, CommandType.ERASE, 15, 1, null, "E_14_2"));
+        bufferOptimizer.processCommand(new CommandContext(0, CommandType.ERASE, 15, 1, null, "E_16_1"));
+        bufferOptimizer.processCommand(new CommandContext(0, CommandType.ERASE, 15, 1, null, "E_14_3"));
+        bufferOptimizer.processCommand(new CommandContext(0, CommandType.WRITE, 15, 1, null, "W_14_0x12345678"));
+        bufferOptimizer.processCommand(new CommandContext(0, CommandType.ERASE, 15, 1, null, "E_14_3"));
+
+        assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(1);
+        assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("E_14_3");
+    }
+
+    @Test
+    void IgnoreWrite후_IgnoreErase() throws IOException {
+        Files.createFile(folder.resolve("1_W_10_0x12345678"));
+
+        bufferOptimizer.processCommand(new CommandContext(0, CommandType.ERASE, 15, 1, null, "E_10_2"));
+        bufferOptimizer.processCommand(new CommandContext(0, CommandType.WRITE, 15, 1, null, "W_11_0x12345678"));
+        bufferOptimizer.processCommand(new CommandContext(0, CommandType.WRITE, 15, 1, null, "W_10_0x12345678"));
+
+        assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(3);
+
+        assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("W_11_0x12345678");
+        assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("W_10_0x12345678");
+
+    }
 
     void deleteBufferFolder() {
         Path folder = Paths.get("buffer");
