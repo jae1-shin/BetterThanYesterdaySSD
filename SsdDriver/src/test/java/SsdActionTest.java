@@ -22,25 +22,24 @@ class SsdActionTest {
     public static final String WRITE_TEST_VALUE = "0x1234ABCD";
     public static final int TEST_LBA_ADDRESS = 3;
 
+    SsdReader reader = new SsdReader();
+    SsdWriter writer = new SsdWriter();
+    SsdEraser eraser = new SsdEraser();
+
     @BeforeEach
     void setUp() {
         Ssd ssd = new Ssd();
         try {
             ssd.initFiles();
+            deleteBufferFolder();
             writeDefaultValue();
         } catch (IOException e) {
             fail("Initialization failed: " + e.getMessage());
         }
-
-
     }
 
     @Test
     void 다섯개_write_직후_세개_일부_erase_ssdEraserTest_erase() {
-        SsdReader reader = new SsdReader();
-        SsdWriter writer = new SsdWriter();
-        SsdEraser eraser = new SsdEraser();
-
         try {
             for (int i = 0; i < 5; i++) {
                 writer.write(i, WRITE_TEST_VALUE);
@@ -71,7 +70,6 @@ class SsdActionTest {
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2})
     void 파라미터에_해당하는_데이터_읽기_성공(int LBA) throws IOException {
-        SsdReader reader = new SsdReader();
         writeSampleData();
         reader.read(LBA);
 
@@ -86,7 +84,6 @@ class SsdActionTest {
     @ParameterizedTest
     @ValueSource(ints = {5, 50, 99})
     void 기록이_한적이_없는_LBA를_읽으면_0X00000000으로_읽힌다(int LBA) throws IOException {
-        SsdReader reader = new SsdReader();
         writeSampleData();
         reader.read(LBA);
 
@@ -115,10 +112,9 @@ class SsdActionTest {
     @Test
     void 파일_Write_정상_동작() throws Exception {
         // arrange
-        SsdWriter ssdWriter = new SsdWriter();
 
         // act
-        ssdWriter.write(TEST_LBA_ADDRESS, WRITE_TEST_VALUE);
+        writer.write(TEST_LBA_ADDRESS, WRITE_TEST_VALUE);
         RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
         raf.seek(3 * SsdConstants.BLOCK_SIZE);
         byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
@@ -131,8 +127,6 @@ class SsdActionTest {
 
     @Test
     void 버퍼에서_읽고_Write_Erase_정상_동작_검증() throws Exception {
-        deleteBufferFolder();
-
         Path folder = Paths.get("buffer");
         Files.createDirectories(folder);
         Files.createFile(folder.resolve("1_W_1_0x1234ABCD"));
@@ -169,8 +163,6 @@ class SsdActionTest {
 
     @Test
     void 버퍼에_empty가_있는_경우_스킵_검증() throws Exception {
-        deleteBufferFolder();
-
         Path folder = Paths.get("buffer");
         Files.createDirectories(folder);
         Files.createFile(folder.resolve("1_W_1_0x1234ABCD"));
@@ -202,7 +194,6 @@ class SsdActionTest {
             raf.write(SAMPLE_DATA.getBytes());
         }
     }
-
 
     void deleteBufferFolder() {
         Path folder = Paths.get("buffer");
