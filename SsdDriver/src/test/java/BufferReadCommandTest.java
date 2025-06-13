@@ -1,4 +1,4 @@
-import command.buffer.BufferReader;
+import command.buffer.BufferReadCommand;
 import command.impl.ReadCommand;
 import common.SSDConstants;
 import org.junit.jupiter.api.AfterEach;
@@ -15,12 +15,12 @@ import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BufferReadCommandTest {
-    private BufferReader reader;
+    private BufferReadCommand reader;
 
     @BeforeEach
     void setup() throws Exception {
         ReadCommand ssdReadCommand = new ReadCommand();
-        reader = new BufferReader(ssdReadCommand);
+        reader = new BufferReadCommand(ssdReadCommand);
         writeDefaultValue();
 
         createFile("1_W_10_0xAAAA_test");

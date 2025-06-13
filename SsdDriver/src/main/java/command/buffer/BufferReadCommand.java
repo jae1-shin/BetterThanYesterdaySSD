@@ -13,11 +13,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
-public class BufferReader implements Command {
+public class BufferReadCommand implements Command {
 
     private final ReadCommand ssdReadCommand;
 
-    public BufferReader(ReadCommand ssdReadCommand) {
+    public BufferReadCommand(ReadCommand ssdReadCommand) {
         this.ssdReadCommand = ssdReadCommand;
     }
 

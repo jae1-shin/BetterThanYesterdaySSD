@@ -5,7 +5,7 @@ import command.context.CommandContext;
 
 import java.io.IOException;
 
-public class BufferEraser implements Command {
+public class BufferEraseCommand implements Command {
 
     @Override
     public void execute(CommandContext commandContext) throws IOException {
