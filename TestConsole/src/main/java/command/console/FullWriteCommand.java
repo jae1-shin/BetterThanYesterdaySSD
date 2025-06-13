@@ -23,5 +23,4 @@ public class FullWriteCommand extends Command {
         service.fullWrite(args[1]);
         return CommandResult.PASS;
     }
-
 }

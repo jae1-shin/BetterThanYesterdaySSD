@@ -30,12 +30,11 @@ public class WriteReadAging extends Command {
             writeAtTargetLBA(writeData);
 
             if (!readCompareTargetLBA(writeData)) {
-                return CommandResult.scriptFail("FAIL");
+                return CommandResult.scriptFail(FAIL_FLAG);
             }
         }
 
-        logger.result("PASS");
-        return CommandResult.PASS;
+        return CommandResult.pass("PASS");
     }
 
     private Map<Integer, String> createWriteData() {

@@ -26,9 +26,8 @@ public class ReadCommand extends Command {
         if(isErrorExist(result)) {
             return CommandResult.error(result);
         }
-        logger.result("[Read] LBA " + String.format("%02d", address) + " : " + result);
 
-        return CommandResult.PASS;
+        return CommandResult.pass("[Read] LBA " + String.format("%02d", address) + " : " + result);
     }
 
 }

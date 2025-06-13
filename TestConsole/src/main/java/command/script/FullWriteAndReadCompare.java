@@ -29,17 +29,14 @@ public class FullWriteAndReadCompare extends Command {
 
             for (int LBA = currentLBA; LBA < currentLBA + DIV_NUM; LBA++) {
                 if (!service.readCompare(LBA, TEST_VALUE)) {
-                    return CommandResult.scriptFail("FAIL");
+                    return CommandResult.scriptFail(FAIL_FLAG);
                 }
             }
 
             currentLBA += DIV_NUM;
         }
 
-
-        logger.result("PASS");
-        return CommandResult.PASS;
+        return CommandResult.pass(PASS_FLAG);
     }
-
 }
 

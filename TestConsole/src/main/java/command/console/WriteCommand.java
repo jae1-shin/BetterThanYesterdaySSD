@@ -23,12 +23,8 @@ public class WriteCommand extends Command {
     @Override
     public CommandResult doExecute(String[] args) {
         if(!service.write(Integer.parseInt(args[1]), args[2])) {
-            logger.error("ERROR Write failed");
-            return CommandResult.error("ERROR");
-        }else{
-            logger.result("[Write] Done");
+            return CommandResult.error("ERROR : Write failed");
         }
-
-        return CommandResult.PASS;
+        return CommandResult.pass("[Write] Done");
     }
 }
