@@ -1,7 +1,8 @@
 package command.script;
 
-import command.CommandInvoker;
-import command.ConsoleService;
+import command.common.CommandInvoker;
+import command.common.ConsoleService;
+import command.common.RunMode;
 import logger.Logger;
 import logger.LoggerContext;
 
@@ -9,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ScriptRunner implements RunMode {
