@@ -44,7 +44,7 @@ class BufferControllerTest {
         Files.createFile(folder.resolve("5_W_24_0x12341234"));
 
         BufferController bufferController = BufferController.getInstance();
-        bufferController.processCommand(new Command(1, CommandType.WRITE, 20, 0, "0xEEEEFFFF", "W_20_0xEEEEFFFF"));
+        bufferController.processCommand(new Command(0, CommandType.WRITE, 20, 0, "0xEEEEFFFF", "W_20_0xEEEEFFFF"));
 
         assertThat(bufferController.getBuffer().size()).isEqualTo(1);
         assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_20_0xEEEEFFFF");
@@ -58,7 +58,7 @@ class BufferControllerTest {
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
         BufferController bufferController = BufferController.getInstance();
-        bufferController.processCommand(new Command(3, CommandType.WRITE, 20, 0, "0xEEEEFFFF", "W_20_0xEEEEFFFF"));
+        bufferController.processCommand(new Command(0, CommandType.WRITE, 20, 0, "0xEEEEFFFF", "W_20_0xEEEEFFFF"));
 
         assertThat(bufferController.getBuffer().size()).isEqualTo(2);
         assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_21_0x12341234");
@@ -73,7 +73,7 @@ class BufferControllerTest {
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
         BufferController bufferController = BufferController.getInstance();
-        bufferController.processCommand(new Command(3, CommandType.WRITE, 23, 0, "0xEEEEFFFF", "W_23_0xEEEEFFFF"));
+        bufferController.processCommand(new Command(0, CommandType.WRITE, 23, 0, "0xEEEEFFFF", "W_23_0xEEEEFFFF"));
 
         assertThat(bufferController.getBuffer().size()).isEqualTo(3);
         assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_20_0xABCDABCD");
@@ -89,7 +89,7 @@ class BufferControllerTest {
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
         BufferController bufferController = BufferController.getInstance();
-        bufferController.processCommand(new Command(3, CommandType.ERASE, 18, 5, null, "E_18_5"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 18, 5, null, "E_18_5"));
 
         assertThat(bufferController.getBuffer().size()).isEqualTo(1);
         assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("E_18_5");
@@ -103,7 +103,7 @@ class BufferControllerTest {
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
         BufferController bufferController = BufferController.getInstance();
-        bufferController.processCommand(new Command(3, CommandType.ERASE, 11, 5, null, "E_11_5"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 11, 5, null, "E_11_5"));
 
         assertThat(bufferController.getBuffer().size()).isEqualTo(3);
         assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("E_10_3");
@@ -119,7 +119,7 @@ class BufferControllerTest {
         Files.createFile(folder.resolve("2_E_10_4"));
 
         BufferController bufferController = BufferController.getInstance();
-        bufferController.processCommand(new Command(3, CommandType.ERASE, 12, 3, null, "E_12_3"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 12, 3, null, "E_12_3"));
 
         assertThat(bufferController.getBuffer().size()).isEqualTo(2);
         assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_20_0xABCDABCD");
@@ -136,11 +136,37 @@ class BufferControllerTest {
         Files.createFile(folder.resolve("4_W_12_0xABCDEEEE"));
 
         BufferController bufferController = BufferController.getInstance();
-        bufferController.processCommand(new Command(5, CommandType.ERASE, 12, 3, null, "E_12_3"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 12, 3, null, "E_12_3"));
 
         assertThat(bufferController.getBuffer().size()).isEqualTo(3);
         assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_5_0x1234ABCD");
         assertThat(bufferController.getBuffer().get(1).getCommandFullName()).isEqualTo("W_7_0xABCDABCD");
         assertThat(bufferController.getBuffer().get(2).getCommandFullName()).isEqualTo("E_10_5");
+    }
+
+    @Test
+    void 복합버퍼알고리즘_테스트() throws IOException {
+// Given: buffer 디렉토리 초기화
+        Path folder = Paths.get("buffer");
+        Files.createDirectories(folder);
+        // 연속 Erase → 병합 대상
+        Files.createFile(folder.resolve("1_E_10_1"));  // LBA 10~14
+        Files.createFile(folder.resolve("2_E_11_1"));  // LBA 15~19
+        Files.createFile(folder.resolve("3_E_12_1"));
+        Files.createFile(folder.resolve("4_E_13_1"));
+        Files.createFile(folder.resolve("5_E_14_1"));
+
+        BufferController bufferController = BufferController.getInstance();
+
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_15_1"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_14_2"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_16_1"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_14_3"));
+        bufferController.processCommand(new Command(0, CommandType.WRITE, 15, 1, null, "W_14_0x12345678"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_14_2"));
+
+
+
+
     }
 }
