@@ -1,8 +1,11 @@
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class BufferUtil {
 
@@ -58,5 +61,68 @@ public class BufferUtil {
             return new Command(0, CommandType.FLUSH, 0, 0, null, commandFullName);
         }
         return new Command(0, CommandType.EMPTY, 0, 0, null, null);
+    }
+    public static void clearBuffer() {
+        try {
+            deleteBufferDirAndFiles();
+
+            File bufferDir = checkAndCreateBufferDir();
+            checkAndCreateEmptyBufferFiles(bufferDir);
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
+    public static void deleteBufferDirAndFiles() {
+        Path folder = Paths.get(SsdConstants.BUFFER_PATH);
+        if (Files.exists(folder) && Files.isDirectory(folder)) {
+            try (Stream<Path> walk = Files.walk(folder, FileVisitOption.FOLLOW_LINKS)) {
+                walk.sorted(Comparator.reverseOrder())
+                        .filter(path -> !path.equals(folder))
+                        .forEach(path -> {
+                            try {
+                                Files.delete(path);
+                            } catch (IOException e) {
+                                // ignore
+                            }
+
+                        });
+            } catch (IOException e) {
+                // ignore
+            }
+        }
+
+        File bufferDir = new File(SsdConstants.BUFFER_PATH);
+        bufferDir.delete();
+    }
+
+    public static File checkAndCreateBufferDir() {
+        File bufferDir = new File(SsdConstants.BUFFER_PATH);
+        if (!bufferDir.exists()) {
+            bufferDir.mkdirs();
+        }
+        return bufferDir;
+    }
+
+    public static void checkAndCreateEmptyBufferFiles(File bufferDir) throws IOException {
+        for (int bufferNum = 1; bufferNum <= SsdConstants.BUFFER_SIZE; bufferNum++) {
+            if (existBufferFile(bufferDir, bufferNum)) continue;
+            Files.writeString(Paths.get(bufferDir.getPath(), getBufferDefaultFileName(bufferNum)), "");
+        }
+    }
+
+    private static boolean existBufferFile(File bufferDir, int bufferNum) {
+        final String bufferPrefix = getBufferFilePrefix(bufferNum);
+        File[] bufferFiles = bufferDir.listFiles((dir, name) -> name.startsWith(bufferPrefix));
+
+        return bufferFiles != null && bufferFiles.length > 0;
+    }
+
+    private static String getBufferFilePrefix(int bufferNum) {
+        return bufferNum + "_";
+    }
+
+    private static String getBufferDefaultFileName(int bufferNum) {
+        return getBufferFilePrefix(bufferNum) + "empty";
     }
 }

@@ -1,3 +1,7 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;
@@ -17,12 +21,30 @@ public class BufferReader implements SsdCommand {
         commandList.sort(Comparator.comparingInt((Command c) -> c.order).reversed());
 
         for (Command cmd : commandList) {
-            if (isTargetLBAWrited(targetLBA, cmd)) return cmd.data;
-            if (isTargetLBAErased(targetLBA, cmd)) return "0x00000000";
+            if (isTargetLBAWrited(targetLBA, cmd)) {
+                writeOutput(cmd.data);
+                return cmd.data;
+            }
+            if (isTargetLBAErased(targetLBA, cmd)) {
+                writeOutput(SsdConstants.DEFAULT_DATA);
+                return SsdConstants.DEFAULT_DATA;
+            }
         }
 
         // 못찾은 경우
         return "";
+    }
+
+    private void writeOutput(String readStr) {
+        try {
+            Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH),
+                    readStr,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING
+            );
+        } catch (IOException e) {
+            // ignore
+        }
     }
 
     private boolean isTargetLBAErased(int targetLBA, Command cmd) {

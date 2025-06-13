@@ -22,7 +22,7 @@ public class Ssd {
         try  {
             initFiles();
         } catch (IOException e) {
-            // Ignore?
+            // ignore
         }
 
         if (!checkPreCondition(args)) {
@@ -36,32 +36,19 @@ public class Ssd {
         } catch (Exception e) {
             // ignore
         }
-
     }
 
     void initFiles() throws IOException {
-        // SsdConstants.OUTPUT_FILE_PATH
-        Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH), "");
-
-        // SsdConstants.SSD_NAND_FILE
-        checkFileAndWriteDefaultData();
-
-        // buffer
-        File bufferDir = new File("buffer");
-        if (!bufferDir.exists()) {
-            bufferDir.mkdirs();
-        }
-
-        for (int bufferNum = 1; bufferNum <= SsdConstants.BUFFER_SIZE; bufferNum++) {
-            String bufferPrefix = bufferNum + "_";
-            File[] bufferFiles = bufferDir.listFiles((dir, name) -> name.startsWith(bufferPrefix));
-            if (bufferFiles == null || bufferFiles.length == 0) {
-                Files.writeString(Paths.get(bufferDir.getPath(), bufferPrefix + "empty"), "");
-            }
-        }
+        checkAndClearOutputFile();
+        checkAndCreateNandFile();
+        checkAndCreateBuffer();
     }
 
-    private void checkFileAndWriteDefaultData() throws IOException {
+    private void checkAndClearOutputFile() throws IOException {
+        Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH), "");
+    }
+
+    private void checkAndCreateNandFile() throws IOException {
         File file = new File(SsdConstants.SSD_NAND_FILE);
         if (file.exists()) return;
         writeDefaultData();
@@ -71,9 +58,37 @@ public class Ssd {
         Files.writeString(Paths.get(SsdConstants.SSD_NAND_FILE), (SsdConstants.DEFAULT_DATA).repeat(LBA_MAX_COUNT));
     }
 
+    private void checkAndCreateBuffer() throws IOException {
+        File bufferDir = BufferUtil.checkAndCreateBufferDir();
+        BufferUtil.checkAndCreateEmptyBufferFiles(bufferDir);
+    }
+
+    private void processWriteCommand(String[] args) {
+        SsdWriter writer = new SsdWriter();
+
+        int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
+        try {
+            writer.write(LBA, args[ARGUMENT_DATA_INDEX]);
+        } catch (IOException e) {
+            // ignore
+        }
     private void processWriteCommand(Command command) throws IOException {
         SsdCommandService.execute(command);
     }
+
+    private void processReadCommand(String[] args) {
+        int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
+
+        BufferReader bufferReader = new BufferReader();
+        String readStr = bufferReader.read(LBA);
+        if (isInBuffer(readStr)) return;
+
+        SsdReader reader = new SsdReader();
+        try {
+            reader.read(LBA);
+        } catch (IOException e) {
+            // ignore
+        }
 
     private void processReadCommand(Command command) throws IOException {
         SsdCommandService.execute(command);
@@ -81,6 +96,9 @@ public class Ssd {
 
     private void processEraseCommand(Command command) throws IOException {
         SsdCommandService.execute(command);
+    }
+    private static boolean isInBuffer(String readStr) {
+        return readStr != null && !readStr.isEmpty();
     }
 
     private void processFlushCommand(Command command) throws IOException {
