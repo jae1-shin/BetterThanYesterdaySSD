@@ -1,6 +1,5 @@
-import org.junit.jupiter.api.Disabled;
+import command.console.actor.*;
 import command.common.ConsoleService;
-import command.console.*;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;

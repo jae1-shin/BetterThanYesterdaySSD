@@ -1,25 +1,19 @@
-package command.console;
+package command.console.actor;
 
 import command.common.Command;
 import command.common.CommandResult;
 import command.common.ConsoleService;
+import command.console.validator.ExitCommandValidator;
+import command.console.validator.HelpCommandValidator;
 
 public class HelpCommand extends Command {
-
-    public static final int EXPECTED_ARGUMENT_COUNT = 1;
-
     public HelpCommand(ConsoleService service) {
         super(service);
-    }
-
-    public String argumentsValidCheck(String[] args) {
-        if(isInValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
-        return VALID_ARGUMENT;
+        validator = new HelpCommandValidator();
     }
 
     @Override
     public CommandResult doExecute(String[] args) {
-
         logger.result("Team: BetterThanYesterday");
         logger.result("Members: 신재원, 정혜원, 문영민, 조효민, 류지우, 서인규");
         logger.result("");

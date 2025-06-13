@@ -6,7 +6,7 @@ import command.common.ConsoleService;
 
 //4_EraseAndWriteAging
 
-public class EraseAndWriteAging extends Command {
+public class EraseAndWriteAging extends TestScript {
     public static final int LOOP_COUNT = 30;
     public static final String WRITE_VALUE = "0x11111111";
     public static final String OVERWRITE_VALUE = "0x22222222";
@@ -16,11 +16,6 @@ public class EraseAndWriteAging extends Command {
 
     public EraseAndWriteAging(ConsoleService service) {
         super(service);
-    }
-
-    @Override
-    public String argumentsValidCheck(String[] args) {
-        return NO_NEED_TO_VALID_CHECK;
     }
 
     @Override

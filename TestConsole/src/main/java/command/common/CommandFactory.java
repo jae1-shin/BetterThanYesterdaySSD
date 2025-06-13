@@ -1,6 +1,6 @@
 package command.common;
 
-import command.console.*;
+import command.console.actor.*;
 import command.script.EraseAndWriteAging;
 import command.script.FullWriteAndReadCompare;
 import command.script.PartialLBAWrite;
