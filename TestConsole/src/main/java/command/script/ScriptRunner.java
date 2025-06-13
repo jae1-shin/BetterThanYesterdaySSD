@@ -22,7 +22,7 @@ public class ScriptRunner implements RunMode {
     Logger logger = Logger.getInstance();
 
     public void run() {
-        if(!fileExists(filePath)){
+        if (!fileExists(filePath)) {
             logger.info("There's no File !");
             return;
         }
@@ -30,14 +30,14 @@ public class ScriptRunner implements RunMode {
         ConsoleService service = new ConsoleService();
         CommandInvoker invoker = new CommandInvoker();
 
-        invoker.register("1_FullWriteAndReadCompare",  new FullWriteAndReadCompare(service));
-        invoker.register("1_",  new FullWriteAndReadCompare(service));
-        invoker.register("2_PartialLBAWrite",  new PartialLBAWrite(service));
-        invoker.register("2_",  new PartialLBAWrite(service));
-        invoker.register("3_WriteReadAging",  new WriteReadAging(service));
-        invoker.register("3_",  new WriteReadAging(service));
-        invoker.register("4_EraseAndWriteAging",  new EraseAndWriteAging(service));
-        invoker.register("4_",  new EraseAndWriteAging(service));
+        invoker.register("1_FullWriteAndReadCompare", new FullWriteAndReadCompare(service));
+        invoker.register("1_", new FullWriteAndReadCompare(service));
+        invoker.register("2_PartialLBAWrite", new PartialLBAWrite(service));
+        invoker.register("2_", new PartialLBAWrite(service));
+        invoker.register("3_WriteReadAging", new WriteReadAging(service));
+        invoker.register("3_", new WriteReadAging(service));
+        invoker.register("4_EraseAndWriteAging", new EraseAndWriteAging(service));
+        invoker.register("4_", new EraseAndWriteAging(service));
 
         List<String> scriptNames;
         try {
@@ -46,22 +46,22 @@ public class ScriptRunner implements RunMode {
             throw new RuntimeException(e);
         }
 
-        if(!isValidScriptNames(scriptNames, invoker)){
+        if (!isValidScriptNames(scriptNames, invoker)) {
             logger.info("Invalid Script Names!");
         }
 
-        for(String script : scriptNames){
+        for (String script : scriptNames) {
             logger.result(script + "  ___  Run...", LoggerContext.CONSOLE_NO_NEWLINE);
-            if(invoker.execute(script).shouldExit()){
+            if (invoker.execute(script).shouldExit()) {
                 return;
             }
         }
     }
 
     private boolean isValidScriptNames(List<String> scriptNames, CommandInvoker invoker) {
-        if(scriptNames.isEmpty()) return false;
-        for(String script : scriptNames){
-            if(invoker.hasCommand(script)){
+        if (scriptNames.isEmpty()) return false;
+        for (String script : scriptNames) {
+            if (invoker.hasCommand(script)) {
                 return false;
             }
         }

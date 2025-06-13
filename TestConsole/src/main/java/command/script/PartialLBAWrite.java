@@ -21,13 +21,13 @@ public class PartialLBAWrite extends Command {
 
     @Override
     public CommandResult doExecute(String[] args) {
-        for(int i = 0; i< LOOP_COUNT; i++){
-            for(int lba : LBA_TEST_SEQUENCE){
+        for (int i = 0; i < LOOP_COUNT; i++) {
+            for (int lba : LBA_TEST_SEQUENCE) {
                 service.write(lba, TEST_VALUE);
             }
 
-            for(int lba : LBA_TEST_SEQUENCE){
-                if(!service.readCompare(lba, TEST_VALUE)){
+            for (int lba : LBA_TEST_SEQUENCE) {
+                if (!service.readCompare(lba, TEST_VALUE)) {
                     return CommandResult.scriptFail("FAIL");
                 }
             }
