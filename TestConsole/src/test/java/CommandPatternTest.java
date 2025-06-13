@@ -1,8 +1,10 @@
+import command.common.*;
 import org.junit.jupiter.api.Disabled;
-import command.common.ConsoleService;
 import command.console.*;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class CommandPatternTest {
@@ -77,8 +79,5 @@ class CommandPatternTest {
         // Assert
         verify(command).execute(any());
     }
-
-
-
 
 }

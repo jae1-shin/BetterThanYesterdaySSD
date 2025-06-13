@@ -1,5 +1,6 @@
 import command.common.Command;
 import command.common.ConsoleService;
+import command.console.EraseCommand;
 import command.console.ReadCommand;
 import command.console.WriteCommand;
 import jdk.jfr.Description;
@@ -131,6 +132,21 @@ class ConsoleServiceTest {
 
         // args[1] 에 int 범위를 초과하는 값 주입
         String[] args = {"write", "100000000000000"};
+
+        // when & then
+        assertDoesNotThrow(() -> {
+            command.doExecute(args);
+        });
+    }
+
+    @Test
+    void doExecute_erase_너무_큰_숫자_입력시_NumberFormatException_발생() {
+        // given
+        ConsoleService service = new ConsoleService(); // 또는 mock
+        Command command = new EraseCommand(service);
+
+        // args[1] 에 int 범위를 초과하는 값 주입
+        String[] args = {"erase", "100000000000000"};
 
         // when & then
         assertDoesNotThrow(() -> {
