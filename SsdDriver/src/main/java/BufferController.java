@@ -18,6 +18,8 @@ public class BufferController {
         if (newCmd.type == CommandType.ERASE) {
             applyMergeErase(newCmd);
         }
+
+        BufferUtil.rewriteBuffer(buffer);
     }
 
     private void flushBufferIfNeeded() throws IOException {
