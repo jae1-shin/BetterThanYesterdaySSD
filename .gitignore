@@ -46,3 +46,4 @@ bin/
 *.log
 *.zip
 !resources/*/.txt
+**/buffer/

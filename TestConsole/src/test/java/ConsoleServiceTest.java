@@ -1,4 +1,7 @@
+import command.common.Command;
 import command.common.ConsoleService;
+import command.console.ReadCommand;
+import command.console.WriteCommand;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -103,6 +106,36 @@ class ConsoleServiceTest {
         cs.erase_range(start, end);
 
         assertDoesNotThrow(() -> cs.erase_range(start, end));
+    }
+
+    @Test
+    void doExecute_read_너무_큰_숫자_입력시_NumberFormatException_발생() {
+        // given
+        ConsoleService service = new ConsoleService(); // 또는 mock
+        Command command = new ReadCommand(service);
+
+        // args[1] 에 int 범위를 초과하는 값 주입
+        String[] args = {"read", "100000000000000"};
+
+        // when & then
+        assertDoesNotThrow(() -> {
+            command.doExecute(args);
+        });
+    }
+
+    @Test
+    void doExecute_write_너무_큰_숫자_입력시_NumberFormatException_발생() {
+        // given
+        ConsoleService service = new ConsoleService(); // 또는 mock
+        Command command = new WriteCommand(service);
+
+        // args[1] 에 int 범위를 초과하는 값 주입
+        String[] args = {"write", "100000000000000"};
+
+        // when & then
+        assertDoesNotThrow(() -> {
+            command.doExecute(args);
+        });
     }
 
 }
