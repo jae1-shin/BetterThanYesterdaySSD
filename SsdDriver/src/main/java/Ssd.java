@@ -63,19 +63,6 @@ public class Ssd {
         BufferUtil.checkAndCreateEmptyBufferFiles(bufferDir);
     }
 
-    private void processWriteCommand(String[] args) {
-        SsdWriter writer = new SsdWriter();
-
-        int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
-        try {
-            writer.write(LBA, args[ARGUMENT_DATA_INDEX]);
-        } catch (IOException e) {
-            // ignore
-        }
-    private void processWriteCommand(Command command) throws IOException {
-        SsdCommandService.execute(command);
-    }
-
     private void processReadCommand(String[] args) {
         int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
 
@@ -89,20 +76,10 @@ public class Ssd {
         } catch (IOException e) {
             // ignore
         }
-
-    private void processReadCommand(Command command) throws IOException {
-        SsdCommandService.execute(command);
     }
 
-    private void processEraseCommand(Command command) throws IOException {
-        SsdCommandService.execute(command);
-    }
     private static boolean isInBuffer(String readStr) {
         return readStr != null && !readStr.isEmpty();
-    }
-
-    private void processFlushCommand(Command command) throws IOException {
-        SsdCommandService.execute(command);
     }
 
     private boolean isWriteCommand(String[] args) {
