@@ -41,6 +41,7 @@ public class ScriptRunner implements RunMode {
 
         if (!isValidScriptNames(scriptNames, invoker)) {
             logger.info("Invalid Script Names!");
+            return;
         }
 
         for (String script : scriptNames) {
