@@ -1,34 +1,41 @@
+package command.buffer;
+
+import command.CommandContext;
+import command.impl.Flusher;
+import command.CommandType;
+import common.util.BufferUtil;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
-public class BufferController {
-    private static BufferController controller = null;
-    private List<Command> buffer = Collections.emptyList();
+public class BufferOptimizer {
+    private static BufferOptimizer controller = null;
+    private List<CommandContext> buffer = Collections.emptyList();
 
-    private BufferController() {
+    private BufferOptimizer() {
         // 외부 객체 생성 금지
     }
 
-    public static BufferController getInstance() {
+    public static BufferOptimizer getInstance() {
         if (controller == null) {
-            controller = new BufferController();
+            controller = new BufferOptimizer();
         }
         return controller;
     }
 
-    public void processCommand(Command newCmd) throws IOException {
+    public void processCommand(CommandContext newCmd) throws IOException {
         getBufferFromDisk();
         flushBufferIfNeeded();
 
-        if (newCmd.type == CommandType.WRITE) {
+        if (newCmd.getType() == CommandType.WRITE) {
             applyIgnoreWrite(newCmd);
         } else {
             applyIgnoreErase(newCmd);
         }
 
-        if (newCmd.type == CommandType.ERASE) {
+        if (newCmd.getType() == CommandType.ERASE) {
             applyMergeErase(newCmd);
         }
 
@@ -37,8 +44,8 @@ public class BufferController {
 
     private void flushBufferIfNeeded() throws IOException {
         if (buffer.size() != 5) return;
-        SsdFlush ssdFlush = new SsdFlush();
-        ssdFlush.flush();
+        Flusher ssdFlusher = new Flusher();
+        ssdFlusher.flush();
         getBufferFromDisk();
     }
 
@@ -46,12 +53,12 @@ public class BufferController {
         buffer = BufferUtil.getCommandList();
     }
 
-    private void applyIgnoreWrite(Command newCmd) {
+    private void applyIgnoreWrite(CommandContext newCmd) {
         buffer.removeIf(cmd -> cmd.getType() == CommandType.WRITE && cmd.getLba() == newCmd.getLba());
         buffer.add(newCmd);
     }
 
-    private void applyIgnoreErase(Command newCmd) {
+    private void applyIgnoreErase(CommandContext newCmd) {
         int newStart = newCmd.getLba();
         int newEnd = newCmd.getLba() + newCmd.getSize() - 1;
 
@@ -71,12 +78,12 @@ public class BufferController {
         buffer.add(newCmd);
     }
 
-    private void applyMergeErase(Command newCmd) {
+    private void applyMergeErase(CommandContext newCmd) {
         if (buffer.size() < 2) return;
 
-        ListIterator<Command> iter = buffer.listIterator(buffer.size());
-        Command current = iter.previous();
-        Command previous = iter.previous();
+        ListIterator<CommandContext> iter = buffer.listIterator(buffer.size());
+        CommandContext current = iter.previous();
+        CommandContext previous = iter.previous();
 
         if (current.getType() == CommandType.ERASE && previous.getType() == CommandType.ERASE) {
             int start1 = previous.getLba();
@@ -96,7 +103,7 @@ public class BufferController {
                     iter.remove();
                     iter.next();
                     iter.remove();
-                    Command merged = new Command(buffer.size() + 1, CommandType.ERASE, mergedStart, mergedSize, null,
+                    CommandContext merged = new CommandContext(buffer.size() + 1, CommandType.ERASE, mergedStart, mergedSize, null,
                             "E_" + mergedStart + "_" + mergedSize);
                     buffer.add(merged);
                 }
@@ -104,7 +111,7 @@ public class BufferController {
         }
     }
 
-    public List<Command> getBuffer() {
+    public List<CommandContext> getBuffer() {
         return buffer;
     }
 }

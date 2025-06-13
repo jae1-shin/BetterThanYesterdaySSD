@@ -1,28 +1,34 @@
+package command.impl;
+
+import command.Command;
+import command.CommandContext;
+import common.SSDConstants;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class SsdReader implements SsdCommand {
+public class Reader implements Command {
 
     @Override
-    public void execute(Command command) throws IOException {
-        read(command.getLba());
+    public void execute(CommandContext commandContext) throws IOException {
+        read(commandContext.getLba());
     }
 
     public String read(int LBA) throws IOException {
-        long offset = (long) LBA * SsdConstants.BLOCK_SIZE;
+        long offset = (long) LBA * SSDConstants.BLOCK_SIZE;
 
-        try (RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r")) {
+        try (RandomAccessFile raf = new RandomAccessFile(SSDConstants.SSD_NAND_FILE, "r")) {
             raf.seek(offset);
 
-            byte[] buffer = new byte[SsdConstants.BLOCK_SIZE];
+            byte[] buffer = new byte[SSDConstants.BLOCK_SIZE];
             int bytesRead = raf.read(buffer);
 
             String readStr = new String(buffer, 0, bytesRead);
 
-            Files.writeString(Paths.get(SsdConstants.OUTPUT_FILE_PATH),
+            Files.writeString(Paths.get(SSDConstants.OUTPUT_FILE_PATH),
                     readStr,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING

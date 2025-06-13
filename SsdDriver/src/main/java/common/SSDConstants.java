@@ -1,6 +1,8 @@
-public final class SsdConstants {
+package common;
 
-    private SsdConstants() {
+public final class SSDConstants {
+
+    private SSDConstants() {
         // 인스턴스 생성 방지
     }
 

@@ -1,3 +1,6 @@
+import command.buffer.BufferReader;
+import command.impl.Reader;
+import common.SSDConstants;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,7 @@ class BufferReaderTest {
 
     @BeforeEach
     void setup() throws Exception {
-        SsdReader ssdReader = new SsdReader();
+        Reader ssdReader = new Reader();
         reader = new BufferReader(ssdReader);
         writeDefaultValue();
 
@@ -27,12 +30,12 @@ class BufferReaderTest {
 
     void writeDefaultValue() throws IOException {
         StringBuilder sb = new StringBuilder();
-        sb.append(SsdConstants.DEFAULT_DATA.repeat(100));
-        Files.writeString(Paths.get(SsdConstants.SSD_NAND_FILE), sb.toString());
+        sb.append(SSDConstants.DEFAULT_DATA.repeat(100));
+        Files.writeString(Paths.get(SSDConstants.SSD_NAND_FILE), sb.toString());
     }
 
     void createFile(String fileName) throws Exception {
-        File file = new File(SsdConstants.BUFFER_PATH, fileName);
+        File file = new File(SSDConstants.BUFFER_PATH, fileName);
         try (FileWriter fw = new FileWriter(file)) {
             fw.write("");
         }
@@ -46,12 +49,12 @@ class BufferReaderTest {
 
     @Test
     void 버퍼에_없으면_SSD에서_읽기_성공() {
-        assertEquals(SsdConstants.DEFAULT_DATA, reader.read(12));
+        assertEquals(SSDConstants.DEFAULT_DATA, reader.read(12));
     }
 
     @AfterEach
     void cleanup() {
-        File dir = new File(SsdConstants.BUFFER_PATH);
+        File dir = new File(SSDConstants.BUFFER_PATH);
         File[] files = dir.listFiles();
         if (files != null) {
             for (File f : files) {
