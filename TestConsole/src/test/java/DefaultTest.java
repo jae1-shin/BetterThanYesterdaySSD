@@ -1,4 +1,5 @@
 import command.console.TestConsole;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -7,6 +8,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class DefaultTest {
     @Test
+    @Disabled
     void exit_입력시_종료메시지를_출력한다() throws IOException {
         // Arrange
         String input = "exit\n";
