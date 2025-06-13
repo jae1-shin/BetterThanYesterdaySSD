@@ -1,6 +1,7 @@
 package script;
 
 import command.CommandInvoker;
+import command.CommandResult;
 import command.ConsoleService;
 import logger.Logger;
 import logger.LoggerContext;
@@ -46,7 +47,7 @@ public class ScriptRunner {
 
         for(String script : scriptNames){
             logger.result(script + "  ___  Run...", LoggerContext.CONSOLE_NO_NEWLINE);
-            if(!invoker.execute(script)){
+            if(invoker.execute(script) == CommandResult.FAIL){
                 return;
             }
         }

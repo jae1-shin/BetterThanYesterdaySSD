@@ -12,8 +12,12 @@ public class Script2 extends Command {
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public String isValidArguments(String[] args) {
+        return "";
+    }
 
+    @Override
+    public CommandResult doExecute(String[] args) {
         for(int i = 0; i< LOOP_COUNT; i++){
             for(int lba : LBA_TEST_SEQUENCE){
                 service.write(lba, TEST_VALUE);
@@ -22,22 +26,12 @@ public class Script2 extends Command {
             for(int lba : LBA_TEST_SEQUENCE){
                 if(!service.readCompare(lba, TEST_VALUE)){
                     logger.result("FAIL");
-                    return false;
+                    return CommandResult.error("FAIL");
                 }
             }
         }
 
         logger.result("PASS");
-        return true;
-    }
-
-    @Override
-    public String isValidArguments(String[] args) {
-        return false;
-    }
-
-    @Override
-    public CommandResult doExecute(String[] args) {
-        return false;
+        return CommandResult.PASS;
     }
 }

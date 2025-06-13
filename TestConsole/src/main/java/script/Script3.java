@@ -15,7 +15,12 @@ public class Script3 extends Command{
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public String isValidArguments(String[] args) {
+        return "";
+    }
+
+    @Override
+    public CommandResult doExecute(String[] args) {
         for (int i = 0; i < LOOP_COUNT; i++) {
             Map<Integer, String> writeData = createWriteData();
 
@@ -23,22 +28,12 @@ public class Script3 extends Command{
 
             if (!readCompareTargetLBA(writeData)) {
                 logger.result("FAIL");
-                return false;
+                return CommandResult.error("ERROR");
             }
         }
 
         logger.result("PASS");
-        return true;
-    }
-
-    @Override
-    public String isValidArguments(String[] args) {
-        return false;
-    }
-
-    @Override
-    public CommandResult doExecute(String[] args) {
-        return false;
+        return CommandResult.PASS;
     }
 
     private Map<Integer, String> createWriteData() {

@@ -15,7 +15,12 @@ public class Script4 extends Command {
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public String isValidArguments(String[] args) {
+        return "";
+    }
+
+    @Override
+    public CommandResult doExecute(String[] args) {
         service.erase_range(0, 2);
 
         for (int i = 0; i < LOOP_COUNT; i++) {
@@ -30,24 +35,14 @@ public class Script4 extends Command {
                     service.erase(LBA, 1);
                     if (!service.readCompare(LBA, ERASED_VALUE)) {
                         logger.result("FAIL");
-                        return false;
+                        return CommandResult.error("ERROR");
                     }
                 }
             }
         }
 
         logger.result("PASS");
-        return true;
-    }
-
-    @Override
-    public String isValidArguments(String[] args) {
-        return false;
-    }
-
-    @Override
-    public CommandResult doExecute(String[] args) {
-        return false;
+        return CommandResult.PASS;
     }
 }
 
