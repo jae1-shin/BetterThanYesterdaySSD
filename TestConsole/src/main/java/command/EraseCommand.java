@@ -6,7 +6,7 @@ public class EraseCommand extends Command {
     }
 
     @Override
-    public boolean execute(String[] args)  {
+    public CommandResult execute(String[] args)  {
         try {
             if (InvalidCheck(args)) return false;
 

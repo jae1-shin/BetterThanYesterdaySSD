@@ -6,8 +6,8 @@ public class FlushCommand extends Command {
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public CommandResult execute(String[] args) {
         service.flush();
-        return true;
+        return CommandResult.PASS;
     }
 }
