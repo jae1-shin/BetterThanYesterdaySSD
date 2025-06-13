@@ -15,7 +15,7 @@ public class FlushCommand implements Command {
         flush();
     }
 
-    public void flush() throws IOException {
+    private void flush() throws IOException {
         List<CommandContext> commandContextList = BufferUtil.getCommandList();
         for (CommandContext cmd : commandContextList) {
             if (cmd.getType() == CommandType.WRITE) {

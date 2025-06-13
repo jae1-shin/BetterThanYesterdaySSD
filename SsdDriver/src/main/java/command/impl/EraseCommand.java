@@ -15,7 +15,7 @@ public class EraseCommand implements Command {
         erase(commandContext.getLba(), commandContext.getSize());
     }
 
-    public void erase(int address, int size) throws IOException {
+    private void erase(int address, int size) throws IOException {
         File file = new File(SSDConstants.SSD_NAND_FILE);
         RandomAccessFile raf = new RandomAccessFile(file, "rw");
         raf.seek(address * SSDConstants.BLOCK_SIZE);

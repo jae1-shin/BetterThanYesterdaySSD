@@ -13,7 +13,7 @@ public class WriteCommand implements Command {
         write(commandContext.getLba(), commandContext.getData());
     }
 
-    public void write(int address, String data) throws IOException {
+    private void write(int address, String data) throws IOException {
         File file = new File(SSDConstants.SSD_NAND_FILE);
         RandomAccessFile raf = new RandomAccessFile(file, "rw");
         raf.seek(address * SSDConstants.BLOCK_SIZE);

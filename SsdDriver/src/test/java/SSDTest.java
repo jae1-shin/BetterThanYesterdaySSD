@@ -90,7 +90,7 @@ class SSDTest {
         try {
             String expected = "0x12345678";
             for (int i = 0; i < 5; i++) {
-                writeCommand.write(i, expected);
+                writeCommand.execute(new WriteCommandContext(i, expected));
                 readCommand.read(i);
                 String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(expected);

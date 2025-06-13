@@ -41,20 +41,6 @@ public class BufferReadCommand implements Command {
             }
         }
 
-//        // 최신 명령 부터 확인
-//        commandContextList.sort(Comparator.comparingInt((CommandContext c) -> c.getOrder()).reversed());
-//
-//        for (CommandContext cmd : commandContextList) {
-//            if (isTargetLBAWrited(targetLBA, cmd)) {
-//                writeOutput(cmd.getData());
-//                return cmd.getData();
-//            }
-//            if (isTargetLBAErased(targetLBA, cmd)) {
-//                writeOutput(SSDConstants.DEFAULT_DATA);
-//                return SSDConstants.DEFAULT_DATA;
-//            }
-//        }
-
         // 못찾은 경우
         try {
             return ssdReadCommand.read(targetLBA);
