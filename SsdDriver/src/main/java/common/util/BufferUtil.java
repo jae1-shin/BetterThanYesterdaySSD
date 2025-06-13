@@ -1,20 +1,23 @@
+package common.util;
+
+import command.CommandContext;
+import command.CommandType;
+import common.SSDConstants;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class BufferUtil {
 
-    public static List<Command> getCommandList() {
-        File bufferDir = new File(SsdConstants.BUFFER_PATH);
+    public static List<CommandContext> getCommandList() {
+        File bufferDir = new File(SSDConstants.BUFFER_PATH);
         File[] files = bufferDir.listFiles();
         if (files == null) return Collections.emptyList();
 
-        List<Command> commandList = new ArrayList<>();
+        List<CommandContext> commandContextList = new ArrayList<>();
 
         for (File file : files) {
             String name = file.getName();
@@ -30,55 +33,58 @@ public class BufferUtil {
 
                 if (cmdType.equals("W")) {
                     String data = parts[3];
-                    commandList.add(new Command(order, CommandType.WRITE, lba, 1, data, commandFullName));
+                    commandContextList.add(new CommandContext(order, CommandType.WRITE, lba, 1, data, commandFullName));
                 } else if (cmdType.equals("E")) {
                     int size = Integer.parseInt(parts[3]);
-                    commandList.add(new Command(order, CommandType.ERASE, lba, size, null, commandFullName));
+                    commandContextList.add(new CommandContext(order, CommandType.ERASE, lba, size, null, commandFullName));
                 }
             } catch (Exception e) {
                 // ignore
             }
 
         }
-        return commandList;
+
+        commandContextList.sort(Comparator.comparingInt((CommandContext c) -> c.getOrder()));
+        return commandContextList;
     }
 
-    public static void rewriteBuffer(List<Command> commands) {
+    public static void rewriteBuffer(List<CommandContext> commandContexts) {
         deleteBufferDirAndFiles();
         try {
             File bufferDir = checkAndCreateBufferDir();
-            createBufferFiles(commands, bufferDir);
+            createBufferFiles(commandContexts, bufferDir);
             checkAndCreateEmptyBufferFiles(bufferDir);
         } catch (IOException e) {
             // ignore
         }
     }
 
-    private static void createBufferFiles(List<Command> commands, File bufferDir) throws IOException {
-        for (Command command : commands) {
-            String fileName = String.format("%d_%s", command.order, command.commandFullName);
+    private static void createBufferFiles(List<CommandContext> commandContexts, File bufferDir) throws IOException {
+        int order = 1;
+        for (CommandContext commandContext : commandContexts) {
+            String fileName = String.format("%d_%s", order++, commandContext.getCommandFullName());
             Files.writeString(Paths.get(bufferDir.getPath(), fileName), "");
         }
     }
 
-    public static Command getCommandFromSsdArgs(String[] parts) throws Exception {
+    public static CommandContext getCommandFromSsdArgs(String[] parts) throws Exception {
         String commandFullName = String.join("_", Arrays.copyOfRange(parts, 0, parts.length));
         String cmdType = parts[0];
         if (cmdType.equals("W")) {
             int lba = Integer.parseInt(parts[1]);
             String data = parts[2];
-            return new Command(0, CommandType.WRITE, lba, 1, data, commandFullName);
+            return new CommandContext(0, CommandType.WRITE, lba, 1, data, commandFullName);
         } else if (cmdType.equals("R")) {
             int lba = Integer.parseInt(parts[1]);
-            return new Command(0, CommandType.READ, lba, 1, null, commandFullName);
+            return new CommandContext(0, CommandType.READ, lba, 1, null, commandFullName);
         } else if (cmdType.equals("E")) {
             int lba = Integer.parseInt(parts[1]);
             int size = Integer.parseInt(parts[2]);
-            return new Command(0, CommandType.ERASE, lba, size, null, commandFullName);
+            return new CommandContext(0, CommandType.ERASE, lba, size, null, commandFullName);
         } else if (cmdType.equals("F")) {
-            return new Command(0, CommandType.FLUSH, 0, 0, null, commandFullName);
+            return new CommandContext(0, CommandType.FLUSH, 0, 0, null, commandFullName);
         }
-        return new Command(0, CommandType.EMPTY, 0, 0, null, null);
+        return new CommandContext(0, CommandType.EMPTY, 0, 0, null, null);
     }
 
   public static void clearBuffer() {
@@ -93,7 +99,7 @@ public class BufferUtil {
     }
 
     public static void deleteBufferDirAndFiles() {
-        File bufferDir = new File(SsdConstants.BUFFER_PATH);
+        File bufferDir = new File(SSDConstants.BUFFER_PATH);
 
         if (bufferDir.exists()) {
             for (File file : bufferDir.listFiles()) {
@@ -104,7 +110,7 @@ public class BufferUtil {
     }
 
     public static File checkAndCreateBufferDir() {
-        File bufferDir = new File(SsdConstants.BUFFER_PATH);
+        File bufferDir = new File(SSDConstants.BUFFER_PATH);
         if (!bufferDir.exists()) {
             bufferDir.mkdirs();
         }
@@ -112,7 +118,7 @@ public class BufferUtil {
     }
 
     public static void checkAndCreateEmptyBufferFiles(File bufferDir) throws IOException {
-        for (int bufferNum = 1; bufferNum <= SsdConstants.BUFFER_SIZE; bufferNum++) {
+        for (int bufferNum = 1; bufferNum <= SSDConstants.BUFFER_SIZE; bufferNum++) {
             if (existBufferFile(bufferDir, bufferNum)) continue;
             Files.writeString(Paths.get(bufferDir.getPath(), getBufferDefaultFileName(bufferNum)), "");
         }
