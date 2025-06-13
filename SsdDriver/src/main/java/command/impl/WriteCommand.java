@@ -4,22 +4,20 @@ import command.Command;
 import command.context.CommandContext;
 import common.SSDConstants;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 
-public class Eraser implements Command {
+public class WriteCommand implements Command {
 
     @Override
     public void execute(CommandContext commandContext) throws IOException {
-        erase(commandContext.getLba(), commandContext.getSize());
+        write(commandContext.getLba(), commandContext.getData());
     }
 
-    public void erase(int address, int size) throws IOException {
+    public void write(int address, String data) throws IOException {
         File file = new File(SSDConstants.SSD_NAND_FILE);
         RandomAccessFile raf = new RandomAccessFile(file, "rw");
         raf.seek(address * SSDConstants.BLOCK_SIZE);
-        raf.writeBytes(SSDConstants.DEFAULT_DATA.repeat(size));
+        raf.writeBytes(data);
         raf.close();
     }
 }

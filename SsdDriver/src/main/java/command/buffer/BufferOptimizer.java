@@ -2,8 +2,7 @@ package command.buffer;
 
 import command.context.CommandContext;
 import command.context.EraseCommandContext;
-import command.context.WriteCommandContext;
-import command.impl.Flusher;
+import command.impl.FlushCommand;
 import command.CommandType;
 import common.util.BufferUtil;
 
@@ -46,8 +45,8 @@ public class BufferOptimizer {
 
     private void flushBufferIfNeeded() throws IOException {
         if (buffer.size() != 5) return;
-        Flusher ssdFlusher = new Flusher();
-        ssdFlusher.flush();
+        FlushCommand ssdFlushCommand = new FlushCommand();
+        ssdFlushCommand.flush();
         getBufferFromDisk();
     }
 

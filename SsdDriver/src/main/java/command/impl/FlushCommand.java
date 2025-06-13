@@ -8,7 +8,7 @@ import common.util.BufferUtil;
 import java.io.IOException;
 import java.util.*;
 
-public class Flusher implements Command {
+public class FlushCommand implements Command {
 
     @Override
     public void execute(CommandContext commandContext) throws IOException {
@@ -19,11 +19,11 @@ public class Flusher implements Command {
         List<CommandContext> commandContextList = BufferUtil.getCommandList();
         for (CommandContext cmd : commandContextList) {
             if (cmd.getType() == CommandType.WRITE) {
-                Writer writer = new Writer();
-                writer.execute(cmd);
+                WriteCommand writeCommand = new WriteCommand();
+                writeCommand.execute(cmd);
             } else if (cmd.getType() == CommandType.ERASE) {
-                Eraser eraser = new Eraser();
-                eraser.execute(cmd);
+                EraseCommand eraseCommand = new EraseCommand();
+                eraseCommand.execute(cmd);
             }
         }
 

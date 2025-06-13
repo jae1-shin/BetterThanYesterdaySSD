@@ -1,9 +1,8 @@
 import command.context.CommandContext;
 import command.context.EraseCommandContext;
 import command.context.WriteCommandContext;
-import command.impl.Reader;
-import command.impl.Writer;
-import command.CommandType;
+import command.impl.ReadCommand;
+import command.impl.WriteCommand;
 import common.SSDConstants;
 import common.util.BufferUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,15 +83,15 @@ class SSDTest {
 
     @Test
     void 다섯개_write_직후_세개_일부_erase_ssd_processCommand() {
-        Reader reader = new Reader();
-        Writer writer = new Writer();
+        ReadCommand readCommand = new ReadCommand();
+        WriteCommand writeCommand = new WriteCommand();
         SSD ssd = new SSD();
 
         try {
             String expected = "0x12345678";
             for (int i = 0; i < 5; i++) {
-                writer.write(i, expected);
-                reader.read(i);
+                writeCommand.write(i, expected);
+                readCommand.read(i);
                 String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(expected);
             }

@@ -2,7 +2,7 @@ package command.buffer;
 
 import command.Command;
 import command.context.CommandContext;
-import command.impl.Reader;
+import command.impl.ReadCommand;
 import command.CommandType;
 import common.SSDConstants;
 import common.util.BufferUtil;
@@ -11,16 +11,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class BufferReader implements Command {
 
-    private final Reader ssdReader;
+    private final ReadCommand ssdReadCommand;
 
-    public BufferReader(Reader ssdReader) {
-        this.ssdReader = ssdReader;
+    public BufferReader(ReadCommand ssdReadCommand) {
+        this.ssdReadCommand = ssdReadCommand;
     }
 
     @Override
@@ -59,7 +57,7 @@ public class BufferReader implements Command {
 
         // 못찾은 경우
         try {
-            return ssdReader.read(targetLBA);
+            return ssdReadCommand.read(targetLBA);
         } catch (IOException e) {
             // ignore
             return "";
