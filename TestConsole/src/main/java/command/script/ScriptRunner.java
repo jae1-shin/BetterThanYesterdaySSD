@@ -41,6 +41,7 @@ public class ScriptRunner implements RunMode {
 
         if (!isValidScriptNames(scriptNames, invoker)) {
             logger.info("Invalid Script Names!");
+            return;
         }
 
         for (String script : scriptNames) {
@@ -55,11 +56,11 @@ public class ScriptRunner implements RunMode {
         if (scriptNames.isEmpty()) return false;
         for (String script : scriptNames) {
             if (invoker.hasCommand(script)) {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     private boolean fileExists(String fileName) {
