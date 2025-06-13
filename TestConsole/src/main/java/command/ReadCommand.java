@@ -6,7 +6,7 @@ public class ReadCommand extends Command {
     }
 
     @Override
-    public boolean isValidArguments(String[] args) {
+    public String isValidArguments(String[] args) {
         if (args.length != 2) {
             logger.error("ERROR Invalid argument numbers. Usage: read <address>");
             return false;

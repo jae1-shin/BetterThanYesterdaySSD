@@ -6,7 +6,7 @@ public class FlushCommand extends Command {
     }
 
     @Override
-    public boolean isValidArguments(String[] args) {
+    public String isValidArguments(String[] args) {
         return true;
     }
 

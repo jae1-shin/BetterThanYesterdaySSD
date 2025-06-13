@@ -8,7 +8,7 @@ public class EraseCommand extends Command {
     }
 
     @Override
-    public boolean isValidArguments(String[] args) {
+    public String isValidArguments(String[] args) {
         if (!isValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
             System.out.println("ERROR Invalid argument numbers. ");
             return false;

@@ -11,15 +11,15 @@ public abstract class Command implements ICommand {
     }
 
     public CommandResult execute(String[] args){
-        if(!isValidArguments(args)){
-            logger.error("Invalid Arguments");
+        String validCheckResult = isValidArguments(args);
+        if(!validCheckResult.isEmpty()){
+            CommandResult.error(validCheckResult);
         }
 
         return doExecute(args);
     }
 
-    abstract public boolean isValidArguments(String[] args);
-
+    abstract public String isValidArguments(String[] args);
     abstract public CommandResult doExecute(String[] args);
 
 

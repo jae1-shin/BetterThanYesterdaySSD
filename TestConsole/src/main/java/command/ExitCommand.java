@@ -6,7 +6,7 @@ public class ExitCommand extends Command {
     }
 
     @Override
-    public boolean isValidArguments(String[] args) {
+    public String isValidArguments(String[] args) {
         throw new RuntimeException("아직 구현 안됐어요");
     }
 

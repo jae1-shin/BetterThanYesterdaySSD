@@ -37,7 +37,7 @@ public class WriteCommand extends Command {
     }
 
     @Override
-    public boolean isValidArguments(String[] args) {
+    public String isValidArguments(String[] args) {
         return false;
     }
 
