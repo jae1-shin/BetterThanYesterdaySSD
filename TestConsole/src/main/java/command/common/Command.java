@@ -10,7 +10,9 @@ public abstract class Command implements ICommand {
     public static final String NO_NEED_TO_VALID_CHECK = "";
 
     public static final String VALID_ARGUMENT = "";
-    public static final String INVALID_ARGUMENT_NUMBER_MSG = "Invalid Argument Number !";
+    public static final String VALID_ADDRESS = "";
+    public static final String VALID_DATA_FORMAT = "";
+    public static final String INVALID_ARGUMENT_NUMBER_MSG = "ERROR : Invalid Argument Number !";
     public static final String INVALID_ADDRESS_FORMAT_MSG = "ERROR : LBA must be between 0 and 99.";
     public static final String INVALID_DATA_FORMAT = "ERROR Value must be in hex format (e.g., 0x1234ABCD)";
     public static final String DATA_FORMAT = "^0x[0-9A-Fa-f]{8}$";
@@ -20,7 +22,7 @@ public abstract class Command implements ICommand {
     }
 
     public CommandResult execute(String[] args){
-        String validCheckResult = isValidArguments(args);
+        String validCheckResult = argumentsValidCheck(args);
         if(!validCheckResult.isEmpty()){
             return CommandResult.error(validCheckResult);
         }
@@ -28,31 +30,29 @@ public abstract class Command implements ICommand {
         return doExecute(args);
     }
 
-    abstract public String isValidArguments(String[] args);
+    abstract public String argumentsValidCheck(String[] args);
     abstract public CommandResult doExecute(String[] args);
 
 
-    public boolean isNotValidArgumentCount(String[] args, int expected) {
+    public boolean isInValidArgumentCount(String[] args, int expected) {
         return args.length != expected;
     }
 
-    public boolean isNotValidAddress(String address) {
+    public String addressValidCheck(String address) {
         try {
             int lba = Integer.parseInt(address);
             if (lba < 0 || lba > 99) {
-                logger.result(INVALID_ADDRESS_FORMAT_MSG);
-                return true;
+                return INVALID_ADDRESS_FORMAT_MSG;
             }
         }
         catch (NumberFormatException e) {
-            logger.error("ERROR : NumberFormatException" + e.getMessage());
-            return true;
+            return "ERROR : NumberFormatException" + e.getMessage();
         }
 
-        return false;
+        return VALID_ADDRESS;
     }
 
-    public boolean isNotValidData(String data) {
+    public boolean isInValidData(String data) {
         return !data.matches(DATA_FORMAT);
     }
 

@@ -5,16 +5,16 @@ import command.common.CommandResult;
 import command.common.ConsoleService;
 
 public class HelpCommand extends Command {
+
+    public static final int EXPECTED_ARGUMENT_COUNT = 1;
+
     public HelpCommand(ConsoleService service) {
         super(service);
     }
 
-    @Override
-    public String isValidArguments(String[] args) {
-        if(isNotValidArgumentCount(args, 1)){
-            return INVALID_ARGUMENT_NUMBER_MSG;
-        }
-        return "";
+    public String argumentsValidCheck(String[] args) {
+        if(isInValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
+        return VALID_ARGUMENT;
     }
 
     @Override

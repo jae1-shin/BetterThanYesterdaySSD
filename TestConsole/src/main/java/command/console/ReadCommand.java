@@ -5,15 +5,17 @@ import command.common.CommandResult;
 import command.common.ConsoleService;
 
 public class ReadCommand extends Command {
+
+    public static final int EXPECTED_ARGUMENT_COUNT = 2;
+
     public ReadCommand(ConsoleService service) {
         super(service);
     }
-    public static final int EXCEPTED_ARGUMENT_COUNT = 2;
 
     @Override
-    public String isValidArguments(String[] args) {
-        if(isNotValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
-        if(isNotValidAddress(args[1])) return INVALID_ADDRESS_FORMAT_MSG;
+    public String argumentsValidCheck(String[] args) {
+        if(isInValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
+        if(!addressValidCheck(args[1]).equals(VALID_ADDRESS)) return INVALID_ADDRESS_FORMAT_MSG;
         return VALID_ARGUMENT;
     }
 

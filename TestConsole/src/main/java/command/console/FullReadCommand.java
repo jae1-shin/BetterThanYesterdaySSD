@@ -12,11 +12,9 @@ public class FullReadCommand extends Command {
     }
     
     @Override
-    public String isValidArguments(String[] args) {
-        if (isNotValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
-            return INVALID_ARGUMENT_NUMBER_MSG;
-        }
-        return "";
+    public String argumentsValidCheck(String[] args) {
+        if(isInValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
+        return VALID_ARGUMENT;
     }
 
     @Override

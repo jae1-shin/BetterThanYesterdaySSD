@@ -18,7 +18,7 @@ public class WriteReadAging extends Command {
     }
 
     @Override
-    public String isValidArguments(String[] args) {
+    public String argumentsValidCheck(String[] args) {
         return NO_NEED_TO_VALID_CHECK;
     }
 
