@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -72,6 +73,7 @@ class MainTest {
     }
 
     @Test
+    @Disabled // 더이상 직접 바로 쓰지 않음 - 버퍼에 기록
     void 첫번째_인자가_W인경우_ssd_nand파일에_데이터가_입력된다() throws Exception {
         // arrange
 
