@@ -1,6 +1,9 @@
 package command;
 
 public class FullWriteCommand extends Command {
+
+    public static final int EXCEPTED_ARGUMENT_COUNT = 2;
+
     public FullWriteCommand(ConsoleService service) {
         super(service);
     }
@@ -8,29 +11,21 @@ public class FullWriteCommand extends Command {
 
     @Override
     public String isValidArguments(String[] args) {
-        if(!isValidArgumentNumber(args)){
-            logger.error("ERROR Invalid argument numbers. Usage: fullwrite");
-            return false;
+        if(!isValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)){
+            return INVALID_ARGUMENT_NUMBER_MSG;
         }
 
         if(!isValidData(args[1])){
-            logger.error("ERROR Value must be in hex format (e.g., 0x1234ABCD)");
-            return false;
+            return INVALID_DATA_FORMAT;
         }
 
-        return true;
+        return "";
     }
 
     @Override
     public CommandResult doExecute(String[] args) {
         service.fullWrite(args[1]);
-        return true;
+        return CommandResult.PASS;
     }
 
-    private static boolean isValidArgumentNumber(String[] args) {
-        return args.length == 2;
-    }
-    private boolean isValidData(String data) {
-        return data.matches(DATA_FORMAT);
-    }
 }

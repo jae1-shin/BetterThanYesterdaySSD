@@ -6,6 +6,12 @@ public abstract class Command implements ICommand {
     protected Logger logger = Logger.getInstance();
     protected final ConsoleService service;
 
+    public static final String INVALID_ARGUMENT_NUMBER_MSG = "Invalid Argument Number !";
+    public static final String INVALID_ADDRESS_FORMAT_MSG = "ERROR : LBA must be between 0 and 99.";
+    public static final String INVALID_DATA_FORMAT = "ERROR Value must be in hex format (e.g., 0x1234ABCD)";
+
+    public static final String DATA_FORMAT = "^0x[0-9A-Fa-f]{8}$";
+
     public Command(ConsoleService service) {
         this.service =  service ;
     }
@@ -43,4 +49,7 @@ public abstract class Command implements ICommand {
         return true;
     }
 
+    public boolean isValidData(String data) {
+        return data.matches(DATA_FORMAT);
+    }
 }

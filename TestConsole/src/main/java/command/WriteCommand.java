@@ -4,45 +4,33 @@ public class WriteCommand extends Command {
     public WriteCommand(ConsoleService service) {
         super(service);
     }
-
-    @Override
-    public boolean execute(String[] args)  {
-        try {
-            if (args.length != 3) {
-                logger.error("ERROR Invalid argument format. Usage: write <address> 0x1234ABCD");
-                return false;
-            }
-            if (!args[2].startsWith("0x")) {
-                logger.error("ERROR Value must be in hex format (e.g., 0x1234ABCD)");
-                return false;
-            }
-
-            if(service.write(Integer.parseInt(args[1]), args[2]) == false) {
-                logger.error("ERROR Write failed");
-                return false;
-            }else{
-                logger.result("[Write] Done");
-            }
-
-
-        } catch (NumberFormatException e) {
-            logger.error("ERROR NumberFormatException" + e.getMessage());
-            return false;
-        } catch (IndexOutOfBoundsException e) {
-            logger.error("ERROR IndexOutOfBoundsException" + e.getMessage());
-            return false;
-        }
-
-        return true;
-    }
+    public static final int EXCEPTED_ARGUMENT_COUNT = 3;
 
     @Override
     public String isValidArguments(String[] args) {
-        return false;
+        if(!isValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)){
+            return INVALID_ARGUMENT_NUMBER_MSG;
+        }
+
+        if(!isValidAddress(args[1])){
+            return INVALID_ADDRESS_FORMAT_MSG;
+        }
+
+        if(!isValidData(args[2])){
+            return INVALID_DATA_FORMAT;
+        }
+        return "";
     }
 
     @Override
     public CommandResult doExecute(String[] args) {
-        return false;
+        if(service.write(Integer.parseInt(args[1]), args[2]) == false) {
+            logger.error("ERROR Write failed");
+            return CommandResult.error("ERROR");
+        }else{
+            logger.result("[Write] Done");
+        }
+
+        return CommandResult.PASS;
     }
 }
