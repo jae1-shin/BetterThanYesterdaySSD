@@ -1,5 +1,7 @@
 public enum CommandType {
     READ,
     WRITE,
-    ERASE
+    ERASE,
+    FLUSH,
+    EMPTY
 }

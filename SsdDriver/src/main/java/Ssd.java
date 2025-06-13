@@ -30,12 +30,11 @@ public class Ssd {
             return;
         }
 
-        if (isWriteCommand(args)) {
-            processWriteCommand(args);
-        } else if (isReadCommand(args)) {
-            processReadCommand(args);
-        } else if (isEraseCommand(args)) {
-            processEraseCommand(args);
+        try {
+            Command command = BufferUtil.getCommandFromSsdArgs(args);
+            SsdCommandService.execute(command);
+        } catch (Exception e) {
+            // ignore
         }
     }
 
@@ -64,17 +63,6 @@ public class Ssd {
         BufferUtil.checkAndCreateEmptyBufferFiles(bufferDir);
     }
 
-    private void processWriteCommand(String[] args) {
-        SsdWriter writer = new SsdWriter();
-
-        int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
-        try {
-            writer.write(LBA, args[ARGUMENT_DATA_INDEX]);
-        } catch (IOException e) {
-            // ignore
-        }
-    }
-
     private void processReadCommand(String[] args) {
         int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
 
@@ -92,18 +80,6 @@ public class Ssd {
 
     private static boolean isInBuffer(String readStr) {
         return readStr != null && !readStr.isEmpty();
-    }
-
-    private void processEraseCommand(String[] args) {
-        SsdEraser eraser = new SsdEraser();
-
-        int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
-        int size = Integer.parseInt(args[ARGUMENT_DATA_INDEX]);
-        try {
-            eraser.erase(LBA, size);
-        } catch (IOException e) {
-            // ignore
-        }
     }
 
     private boolean isWriteCommand(String[] args) {

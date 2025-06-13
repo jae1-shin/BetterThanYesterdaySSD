@@ -43,6 +43,25 @@ public class BufferUtil {
         return commandList;
     }
 
+    public static Command getCommandFromSsdArgs(String[] parts) throws Exception {
+        String commandFullName = String.join("_", Arrays.copyOfRange(parts, 0, parts.length));
+        String cmdType = parts[0];
+        if (cmdType.equals("W")) {
+            int lba = Integer.parseInt(parts[1]);
+            String data = parts[2];
+            return new Command(0, CommandType.WRITE, lba, 1, data, commandFullName);
+        } else if (cmdType.equals("R")) {
+            int lba = Integer.parseInt(parts[1]);
+            return new Command(0, CommandType.READ, lba, 1, null, commandFullName);
+        } else if (cmdType.equals("E")) {
+            int lba = Integer.parseInt(parts[1]);
+            int size = Integer.parseInt(parts[2]);
+            return new Command(0, CommandType.ERASE, lba, size, null, commandFullName);
+        } else if (cmdType.equals("F")) {
+            return new Command(0, CommandType.FLUSH, 0, 0, null, commandFullName);
+        }
+        return new Command(0, CommandType.EMPTY, 0, 0, null, null);
+    }
     public static void clearBuffer() {
         try {
             deleteBufferDirAndFiles();
