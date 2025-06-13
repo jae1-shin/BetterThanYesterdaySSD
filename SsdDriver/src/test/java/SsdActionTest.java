@@ -27,9 +27,12 @@ class SsdActionTest {
         Ssd ssd = new Ssd();
         try {
             ssd.initFiles();
+            writeDefaultValue();
         } catch (IOException e) {
             fail("Initialization failed: " + e.getMessage());
         }
+
+
     }
 
     @Test
@@ -69,7 +72,6 @@ class SsdActionTest {
     @ValueSource(ints = {0, 1, 2})
     void 파라미터에_해당하는_데이터_읽기_성공(int LBA) throws IOException {
         SsdReader reader = new SsdReader();
-        writeDefaultValue();
         writeSampleData();
         reader.read(LBA);
 
@@ -85,7 +87,6 @@ class SsdActionTest {
     @ValueSource(ints = {5, 50, 99})
     void 기록이_한적이_없는_LBA를_읽으면_0X00000000으로_읽힌다(int LBA) throws IOException {
         SsdReader reader = new SsdReader();
-        writeDefaultValue();
         writeSampleData();
         reader.read(LBA);
 
@@ -97,8 +98,6 @@ class SsdActionTest {
     @Disabled
     void 파일_Write시_파일이_없으면_초기화() throws Exception {
         // arrange
-        new File(SsdConstants.SSD_NAND_FILE).delete();
-        new File(SsdConstants.OUTPUT_FILE_PATH).delete();
         SsdWriter ssdWriter = new SsdWriter();
 
         // act
@@ -116,8 +115,6 @@ class SsdActionTest {
     @Test
     void 파일_Write_정상_동작() throws Exception {
         // arrange
-        new File(SsdConstants.SSD_NAND_FILE).delete();
-        new File(SsdConstants.OUTPUT_FILE_PATH).delete();
         SsdWriter ssdWriter = new SsdWriter();
 
         // act
@@ -205,6 +202,7 @@ class SsdActionTest {
             raf.write(SAMPLE_DATA.getBytes());
         }
     }
+
 
     void deleteBufferFolder() {
         Path folder = Paths.get("buffer");
