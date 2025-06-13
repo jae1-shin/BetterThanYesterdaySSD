@@ -1,16 +1,20 @@
-import command.*;
+package command.console;
+
+import command.common.CommandInvoker;
+import command.common.ConsoleService;
+import command.common.RunMode;
+import command.script.Script1;
 import logger.Logger;
-import script.*;
-import script.Script2;
-import script.Script3;
-import script.Script4;
+import command.script.Script2;
+import command.script.Script3;
+import command.script.Script4;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class TestConsole {
+public class TestConsole implements RunMode {
 
-    public static final String PROGRAM_TERMINATED = "TestConsole terminated";
+    public static final String PROGRAM_TERMINATED = "command.console.TestConsole terminated";
     private final Scanner scanner;
 
     public TestConsole() {

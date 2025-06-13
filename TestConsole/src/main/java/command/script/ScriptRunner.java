@@ -1,7 +1,6 @@
-package script;
+package command.script;
 
 import command.CommandInvoker;
-import command.CommandResult;
 import command.ConsoleService;
 import logger.Logger;
 import logger.LoggerContext;
@@ -12,12 +11,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
 
-public class ScriptRunner {
+public class ScriptRunner implements RunMode {
+    private final String filePath;
+
+    public ScriptRunner(String filePath) {
+        this.filePath = filePath;
+    }
+
     Logger logger = Logger.getInstance();
 
-    public void run(String filePath) {
+    public void run() {
         if(!fileExists(filePath)){
             logger.info("There's no File !");
             return;

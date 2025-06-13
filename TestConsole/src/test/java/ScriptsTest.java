@@ -1,12 +1,12 @@
-import command.ConsoleService;
+import command.common.ConsoleService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import script.Script1;
-import script.Script2;
-import script.Script3;
-import script.Script4;
+import command.script.Script1;
+import command.script.Script2;
+import command.script.Script3;
+import command.script.Script4;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;

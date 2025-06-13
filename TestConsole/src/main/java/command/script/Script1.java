@@ -1,6 +1,8 @@
-package script;
+package command.script;
 
-import command.*;
+import command.common.Command;
+import command.common.CommandResult;
+import command.common.ConsoleService;
 
 public class Script1 extends Command {
     public static final String TEST_VALUE = "0xFFFFFFFF";

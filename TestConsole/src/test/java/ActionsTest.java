@@ -1,5 +1,5 @@
 
-import command.ConsoleService;
+import command.common.ConsoleService;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

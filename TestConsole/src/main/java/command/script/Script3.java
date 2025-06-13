@@ -1,12 +1,14 @@
-package script;
+package command.script;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import command.*;
+import command.common.Command;
+import command.common.CommandResult;
+import command.common.ConsoleService;
 
-public class Script3 extends Command{
+public class Script3 extends Command {
     public static final int LOOP_COUNT = 200;
     public static final int[] targetLBA = new int[]{0, 99};
 

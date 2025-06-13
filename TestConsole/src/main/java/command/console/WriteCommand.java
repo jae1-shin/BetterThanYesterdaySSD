@@ -1,4 +1,8 @@
-package command;
+package command.console;
+
+import command.common.Command;
+import command.common.CommandResult;
+import command.common.ConsoleService;
 
 public class WriteCommand extends Command {
     public WriteCommand(ConsoleService service) {

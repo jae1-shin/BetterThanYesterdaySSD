@@ -1,6 +1,8 @@
-package script;
+package command.script;
 
-import command.*;
+import command.common.Command;
+import command.common.CommandResult;
+import command.common.ConsoleService;
 
 public class Script4 extends Command {
     public static final int LOOP_COUNT = 30;
