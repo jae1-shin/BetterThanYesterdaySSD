@@ -19,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class SsdActionTest {
     public static final String SAMPLE_DATA = "0xAAAABBBB0xCCCCDDDD0xEEEEFFFF";
     public static final String DEFAULT_VALUE = "0x00000000";
-    public static final String WRITE_TEST_VALUE = "0x12345678";
+    public static final String WRITE_TEST_VALUE = "0x1234ABCD";
+    public static final int TEST_LBA_ADDRESS = 3;
 
     @BeforeEach
     void setUp() {
@@ -101,7 +102,7 @@ class SsdActionTest {
         SsdWriter ssdWriter = new SsdWriter();
 
         // act
-        ssdWriter.write(3, "0x1234ABCD");
+        ssdWriter.write(TEST_LBA_ADDRESS, WRITE_TEST_VALUE);
         RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
         raf.seek(0);
         byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
@@ -120,7 +121,7 @@ class SsdActionTest {
         SsdWriter ssdWriter = new SsdWriter();
 
         // act
-        ssdWriter.write(3, WRITE_TEST_VALUE);
+        ssdWriter.write(TEST_LBA_ADDRESS, WRITE_TEST_VALUE);
         RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
         raf.seek(3 * SsdConstants.BLOCK_SIZE);
         byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
@@ -133,7 +134,6 @@ class SsdActionTest {
 
     @Test
     void 버퍼에서_읽고_Write_Erase_정상_동작_검증() throws Exception {
-        initDefaultData();
         deleteBufferFolder();
 
         Path folder = Paths.get("buffer");
@@ -150,29 +150,28 @@ class SsdActionTest {
         raf.seek(1 * SsdConstants.BLOCK_SIZE);
         byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
         raf.readFully(buf);
-        assertThat(new String(buf)).isEqualTo("0x1234ABCD");
+        assertThat(new String(buf)).isEqualTo(WRITE_TEST_VALUE);
 
         raf.seek(2 * SsdConstants.BLOCK_SIZE);
         raf.readFully(buf);
-        assertThat(new String(buf)).isEqualTo("0x00000000");
+        assertThat(new String(buf)).isEqualTo(DEFAULT_VALUE);
 
         raf.seek(3 * SsdConstants.BLOCK_SIZE);
         raf.readFully(buf);
-        assertThat(new String(buf)).isEqualTo("0x1234ABCD");
+        assertThat(new String(buf)).isEqualTo(WRITE_TEST_VALUE);
 
         raf.seek(4 * SsdConstants.BLOCK_SIZE);
         raf.readFully(buf);
-        assertThat(new String(buf)).isEqualTo("0x00000000");
+        assertThat(new String(buf)).isEqualTo(DEFAULT_VALUE);
 
         raf.seek(5 * SsdConstants.BLOCK_SIZE);
         raf.readFully(buf);
         raf.close();
-        assertThat(new String(buf)).isEqualTo("0x1234ABCD");
+        assertThat(new String(buf)).isEqualTo(WRITE_TEST_VALUE);
     }
 
     @Test
     void 버퍼에_empty가_있는_경우_스킵_검증() throws Exception {
-        initDefaultData();
         deleteBufferFolder();
 
         Path folder = Paths.get("buffer");
@@ -191,7 +190,7 @@ class SsdActionTest {
         raf.readFully(buf);
         raf.close();
 
-        assertThat(new String(buf)).isEqualTo("0x00000000");
+        assertThat(new String(buf)).isEqualTo(DEFAULT_VALUE);
     }
 
     private void writeDefaultValue() throws IOException {
@@ -204,13 +203,6 @@ class SsdActionTest {
         try (RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "rw")) {
             raf.seek(0);
             raf.write(SAMPLE_DATA.getBytes());
-        }
-    }
-
-    void initDefaultData() {
-        try {
-            Files.writeString(Paths.get(SsdConstants.SSD_NAND_FILE), DEFAULT_VALUE.repeat(100));
-        } catch (IOException e) {
         }
     }
 
