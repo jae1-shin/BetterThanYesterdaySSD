@@ -6,19 +6,15 @@ public class EraseCommand extends Command {
     }
 
     @Override
-    public boolean execute(String[] args)  {
-        try {
-            if (InvalidCheck(args)) return false;
-
-            service.erase(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
-
-        } catch (NumberFormatException e) {
-            System.out.println("ERROR NumberFormatException" + e.getMessage());
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("ERROR IndexOutOfBoundsException" + e.getMessage());
-        }
-
+    public boolean isValid(String[] args) {
+        if (InvalidCheck(args)) return false;
         return false;
+    }
+
+    @Override
+    public boolean doExecute(String[] args) {
+        service.erase(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+        return true;
     }
 
     private static boolean InvalidCheck(String[] args) {
