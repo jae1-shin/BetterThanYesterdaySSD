@@ -16,7 +16,7 @@ public class WriteCommand extends Command {
     public String argumentsValidCheck(String[] args) {
         if(isInValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
         if(!addressValidCheck(args[1]).equals(VALID_ADDRESS)) return INVALID_ADDRESS_FORMAT_MSG;
-        if(!addressValidCheck(args[2]).equals(VALID_ADDRESS)) return INVALID_ADDRESS_FORMAT_MSG;
+        if(isInValidData(args[2])) return INVALID_DATA_FORMAT;
         return VALID_ARGUMENT;
     }
 
