@@ -11,12 +11,9 @@ public class ExitCommand extends Command {
     public static final int EXPECTED_ARGUMENT_COUNT = 1;
 
     @Override
-    public String isValidArguments(String[] args) {
-        if (isNotValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
-            return INVALID_ARGUMENT_NUMBER_MSG;
-        }
-
-        return "";
+    public String argumentsValidCheck(String[] args) {
+        if(isInValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
+        return VALID_ARGUMENT;
     }
 
     @Override

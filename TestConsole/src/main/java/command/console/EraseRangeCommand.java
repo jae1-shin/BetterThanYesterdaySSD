@@ -13,16 +13,11 @@ public class EraseRangeCommand extends Command {
     }
 
     @Override
-    public String isValidArguments(String[] args) {
-        if (isNotValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
-            return INVALID_ARGUMENT_NUMBER_MSG;
-        }
-
-        if(isNotValidAddress(args[1]) || isNotValidAddress(args[2])){
-            return INVALID_ADDRESS_FORMAT_MSG;
-        }
-
-        return "";
+    public String argumentsValidCheck(String[] args) {
+        if(isInValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
+        if(!addressValidCheck(args[1]).equals(VALID_ADDRESS)) return INVALID_ADDRESS_FORMAT_MSG;
+        if(!addressValidCheck(args[2]).equals(VALID_ADDRESS)) return INVALID_ADDRESS_FORMAT_MSG;
+        return VALID_ARGUMENT;
     }
 
     @Override
