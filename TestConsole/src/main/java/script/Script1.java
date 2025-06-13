@@ -26,7 +26,7 @@ public class Script1 extends Command {
 
             for (int LBA = currentLBA; LBA < currentLBA + DIV_NUM; LBA++) {
                 if (!service.readCompare(LBA, TEST_VALUE)) {
-                    return CommandResult.error("FAIL");
+                    return CommandResult.scriptFail("FAIL");
                 }
             }
 

@@ -34,7 +34,7 @@ public class Script4 extends Command {
                 for (int LBA = startLBA; LBA < startLBA + count; LBA++) {
                     service.erase(LBA, 1);
                     if (!service.readCompare(LBA, ERASED_VALUE)) {
-                        return CommandResult.error("FAIL");
+                        return CommandResult.scriptFail("FAIL");
                     }
                 }
             }

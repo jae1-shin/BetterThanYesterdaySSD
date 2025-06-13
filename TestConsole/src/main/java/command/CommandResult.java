@@ -33,10 +33,14 @@ public class CommandResult {
     // 정적 팩토리 메서드로 표현력 향상
     public static final CommandResult PASS = new CommandResult();
     public static final CommandResult EXIT = new CommandResult(true);
-    public static final CommandResult SCRIPT_FAIL = new CommandResult(true);
 
     public static CommandResult error(String message) {
         Logger.getInstance().error(message);
         return new CommandResult(false, message);
+    }
+
+    public static CommandResult scriptFail(String message) {
+        Logger.getInstance().error(message);
+        return new CommandResult(true, message);
     }
 }
