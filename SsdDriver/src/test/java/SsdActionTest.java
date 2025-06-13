@@ -136,7 +136,7 @@ class SsdActionTest {
         Files.createFile(folder.resolve("5_W_5_0x1234ABCD"));
 
         SsdFlush ssdFlush = new SsdFlush();
-        ssdFlush.plush();
+        ssdFlush.flush();
         RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
         raf.seek(1 * SsdConstants.BLOCK_SIZE);
         byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
@@ -172,7 +172,7 @@ class SsdActionTest {
         Files.createFile(folder.resolve("5_empty"));
 
         SsdFlush ssdFlush = new SsdFlush();
-        ssdFlush.plush();
+        ssdFlush.flush();
         RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r");
         raf.seek(5 * SsdConstants.BLOCK_SIZE);
         byte[] buf = new byte[SsdConstants.BLOCK_SIZE];
