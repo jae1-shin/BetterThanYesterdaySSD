@@ -40,6 +40,8 @@ public class BufferUtil {
             }
 
         }
+
+        commandList.sort(Comparator.comparingInt((Command c) -> c.order));
         return commandList;
     }
 
@@ -55,8 +57,9 @@ public class BufferUtil {
     }
 
     private static void createBufferFiles(List<Command> commands, File bufferDir) throws IOException {
+        int order = 1;
         for (Command command : commands) {
-            String fileName = String.format("%d_%s", command.order, command.commandFullName);
+            String fileName = String.format("%d_%s", order++, command.commandFullName);
             Files.writeString(Paths.get(bufferDir.getPath(), fileName), "");
         }
     }
