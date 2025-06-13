@@ -4,7 +4,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class SsdReader {
+public class SsdReader implements SsdCommand {
+
+    @Override
+    public void execute(Command command) throws IOException {
+        read(command.getLba());
+    }
 
     public void read(int LBA) throws IOException {
         long offset = (long) LBA * SsdConstants.BLOCK_SIZE;

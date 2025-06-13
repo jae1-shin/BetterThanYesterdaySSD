@@ -1,6 +1,11 @@
 import java.io.*;
 
-public class SsdWriter {
+public class SsdWriter implements SsdCommand {
+
+    @Override
+    public void execute(Command command) throws IOException {
+        write(command.getLba(), command.getData());
+    }
 
     public void write(int address, String data) throws IOException {
         writeData(address, data);
