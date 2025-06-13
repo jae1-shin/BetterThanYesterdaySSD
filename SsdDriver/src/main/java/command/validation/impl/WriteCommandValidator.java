@@ -11,7 +11,7 @@ public class WriteCommandValidator implements CommandValidator {
     @Override
     public boolean validate(String[] args) {
         return WRITE_COMMAND.equals(args[0]) &&
-                ArgsValidator.isValidArgumentCount(args) &&
+                args.length == 3 &&
                 ArgsValidator.isValidAddressRange(args[ArgsValidator.ARGUMENT_ADDRESS_INDEX]) &&
                 isValidData(args);
     }

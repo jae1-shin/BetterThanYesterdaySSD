@@ -14,11 +14,12 @@ public class ArgsValidator {
     }
 
     public static boolean isValidAddressRange(String address) {
-        int LBA = Integer.parseInt(address);
-        if (LBA < LBA_MIN || LBA > LBA_MAX) {
+        try {
+            int LBA = Integer.parseInt(address);
+            return LBA >= LBA_MIN && LBA <= LBA_MAX;
+        } catch (NumberFormatException e) {
             return false;
         }
-        return true;
     }
 
 }
