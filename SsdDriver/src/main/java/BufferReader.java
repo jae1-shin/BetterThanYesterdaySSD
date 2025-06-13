@@ -36,14 +36,12 @@ public class BufferReader implements SsdCommand {
         }
 
         // 못찾은 경우
-        String readFromSSD = "";
         try {
-            readFromSSD = ssdReader.read(targetLBA);
+            return ssdReader.read(targetLBA);
         } catch (IOException e) {
             // ignore
+            return "";
         }
-
-        return readFromSSD;
     }
 
     private void writeOutput(String readStr) {
