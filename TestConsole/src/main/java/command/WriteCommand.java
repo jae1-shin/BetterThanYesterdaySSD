@@ -35,4 +35,14 @@ public class WriteCommand extends Command {
 
         return true;
     }
+
+    @Override
+    public String isValidArguments(String[] args) {
+        return false;
+    }
+
+    @Override
+    public CommandResult doExecute(String[] args) {
+        return false;
+    }
 }

@@ -30,4 +30,14 @@ public class Script2 extends Command {
         logger.result("PASS");
         return true;
     }
+
+    @Override
+    public String isValidArguments(String[] args) {
+        return false;
+    }
+
+    @Override
+    public CommandResult doExecute(String[] args) {
+        return false;
+    }
 }

@@ -34,5 +34,15 @@ public class Script1 extends Command {
         return true;
     }
 
+    @Override
+    public String isValidArguments(String[] args) {
+        return false;
+    }
+
+    @Override
+    public CommandResult doExecute(String[] args) {
+        return false;
+    }
+
 }
 

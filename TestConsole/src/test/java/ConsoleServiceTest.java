@@ -17,7 +17,6 @@ class ConsoleServiceTest {
 
     @Test
     @Description("실제 ssd.jar 테스트입니다.")
-    @Disabled
     void erase_실제ssd_jar_지우기_테스트() {
         ConsoleService cs = new ConsoleService();
 

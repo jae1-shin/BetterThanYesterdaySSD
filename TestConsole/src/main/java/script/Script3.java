@@ -31,6 +31,16 @@ public class Script3 extends Command{
         return true;
     }
 
+    @Override
+    public String isValidArguments(String[] args) {
+        return false;
+    }
+
+    @Override
+    public CommandResult doExecute(String[] args) {
+        return false;
+    }
+
     private Map<Integer, String> createWriteData() {
         Map<Integer, String> writeData = new HashMap<>();
         for (int lba : targetLBA) {

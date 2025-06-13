@@ -6,7 +6,12 @@ public class FlushCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(String[] args) {
+    public String isValidArguments(String[] args) {
+        return true;
+    }
+
+    @Override
+    public CommandResult doExecute(String[] args) {
         service.flush();
         return CommandResult.PASS;
     }
