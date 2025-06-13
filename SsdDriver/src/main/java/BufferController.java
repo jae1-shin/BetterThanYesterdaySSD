@@ -1,9 +1,22 @@
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
 public class BufferController {
-    List<Command> buffer;
+    private static BufferController controller = null;
+    private List<Command> buffer = Collections.emptyList();
+
+    private BufferController() {
+        // 외부 객체 생성 금지
+    }
+
+    public static BufferController getInstance() {
+        if (controller == null) {
+            controller = new BufferController();
+        }
+        return controller;
+    }
 
     public void processCommand(Command newCmd) throws IOException {
         getBufferFromDisk();
@@ -25,7 +38,7 @@ public class BufferController {
     private void flushBufferIfNeeded() throws IOException {
         if (buffer.size() != 5) return;
         SsdFlush ssdFlush = new SsdFlush();
-        ssdFlush.plush();
+        ssdFlush.flush();
         getBufferFromDisk();
     }
 
