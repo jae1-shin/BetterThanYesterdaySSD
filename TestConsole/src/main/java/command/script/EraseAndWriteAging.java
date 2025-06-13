@@ -4,7 +4,9 @@ import command.common.Command;
 import command.common.CommandResult;
 import command.common.ConsoleService;
 
-public class Script4 extends Command {
+//4_EraseAndWriteAging
+
+public class EraseAndWriteAging extends Command {
     public static final int LOOP_COUNT = 30;
     public static final String WRITE_VALUE = "0x11111111";
     public static final String OVERWRITE_VALUE = "0x22222222";
@@ -12,12 +14,17 @@ public class Script4 extends Command {
     public static final int BASE_COUNT = 3;
     public static final int EXCEPT_COUNT = 2;
 
-    public Script4(ConsoleService service) {
+    public EraseAndWriteAging(ConsoleService service) {
         super(service);
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public String isValidArguments(String[] args) {
+        return "";
+    }
+
+    @Override
+    public CommandResult doExecute(String[] args) {
         service.erase_range(0, 2);
 
         for (int i = 0; i < LOOP_COUNT; i++) {
@@ -31,25 +38,14 @@ public class Script4 extends Command {
                 for (int LBA = startLBA; LBA < startLBA + count; LBA++) {
                     service.erase(LBA, 1);
                     if (!service.readCompare(LBA, ERASED_VALUE)) {
-                        logger.result("FAIL");
-                        return false;
+                        return CommandResult.scriptFail("FAIL");
                     }
                 }
             }
         }
 
         logger.result("PASS");
-        return true;
-    }
-
-    @Override
-    public String isValidArguments(String[] args) {
-        return false;
-    }
-
-    @Override
-    public CommandResult doExecute(String[] args) {
-        return false;
+        return CommandResult.PASS;
     }
 }
 

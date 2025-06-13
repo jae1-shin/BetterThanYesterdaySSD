@@ -4,17 +4,23 @@ import command.common.Command;
 import command.common.CommandResult;
 import command.common.ConsoleService;
 
-public class Script1 extends Command {
+//1_FullWriteAndReadCompare
+public class FullWriteAndReadCompare extends Command {
     public static final String TEST_VALUE = "0xFFFFFFFF";
     public static final int LAST_LBA = 100;
     public static final int DIV_NUM = 5;
 
-    public Script1(ConsoleService service) {
+    public FullWriteAndReadCompare(ConsoleService service) {
         super(service);
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public String isValidArguments(String[] args) {
+        return "";
+    }
+
+    @Override
+    public CommandResult doExecute(String[] args) {
         int currentLBA = 0;
         while (currentLBA < LAST_LBA) {
             for (int LBA = currentLBA; LBA < currentLBA + DIV_NUM; LBA++) {
@@ -23,8 +29,7 @@ public class Script1 extends Command {
 
             for (int LBA = currentLBA; LBA < currentLBA + DIV_NUM; LBA++) {
                 if (!service.readCompare(LBA, TEST_VALUE)) {
-                    logger.result("FAIL");
-                    return false;
+                    return CommandResult.scriptFail("FAIL");
                 }
             }
 
@@ -33,17 +38,7 @@ public class Script1 extends Command {
 
 
         logger.result("PASS");
-        return true;
-    }
-
-    @Override
-    public String isValidArguments(String[] args) {
-        return false;
-    }
-
-    @Override
-    public CommandResult doExecute(String[] args) {
-        return false;
+        return CommandResult.PASS;
     }
 
 }

@@ -38,4 +38,9 @@ public class CommandResult {
         Logger.getInstance().error(message);
         return new CommandResult(false, message);
     }
+
+    public static CommandResult scriptFail(String message) {
+        Logger.getInstance().error(message);
+        return new CommandResult(true, message);
+    }
 }

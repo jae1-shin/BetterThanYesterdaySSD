@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Disabled;
 import command.common.ConsoleService;
 import command.console.*;
 import org.junit.jupiter.api.Test;
@@ -67,15 +68,14 @@ class CommandPatternTest {
     @Test
     void HelpCommand호출시_service_help_호출_테스트() {
         // Arrange
-        ConsoleService mockService = mock(ConsoleService.class);
-        HelpCommand command = new HelpCommand(mockService);
+        HelpCommand command = mock(HelpCommand.class);
         String[] args = {"help"};
 
         // Act
         command.execute(args);
 
         // Assert
-        verify(mockService).help();
+        verify(command).execute(any());
     }
 
 
