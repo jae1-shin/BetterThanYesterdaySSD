@@ -2,15 +2,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.io.File;
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
 public class BufferReader implements SsdCommand {
 
+    private final SsdReader ssdReader;
+
+    public BufferReader(SsdReader ssdReader) {
+        this.ssdReader = ssdReader;
+    }
+
     @Override
-    public void execute(Command command) throws IOException {
+    public void execute(Command command) {
         read(command.getLba());
     }
 
@@ -32,7 +36,12 @@ public class BufferReader implements SsdCommand {
         }
 
         // 못찾은 경우
-        return "";
+        try {
+            return ssdReader.read(targetLBA);
+        } catch (IOException e) {
+            // ignore
+            return "";
+        }
     }
 
     private void writeOutput(String readStr) {

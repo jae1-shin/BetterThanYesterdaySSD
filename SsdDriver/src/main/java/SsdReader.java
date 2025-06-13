@@ -11,7 +11,7 @@ public class SsdReader implements SsdCommand {
         read(command.getLba());
     }
 
-    public void read(int LBA) throws IOException {
+    public String read(int LBA) throws IOException {
         long offset = (long) LBA * SsdConstants.BLOCK_SIZE;
 
         try (RandomAccessFile raf = new RandomAccessFile(SsdConstants.SSD_NAND_FILE, "r")) {
@@ -27,6 +27,8 @@ public class SsdReader implements SsdCommand {
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING
             );
+
+            return readStr;
         }
     }
 }
