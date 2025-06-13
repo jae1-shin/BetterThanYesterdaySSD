@@ -1,4 +1,5 @@
 import command.*;
+import logger.Logger;
 import script.*;
 import script.Script2;
 import script.Script3;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 
 public class TestConsole {
 
+    public static final String PROGRAM_TERMINATED = "TestConsole terminated";
     private final Scanner scanner;
 
     public TestConsole() {
@@ -45,11 +47,10 @@ public class TestConsole {
             System.out.print("Shell> ");
             String input = scanner.nextLine().trim();
 
-            if(input.startsWith("exit")) {
-                System.out.print("Program terminated");
+            if(invoker.execute(input).shouldExit()) {
+                Logger.getInstance().result(PROGRAM_TERMINATED);
                 break;
             }
-            invoker.execute(input);
         }
     }
 }

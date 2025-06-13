@@ -6,7 +6,7 @@ public class ExitCommand extends Command {
     }
 
     @Override
-    public boolean execute(String[] args) {
-        throw new RuntimeException("아직 구현 안됐어요");
+    public CommandResult execute(String[] args) {
+        return CommandResult.EXIT;
     }
 }
