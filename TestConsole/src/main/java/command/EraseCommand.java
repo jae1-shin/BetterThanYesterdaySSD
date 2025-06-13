@@ -7,8 +7,19 @@ public class EraseCommand extends Command {
 
     @Override
     public boolean isValid(String[] args) {
-        if (InvalidCheck(args)) return false;
-        return false;
+        if (args.length != 3) {
+            System.out.println("ERROR Invalid argument numbers. ");
+            System.out.println("Usage: erase <LBA> <SIZE> or erase_range <Start LBA> <End LBA>");
+            return false;
+        }
+
+        int lba = Integer.parseInt(args[1]);
+        if (lba < 0 || lba > 99) {
+            System.out.println("ERROR LBA must be between 0 and 99.");
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -17,20 +28,4 @@ public class EraseCommand extends Command {
         return true;
     }
 
-    private static boolean InvalidCheck(String[] args) {
-
-        if (args.length != 3) {
-            System.out.println("ERROR Invalid argument numbers. ");
-            System.out.println("Usage: erase <LBA> <SIZE> or erase_range <Start LBA> <End LBA>");
-            return true;
-        }
-
-        int lba = Integer.parseInt(args[1]);
-        if (lba < 0 || lba > 99) {
-            System.out.println("ERROR LBA must be between 0 and 99.");
-            return true;
-        }
-
-        return false;
-    }
 }

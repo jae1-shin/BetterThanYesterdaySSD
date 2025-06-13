@@ -7,36 +7,30 @@ public class EraseRangeCommand extends Command {
 
     @Override
     public boolean isValid(String[] args) {
-        if (InvalidCheck(args)) return false;
-        return false;
+        if (args.length != 3) {
+            System.out.println("ERROR Invalid argument numbers. ");
+            System.out.println("Usage: erase <LBA> <SIZE> or erase_range <Start LBA> <End LBA>");
+            return false;
+        }
+
+        int start_lba = Integer.parseInt(args[1]);
+        if (start_lba < 0 || start_lba > 99) {
+            System.out.println("ERROR Start LBA must be between 0 and 99.");
+            return false;
+        }
+
+        int end_lba = Integer.parseInt(args[2]);
+        if (end_lba < 0 || end_lba > 99) {
+            System.out.println("ERROR End LBA must be between 0 and 99.");
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public boolean doExecute(String[] args) {
         service.erase_range(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
         return true;
-    }
-
-    private static boolean InvalidCheck(String[] args) {
-
-        if (args.length != 3) {
-            System.out.println("ERROR Invalid argument numbers. ");
-            System.out.println("Usage: erase <LBA> <SIZE> or erase_range <Start LBA> <End LBA>");
-            return true;
-        }
-
-        int start_lba = Integer.parseInt(args[1]);
-        if (start_lba < 0 || start_lba > 99) {
-            System.out.println("ERROR Start LBA must be between 0 and 99.");
-            return true;
-        }
-
-        int end_lba = Integer.parseInt(args[2]);
-        if (end_lba < 0 || end_lba > 99) {
-            System.out.println("ERROR End LBA must be between 0 and 99.");
-            return true;
-        }
-
-        return false;
     }
 }
