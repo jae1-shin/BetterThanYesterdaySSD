@@ -47,7 +47,7 @@ public class ScriptRunner {
 
         for(String script : scriptNames){
             logger.result(script + "  ___  Run...", LoggerContext.CONSOLE_NO_NEWLINE);
-            if(invoker.execute(script) == CommandResult.FAIL){
+            if(invoker.execute(script) == CommandResult.PASS){
                 return;
             }
         }
