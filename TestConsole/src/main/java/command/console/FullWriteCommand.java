@@ -15,11 +15,11 @@ public class FullWriteCommand extends Command {
 
     @Override
     public String isValidArguments(String[] args) {
-        if(!isValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)){
+        if(isNotValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)){
             return INVALID_ARGUMENT_NUMBER_MSG;
         }
 
-        if(!isValidData(args[1])){
+        if(isNotValidData(args[1])){
             return INVALID_DATA_FORMAT;
         }
 
