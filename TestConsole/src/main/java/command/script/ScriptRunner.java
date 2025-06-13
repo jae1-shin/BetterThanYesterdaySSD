@@ -1,7 +1,8 @@
-package script;
+package command.script;
 
-import command.CommandInvoker;
-import command.ConsoleService;
+import command.common.CommandInvoker;
+import command.common.ConsoleService;
+import command.common.RunMode;
 import logger.Logger;
 import logger.LoggerContext;
 
@@ -9,13 +10,18 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ScriptRunner {
+public class ScriptRunner implements RunMode {
+    private final String filePath;
+
+    public ScriptRunner(String filePath) {
+        this.filePath = filePath;
+    }
+
     Logger logger = Logger.getInstance();
 
-    public void run(String filePath) {
+    public void run() {
         if(!fileExists(filePath)){
             logger.info("There's no File !");
             return;

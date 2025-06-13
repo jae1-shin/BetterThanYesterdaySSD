@@ -37,7 +37,7 @@ ex) `[feature] ssd write 기능 추가 `
 
 ### ✅ Main Test시 working directory 콘솔로 변경 
 as-is C:\Users\User\IdeaProjects\BetterThanYesterdaySSD
-to-be C:\Users\User\IdeaProjects\BetterThanYesterdaySSD\TestConsole
+to-be C:\Users\User\IdeaProjects\BetterThanYesterdaySSD\command.console.TestConsole
 
 ### ✅ Shell.jar test시 
  아래 폴더 2개 생성 및 각각에 jar 복사
