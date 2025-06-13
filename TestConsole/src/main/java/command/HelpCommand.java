@@ -6,12 +6,16 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public boolean isValid(String[] args) {
         if(!isValidArgumentNumber(args)){
             logger.error("Invalid number of argument");
             return false;
         }
+        return true;
+    }
 
+    @Override
+    public boolean doExecute(String[] args) {
         service.help();
         return true;
     }
