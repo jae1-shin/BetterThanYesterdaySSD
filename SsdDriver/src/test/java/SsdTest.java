@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -194,6 +196,43 @@ class SsdTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    void rewriteBuffer_정상동작_확인() {
+        Ssd ssd = new Ssd();
+
+        try {
+            ssd.initFiles();
+        } catch (Exception e) {
+            fail("Initialization failed: " + e.getMessage());
+        }
+
+        List<Command> commands = Arrays.asList(
+                new Command(1, CommandType.WRITE, 0, 1, "0x12345678", "W_0_0x12345678"),
+                new Command(2, CommandType.WRITE, 2, 1, "0x87654321", "W_2_0x87654321"),
+                new Command(3, CommandType.ERASE, 4, 5, null, "E_4_5")
+        );
+
+        BufferUtil.rewriteBuffer(commands);
+
+        File bufferDir = new File(SsdConstants.BUFFER_PATH);
+        assertTrue(bufferDir.exists(), "buffer 디렉토리가 존재해야 함");
+
+        File[] files = bufferDir.listFiles();
+        assertNotNull(files, "buffer 디렉토리의 파일 배열이 null이면 안됨");
+        List<String> fileNames = Arrays.stream(files)
+                .map(File::getName)
+                .sorted()
+                .toList();
+        List<String> expectedFileNames = Arrays.asList(
+                "1_W_0_0x12345678",
+                "2_W_2_0x87654321",
+                "3_E_4_5",
+                "4_empty",
+                "5_empty"
+        );
+        assertThat(fileNames).containsExactlyElementsOf(expectedFileNames);
     }
 //
 //  [TODO] 리팩토링(모킹을 위해 SSD 에서 생성자 주입 필요) 후 주석 풀기

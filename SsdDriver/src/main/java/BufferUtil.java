@@ -43,6 +43,24 @@ public class BufferUtil {
         return commandList;
     }
 
+    public static void rewriteBuffer(List<Command> commands) {
+        deleteBufferDirAndFiles();
+        try {
+            File bufferDir = checkAndCreateBufferDir();
+            createBufferFiles(commands, bufferDir);
+            checkAndCreateEmptyBufferFiles(bufferDir);
+        } catch (IOException e) {
+            // ignore
+        }
+    }
+
+    private static void createBufferFiles(List<Command> commands, File bufferDir) throws IOException {
+        for (Command command : commands) {
+            String fileName = String.format("%d_%s", command.order, command.commandFullName);
+            Files.writeString(Paths.get(bufferDir.getPath(), fileName), "");
+        }
+    }
+
     public static Command getCommandFromSsdArgs(String[] parts) throws Exception {
         String commandFullName = String.join("_", Arrays.copyOfRange(parts, 0, parts.length));
         String cmdType = parts[0];
@@ -62,7 +80,8 @@ public class BufferUtil {
         }
         return new Command(0, CommandType.EMPTY, 0, 0, null, null);
     }
-    public static void clearBuffer() {
+
+  public static void clearBuffer() {
         try {
             deleteBufferDirAndFiles();
 
@@ -74,26 +93,14 @@ public class BufferUtil {
     }
 
     public static void deleteBufferDirAndFiles() {
-        Path folder = Paths.get(SsdConstants.BUFFER_PATH);
-        if (Files.exists(folder) && Files.isDirectory(folder)) {
-            try (Stream<Path> walk = Files.walk(folder, FileVisitOption.FOLLOW_LINKS)) {
-                walk.sorted(Comparator.reverseOrder())
-                        .filter(path -> !path.equals(folder))
-                        .forEach(path -> {
-                            try {
-                                Files.delete(path);
-                            } catch (IOException e) {
-                                // ignore
-                            }
-
-                        });
-            } catch (IOException e) {
-                // ignore
-            }
-        }
-
         File bufferDir = new File(SsdConstants.BUFFER_PATH);
-        bufferDir.delete();
+
+        if (bufferDir.exists()) {
+            for (File file : bufferDir.listFiles()) {
+                file.delete();
+            }
+            bufferDir.delete();
+        }
     }
 
     public static File checkAndCreateBufferDir() {
