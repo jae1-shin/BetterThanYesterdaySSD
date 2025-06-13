@@ -39,21 +39,6 @@ class SsdActionTest {
     }
 
     @Test
-    void flush_외부_호출_검증() {
-        try {
-            Path folder = Paths.get("buffer");
-            Files.createDirectories(folder);
-            Files.createFile(folder.resolve("1_W_1_0x1234ABCD"));
-            Files.createFile(folder.resolve("2_E_2_1"));
-            Files.createFile(folder.resolve("3_W_3_0x1234ABCD"));
-            Files.createFile(folder.resolve("4_E_4_1"));
-            Files.createFile(folder.resolve("5_W_5_0x1234ABCD"));
-        } catch (IOException e) {
-            fail("Initialization failed: " + e.getMessage());
-        }
-    }
-
-    @Test
     void 다섯개_write_직후_세개_일부_erase_ssdEraserTest_erase() {
         try {
             for (int i = 0; i < 5; i++) {
