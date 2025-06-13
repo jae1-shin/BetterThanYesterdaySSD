@@ -6,6 +6,10 @@ public class CommandResult {
     private final boolean shouldExit;
     private final String message;
 
+    // 정적 팩토리 메서드로 표현력 향상
+    public static final CommandResult PASS = new CommandResult();
+    public static final CommandResult EXIT = new CommandResult(true);
+
 
     public CommandResult() {
         this.shouldExit = false;
@@ -30,9 +34,10 @@ public class CommandResult {
         return message;
     }
 
-    // 정적 팩토리 메서드로 표현력 향상
-    public static final CommandResult PASS = new CommandResult();
-    public static final CommandResult EXIT = new CommandResult(true);
+    public static CommandResult pass(String message) {
+        Logger.getInstance().result(message);
+        return PASS;
+    }
 
     public static CommandResult error(String message) {
         Logger.getInstance().error(message);

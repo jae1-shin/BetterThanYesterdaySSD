@@ -28,12 +28,11 @@ public class PartialLBAWrite extends Command {
 
             for (int lba : LBA_TEST_SEQUENCE) {
                 if (!service.readCompare(lba, TEST_VALUE)) {
-                    return CommandResult.scriptFail("FAIL");
+                    return CommandResult.scriptFail(FAIL_FLAG);
                 }
             }
         }
 
-        logger.result("PASS");
-        return CommandResult.PASS;
+        return CommandResult.pass("PASS");
     }
 }

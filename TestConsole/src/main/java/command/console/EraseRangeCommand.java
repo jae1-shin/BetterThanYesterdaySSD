@@ -25,5 +25,4 @@ public class EraseRangeCommand extends Command {
         service.erase_range(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
         return CommandResult.PASS;
     }
-
 }

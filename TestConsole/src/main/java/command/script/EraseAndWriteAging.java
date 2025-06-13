@@ -38,14 +38,13 @@ public class EraseAndWriteAging extends Command {
                 for (int LBA = startLBA; LBA < startLBA + count; LBA++) {
                     service.erase(LBA, 1);
                     if (!service.readCompare(LBA, ERASED_VALUE)) {
-                        return CommandResult.scriptFail("FAIL");
+                        return CommandResult.scriptFail(FAIL_FLAG);
                     }
                 }
             }
         }
 
-        logger.result("PASS");
-        return CommandResult.PASS;
+        return CommandResult.pass(PASS_FLAG);
     }
 }
 

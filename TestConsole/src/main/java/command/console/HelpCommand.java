@@ -43,5 +43,4 @@ public class HelpCommand extends Command {
         logger.result("{data} must be 4-byte unsigned hexadecimal (0x00000000 - 0xFFFFFFFF)");
         return CommandResult.PASS;
     }
-
 }

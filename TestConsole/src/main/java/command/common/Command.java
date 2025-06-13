@@ -4,6 +4,8 @@ import logger.Logger;
 
 public abstract class Command implements ICommand {
     public static final String ERROR_FLAG = "ERROR";
+    public static final String PASS_FLAG = "PASS";
+    public static final String FAIL_FLAG = "FAIL";
     protected Logger logger = Logger.getInstance();
     protected final ConsoleService service;
 

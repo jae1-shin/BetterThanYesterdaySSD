@@ -21,7 +21,8 @@ public class ScriptRunner implements RunMode {
 
     public void run() {
         if (!fileExists(filePath)) {
-            logger.info("There's no File !");
+            String message = "There's no File !";
+            logger.info(message);
             return;
         }
 

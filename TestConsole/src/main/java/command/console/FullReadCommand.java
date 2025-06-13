@@ -22,6 +22,4 @@ public class FullReadCommand extends Command {
         service.fullRead();
         return CommandResult.PASS;
     }
-
-
 }
