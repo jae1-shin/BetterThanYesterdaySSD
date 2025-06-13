@@ -92,13 +92,13 @@ class SsdTest {
 
             ssd.processCommand(new String[]{"E", "1", "3"});
             for (int i : new int[]{1, 2, 3}) {
-                reader.read(i);
+                ssd.processCommand(new String[]{"R", String.valueOf(i)});
                 String output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(SsdConstants.DEFAULT_DATA);
             }
 
             for (int i : new int[]{0, 4}) {
-                reader.read(i);
+                ssd.processCommand(new String[]{"R", String.valueOf(i)});
                 String output = Files.readString(Paths.get(SsdConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(expected);
             }
