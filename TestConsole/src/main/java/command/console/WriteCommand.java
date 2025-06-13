@@ -5,30 +5,24 @@ import command.common.CommandResult;
 import command.common.ConsoleService;
 
 public class WriteCommand extends Command {
+
+    public static final int EXPECTED_ARGUMENT_COUNT = 3;
+
     public WriteCommand(ConsoleService service) {
         super(service);
     }
-    public static final int EXCEPTED_ARGUMENT_COUNT = 3;
 
     @Override
-    public String isValidArguments(String[] args) {
-        if(isNotValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)){
-            return INVALID_ARGUMENT_NUMBER_MSG;
-        }
-
-        if(isNotValidAddress(args[1])){
-            return INVALID_ADDRESS_FORMAT_MSG;
-        }
-
-        if(isNotValidData(args[2])){
-            return INVALID_DATA_FORMAT;
-        }
-        return "";
+    public String argumentsValidCheck(String[] args) {
+        if(isInValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
+        if(!addressValidCheck(args[1]).equals(VALID_ADDRESS)) return INVALID_ADDRESS_FORMAT_MSG;
+        if(!addressValidCheck(args[2]).equals(VALID_ADDRESS)) return INVALID_ADDRESS_FORMAT_MSG;
+        return VALID_ARGUMENT;
     }
 
     @Override
     public CommandResult doExecute(String[] args) {
-        if(service.write(Integer.parseInt(args[1]), args[2]) == false) {
+        if(!service.write(Integer.parseInt(args[1]), args[2])) {
             logger.error("ERROR Write failed");
             return CommandResult.error("ERROR");
         }else{

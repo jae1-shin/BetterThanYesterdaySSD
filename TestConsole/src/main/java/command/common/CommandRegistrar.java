@@ -3,7 +3,7 @@ package command.common;
 public class CommandRegistrar {
     public static void registerConsoleCommands(CommandInvoker invoker, CommandFactory factory, ConsoleService service) {
         String[] commands = {
-                "read", "write", "erase", "flush", "help", "exit",
+                "read", "write", "erase", "flush", "help", "exit", "fullread", "fullwrite", "erase_range",
                 "1_", "1_FullWriteAndReadCompare",
                 "2_", "2_PartialLBAWrite",
                 "3_", "3_WriteReadAging",
