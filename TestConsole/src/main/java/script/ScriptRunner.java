@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 public class ScriptRunner {
     Logger logger = Logger.getInstance();
@@ -47,7 +48,7 @@ public class ScriptRunner {
 
         for(String script : scriptNames){
             logger.result(script + "  ___  Run...", LoggerContext.CONSOLE_NO_NEWLINE);
-            if(invoker.execute(script) == CommandResult.PASS){
+            if(invoker.execute(script).shouldExit()){
                 return;
             }
         }

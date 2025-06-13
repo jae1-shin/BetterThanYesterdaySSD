@@ -27,8 +27,7 @@ public class Script3 extends Command{
             writeAtTargetLBA(writeData);
 
             if (!readCompareTargetLBA(writeData)) {
-                logger.result("FAIL");
-                return CommandResult.error("ERROR");
+                return CommandResult.error("FAIL");
             }
         }
 
