@@ -18,16 +18,6 @@ public class EraseRangeCommand extends Command {
             return INVALID_ADDRESS_FORMAT_MSG;
         }
 
-        int start_lba = Integer.parseInt(args[1]);
-        if (start_lba < 0 || start_lba > 99) {
-            return "ERROR Start LBA must be between 0 and 99.";
-        }
-
-        int end_lba = Integer.parseInt(args[2]);
-        if (end_lba < 0 || end_lba > 99) {
-            return "ERROR Start LBA must be between 0 and 99.";
-        }
-
         return "";
     }
 
