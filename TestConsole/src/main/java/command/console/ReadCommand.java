@@ -12,24 +12,17 @@ public class ReadCommand extends Command {
 
     @Override
     public String isValidArguments(String[] args) {
-        if(!isValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)){
-            return INVALID_ARGUMENT_NUMBER_MSG;
-        }
-
-        if(!isValidAddress(args[1])){
-            return INVALID_ADDRESS_FORMAT_MSG;
-        }
-
-        return "";
+        if(isNotValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
+        if(isNotValidAddress(args[1])) return INVALID_ADDRESS_FORMAT_MSG;
+        return VALID_ARGUMENT;
     }
 
     @Override
     public CommandResult doExecute(String[] args) {
         int address = Integer.parseInt(args[1]);
         String result = service.read(address);
-        if(result.startsWith("ERROR")) {
-            logger.result(result);
-            return CommandResult.error("ERROR");
+        if(isErrorExist(result)) {
+            return CommandResult.error(result);
         }
         logger.result("[Read] LBA " + String.format("%02d", address) + " : " + result);
 

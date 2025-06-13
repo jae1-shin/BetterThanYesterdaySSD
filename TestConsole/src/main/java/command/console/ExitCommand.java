@@ -12,7 +12,7 @@ public class ExitCommand extends Command {
 
     @Override
     public String isValidArguments(String[] args) {
-        if (!isValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
+        if (isNotValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
             return INVALID_ARGUMENT_NUMBER_MSG;
         }
 
