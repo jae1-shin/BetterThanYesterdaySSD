@@ -130,18 +130,18 @@ class BufferControllerTest {
     }
 
     @Test
-    void IgnoreWrite후() throws IOException {
+    void IgnoreWrite후_IgnoreErase() throws IOException {
         Files.createFile(folder.resolve("1_W_10_0x12345678"));
 
-        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_15_1"));
-        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_14_2"));
-        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_16_1"));
-        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_14_3"));
-        bufferController.processCommand(new Command(0, CommandType.WRITE, 15, 1, null, "W_14_0x12345678"));
-        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_14_3"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "E_10_2"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "W_11_0x12345678"));
+        bufferController.processCommand(new Command(0, CommandType.ERASE, 15, 1, null, "W_10_0x12345678"));
 
-        assertThat(bufferController.getBuffer().size()).isEqualTo(1);
-        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("E_14_3");
+        assertThat(bufferController.getBuffer().size()).isEqualTo(2);
+
+        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_11_0x12345678");
+        assertThat(bufferController.getBuffer().get(0).getCommandFullName()).isEqualTo("W_10_0x12345678");
+
     }
 
     void deleteBufferFolder() {
