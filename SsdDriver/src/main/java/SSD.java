@@ -1,5 +1,6 @@
-import command.CommandContext;
+import command.context.CommandContext;
 import command.CommandFactory;
+import command.context.CommandContextFactory;
 import common.SSDConstants;
 import common.util.BufferUtil;
 
@@ -37,8 +38,7 @@ public class SSD {
         }
 
         try {
-            CommandContext commandContext = BufferUtil.getCommandFromSsdArgs(args);
-            CommandFactory.execute(commandContext);
+            CommandFactory.execute(CommandContextFactory.getCommandContext(args));
         } catch (Exception e) {
             // ignore
         }

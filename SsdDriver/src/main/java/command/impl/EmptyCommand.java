@@ -1,14 +1,13 @@
-package command.buffer;
+package command.impl;
 
 import command.Command;
 import command.context.CommandContext;
 
 import java.io.IOException;
 
-public class BufferWriter implements Command {
-
+public class EmptyCommand implements Command {
     @Override
     public void execute(CommandContext commandContext) throws IOException {
-        BufferOptimizer.getInstance().processCommand(commandContext);
+        // do nothing
     }
 }

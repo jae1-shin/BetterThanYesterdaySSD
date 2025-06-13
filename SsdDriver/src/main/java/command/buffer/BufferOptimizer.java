@@ -1,6 +1,8 @@
 package command.buffer;
 
-import command.CommandContext;
+import command.context.CommandContext;
+import command.context.EraseCommandContext;
+import command.context.WriteCommandContext;
 import command.impl.Flusher;
 import command.CommandType;
 import common.util.BufferUtil;
@@ -103,9 +105,7 @@ public class BufferOptimizer {
                     iter.remove();
                     iter.next();
                     iter.remove();
-                    CommandContext merged = new CommandContext(buffer.size() + 1, CommandType.ERASE, mergedStart, mergedSize, null,
-                            "E_" + mergedStart + "_" + mergedSize);
-                    buffer.add(merged);
+                    buffer.add(new EraseCommandContext(mergedStart, mergedSize));
                 }
             }
         }

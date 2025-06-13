@@ -1,7 +1,7 @@
 package command.buffer;
 
 import command.Command;
-import command.CommandContext;
+import command.context.CommandContext;
 
 import java.io.IOException;
 

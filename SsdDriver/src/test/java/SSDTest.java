@@ -1,4 +1,6 @@
-import command.CommandContext;
+import command.context.CommandContext;
+import command.context.EraseCommandContext;
+import command.context.WriteCommandContext;
 import command.impl.Reader;
 import command.impl.Writer;
 import command.CommandType;
@@ -214,9 +216,12 @@ class SSDTest {
         }
 
         List<CommandContext> commandContexts = Arrays.asList(
-                new CommandContext(1, CommandType.WRITE, 0, 1, "0x12345678", "W_0_0x12345678"),
-                new CommandContext(2, CommandType.WRITE, 2, 1, "0x87654321", "W_2_0x87654321"),
-                new CommandContext(3, CommandType.ERASE, 4, 5, null, "E_4_5")
+                new WriteCommandContext(0, "0x12345678"),
+                new WriteCommandContext(2, "0x87654321"),
+                new EraseCommandContext(4,5)
+//                new CommandContext(1, CommandType.WRITE, 0, 1, "0x12345678", "W_0_0x12345678"),
+//                new CommandContext(2, CommandType.WRITE, 2, 1, "0x87654321", "W_2_0x87654321"),
+//                new CommandContext(3, CommandType.ERASE, 4, 5, null, "E_4_5")
         );
 
         BufferUtil.rewriteBuffer(commandContexts);

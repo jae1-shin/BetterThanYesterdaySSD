@@ -3,6 +3,8 @@ package command;
 import command.buffer.BufferEraser;
 import command.buffer.BufferReader;
 import command.buffer.BufferWriter;
+import command.context.CommandContext;
+import command.impl.EmptyCommand;
 import command.impl.Flusher;
 import command.impl.Reader;
 
@@ -18,6 +20,7 @@ public class CommandFactory {
         commandMap.put(CommandType.ERASE, new BufferEraser());
         commandMap.put(CommandType.READ, new BufferReader(new Reader()));
         commandMap.put(CommandType.FLUSH, new Flusher());
+        commandMap.put(CommandType.EMPTY, new EmptyCommand());
     }
 
     public static void execute(CommandContext commandContext) {

@@ -1,7 +1,7 @@
 package command.buffer;
 
 import command.Command;
-import command.CommandContext;
+import command.context.CommandContext;
 import command.impl.Reader;
 import command.CommandType;
 import common.SSDConstants;
@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class BufferReader implements Command {
 
@@ -30,10 +31,8 @@ public class BufferReader implements Command {
     public String read(int targetLBA) {
         List<CommandContext> commandContextList = BufferUtil.getCommandList();
 
-        // 최신 명령 부터 확인
-        commandContextList.sort(Comparator.comparingInt((CommandContext c) -> c.getOrder()).reversed());
-
-        for (CommandContext cmd : commandContextList) {
+        for (int i = commandContextList.size() - 1; i >= 0; i--) {
+            CommandContext cmd = commandContextList.get(i);
             if (isTargetLBAWrited(targetLBA, cmd)) {
                 writeOutput(cmd.getData());
                 return cmd.getData();
@@ -43,6 +42,20 @@ public class BufferReader implements Command {
                 return SSDConstants.DEFAULT_DATA;
             }
         }
+
+//        // 최신 명령 부터 확인
+//        commandContextList.sort(Comparator.comparingInt((CommandContext c) -> c.getOrder()).reversed());
+//
+//        for (CommandContext cmd : commandContextList) {
+//            if (isTargetLBAWrited(targetLBA, cmd)) {
+//                writeOutput(cmd.getData());
+//                return cmd.getData();
+//            }
+//            if (isTargetLBAErased(targetLBA, cmd)) {
+//                writeOutput(SSDConstants.DEFAULT_DATA);
+//                return SSDConstants.DEFAULT_DATA;
+//            }
+//        }
 
         // 못찾은 경우
         try {

@@ -1,7 +1,7 @@
 package command.impl;
 
 import command.Command;
-import command.CommandContext;
+import command.context.CommandContext;
 import command.CommandType;
 import common.util.BufferUtil;
 

@@ -1,6 +1,8 @@
-import command.CommandContext;
+import command.context.CommandContext;
 import command.buffer.BufferOptimizer;
 import command.CommandType;
+import command.context.EraseCommandContext;
+import command.context.WriteCommandContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +49,7 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("5_W_24_0x12341234"));
 
         BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
-        bufferOptimizer.processCommand(new CommandContext(1, CommandType.WRITE, 20, 0, "0xEEEEFFFF", "W_20_0xEEEEFFFF"));
+        bufferOptimizer.processCommand(new WriteCommandContext(20, "0xEEEEFFFF"));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(1);
         assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("W_20_0xEEEEFFFF");
@@ -61,7 +63,7 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
         BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
-        bufferOptimizer.processCommand(new CommandContext(3, CommandType.WRITE, 20, 0, "0xEEEEFFFF", "W_20_0xEEEEFFFF"));
+        bufferOptimizer.processCommand(new WriteCommandContext(20, "0xEEEEFFFF"));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(2);
         assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("W_21_0x12341234");
@@ -76,7 +78,7 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
         BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
-        bufferOptimizer.processCommand(new CommandContext(3, CommandType.WRITE, 23, 0, "0xEEEEFFFF", "W_23_0xEEEEFFFF"));
+        bufferOptimizer.processCommand(new WriteCommandContext(23, "0xEEEEFFFF"));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(3);
         assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("W_20_0xABCDABCD");
@@ -92,7 +94,7 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
         BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
-        bufferOptimizer.processCommand(new CommandContext(3, CommandType.ERASE, 18, 5, null, "E_18_5"));
+        bufferOptimizer.processCommand(new EraseCommandContext(18, 5));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(1);
         assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("E_18_5");
@@ -106,7 +108,7 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("2_W_21_0x12341234"));
 
         BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
-        bufferOptimizer.processCommand(new CommandContext(3, CommandType.ERASE, 11, 5, null, "E_11_5"));
+        bufferOptimizer.processCommand(new EraseCommandContext(11, 5));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(3);
         assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("E_10_3");
@@ -122,7 +124,7 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("2_E_10_4"));
 
         BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
-        bufferOptimizer.processCommand(new CommandContext(3, CommandType.ERASE, 12, 3, null, "E_12_3"));
+        bufferOptimizer.processCommand(new EraseCommandContext(12, 3));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(2);
         assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("W_20_0xABCDABCD");
@@ -139,7 +141,7 @@ class BufferOptimizerTest {
         Files.createFile(folder.resolve("4_W_12_0xABCDEEEE"));
 
         BufferOptimizer bufferOptimizer = BufferOptimizer.getInstance();
-        bufferOptimizer.processCommand(new CommandContext(5, CommandType.ERASE, 12, 3, null, "E_12_3"));
+        bufferOptimizer.processCommand(new EraseCommandContext(12, 3));
 
         assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(3);
         assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("W_5_0x1234ABCD");
