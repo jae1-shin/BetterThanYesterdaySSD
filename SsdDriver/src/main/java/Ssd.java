@@ -32,15 +32,7 @@ public class Ssd {
 
         try {
             Command command = BufferUtil.getCommandFromSsdArgs(args);
-            if (command.getType() == CommandType.WRITE) {
-                processWriteCommand(command);
-            } else if (command.getType() == CommandType.READ) {
-                processReadCommand(command);
-            } else if (command.getType() == CommandType.ERASE) {
-                processEraseCommand(command);
-            } else if (command.getType() ==CommandType.FLUSH) {
-                processFlushCommand(command);
-            }
+            SsdCommandService.execute(command);
         } catch (Exception e) {
             // ignore
         }
