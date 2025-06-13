@@ -3,9 +3,13 @@ package command.common;
 import logger.Logger;
 
 public abstract class Command implements ICommand {
+    public static final String ERROR_FLAG = "ERROR";
     protected Logger logger = Logger.getInstance();
     protected final ConsoleService service;
 
+    public static final String NO_NEED_TO_VALID_CHECK = "";
+
+    public static final String VALID_ARGUMENT = "";
     public static final String INVALID_ARGUMENT_NUMBER_MSG = "Invalid Argument Number !";
     public static final String INVALID_ADDRESS_FORMAT_MSG = "ERROR : LBA must be between 0 and 99.";
     public static final String INVALID_DATA_FORMAT = "ERROR Value must be in hex format (e.g., 0x1234ABCD)";
@@ -28,27 +32,31 @@ public abstract class Command implements ICommand {
     abstract public CommandResult doExecute(String[] args);
 
 
-    public boolean isValidArgumentCount(String[] args, int expected) {
+    public boolean isNotValidArgumentCount(String[] args, int expected) {
         return args.length != expected;
     }
 
-    public boolean isValidAddress(String address) {
+    public boolean isNotValidAddress(String address) {
         try {
             int lba = Integer.parseInt(address);
             if (lba < 0 || lba > 99) {
-                logger.result("ERROR LBA must be between 0 and 99.");
-                return false;
+                logger.result(INVALID_ADDRESS_FORMAT_MSG);
+                return true;
             }
         }
         catch (NumberFormatException e) {
-            logger.error("ERROR NumberFormatException" + e.getMessage());
-            return false;
+            logger.error("ERROR : NumberFormatException" + e.getMessage());
+            return true;
         }
 
-        return true;
+        return false;
     }
 
-    public boolean isValidData(String data) {
-        return data.matches(DATA_FORMAT);
+    public boolean isNotValidData(String data) {
+        return !data.matches(DATA_FORMAT);
+    }
+
+    public boolean isErrorExist(String result){
+        return result.startsWith(ERROR_FLAG);
     }
 }

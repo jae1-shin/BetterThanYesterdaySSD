@@ -12,15 +12,15 @@ public class WriteCommand extends Command {
 
     @Override
     public String isValidArguments(String[] args) {
-        if(!isValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)){
+        if(isNotValidArgumentCount(args, EXCEPTED_ARGUMENT_COUNT)){
             return INVALID_ARGUMENT_NUMBER_MSG;
         }
 
-        if(!isValidAddress(args[1])){
+        if(isNotValidAddress(args[1])){
             return INVALID_ADDRESS_FORMAT_MSG;
         }
 
-        if(!isValidData(args[2])){
+        if(isNotValidData(args[2])){
             return INVALID_DATA_FORMAT;
         }
         return "";

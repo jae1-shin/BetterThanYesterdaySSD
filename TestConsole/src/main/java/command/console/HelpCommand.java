@@ -11,7 +11,7 @@ public class HelpCommand extends Command {
 
     @Override
     public String isValidArguments(String[] args) {
-        if(!isValidArgumentCount(args, 1)){
+        if(isNotValidArgumentCount(args, 1)){
             return INVALID_ARGUMENT_NUMBER_MSG;
         }
         return "";

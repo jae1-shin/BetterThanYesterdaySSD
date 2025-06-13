@@ -13,15 +13,10 @@ public class EraseCommand extends Command {
 
     @Override
     public String isValidArguments(String[] args) {
-        if (!isValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) {
-            return INVALID_ARGUMENT_NUMBER_MSG;
-        }
+        if (isNotValidArgumentCount(args, EXPECTED_ARGUMENT_COUNT)) return INVALID_ARGUMENT_NUMBER_MSG;
+        if(isNotValidAddress(args[1])) return INVALID_ADDRESS_FORMAT_MSG;
 
-        if(!isValidAddress(args[1])){
-            return INVALID_ADDRESS_FORMAT_MSG;
-        }
-
-        return "";
+        return VALID_ARGUMENT;
     }
 
     @Override

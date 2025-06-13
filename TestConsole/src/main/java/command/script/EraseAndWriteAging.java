@@ -20,7 +20,7 @@ public class EraseAndWriteAging extends Command {
 
     @Override
     public String isValidArguments(String[] args) {
-        return "";
+        return NO_NEED_TO_VALID_CHECK;
     }
 
     @Override
