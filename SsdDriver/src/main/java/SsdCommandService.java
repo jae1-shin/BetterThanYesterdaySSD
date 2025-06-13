@@ -6,8 +6,8 @@ public class SsdCommandService {
     private static final Map<CommandType, SsdCommand> commandMap = new EnumMap<>(CommandType.class);
 
     static {
-        commandMap.put(CommandType.WRITE, new SsdWriter());
-        commandMap.put(CommandType.ERASE, new SsdEraser());
+        commandMap.put(CommandType.WRITE, new BufferWriter());
+        commandMap.put(CommandType.ERASE, new BufferEraser());
         commandMap.put(CommandType.READ, new BufferReader(new SsdReader()));
         commandMap.put(CommandType.FLUSH, new SsdFlush());
     }
