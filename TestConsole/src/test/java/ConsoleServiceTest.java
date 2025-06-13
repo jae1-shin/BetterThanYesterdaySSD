@@ -120,7 +120,7 @@ class ConsoleServiceTest {
 
         // when & then
         assertDoesNotThrow(() -> {
-            command.doExecute(args);
+            command.execute(args);
         });
     }
 
@@ -135,7 +135,7 @@ class ConsoleServiceTest {
 
         // when & then
         assertDoesNotThrow(() -> {
-            command.doExecute(args);
+            command.execute(args);
         });
     }
 
@@ -150,7 +150,7 @@ class ConsoleServiceTest {
 
         // when & then
         assertDoesNotThrow(() -> {
-            command.doExecute(args);
+            command.execute(args);
         });
     }
 
