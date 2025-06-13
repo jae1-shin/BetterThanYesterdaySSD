@@ -21,5 +21,4 @@ public abstract class Command implements ICommand {
     abstract public boolean isValid(String[] args);
     abstract public boolean doExecute(String[] args);
 
-
 }
