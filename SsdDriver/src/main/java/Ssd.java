@@ -76,14 +76,22 @@ public class Ssd {
     }
 
     private void processReadCommand(String[] args) {
-        SsdReader reader = new SsdReader();
-
         int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
+
+        BufferReader bufferReader = new BufferReader();
+        String readStr = bufferReader.read(LBA);
+        if (isInBuffer(readStr)) return;
+
+        SsdReader reader = new SsdReader();
         try {
             reader.read(LBA);
         } catch (IOException e) {
             // ignore
         }
+    }
+
+    private static boolean isInBuffer(String readStr) {
+        return readStr != null && !readStr.isEmpty();
     }
 
     private void processEraseCommand(String[] args) {

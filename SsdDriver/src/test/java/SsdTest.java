@@ -195,4 +195,31 @@ class SsdTest {
             throw new RuntimeException(e);
         }
     }
+//
+//  [TODO] 리팩토링(모킹을 위해 SSD 에서 생성자 주입 필요) 후 주석 풀기
+//    @Test
+//    void 버퍼에서_읽기_성공() throws Exception {
+//
+//        int testLBA = 10;
+//        doReturn("0xABCD").when(bufferReader).read(testLBA);
+//
+//        Ssd ssd = new Ssd(bufferReader, ssdReader);
+//        ssd.processCommand(new String[]{"R", "10"});
+//
+//        verify(bufferReader).read(testLBA);
+//        verify(ssdReader, never()).read(anyInt());
+//    }
+//
+//    @Test
+//    void 버퍼에_없는_경우_nand파일에서_읽기_성공() throws Exception {
+//        int testLBA = 20;
+//        doReturn("").when(bufferReader).read(testLBA);
+//
+//        Ssd ssd = new Ssd(bufferReader, ssdReader);
+//        ssd.processCommand(new String[]{"R", "20"});
+//
+//        verify(bufferReader).read(testLBA);
+//        verify(ssdReader).read(testLBA);
+//    }
+
 }
