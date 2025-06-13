@@ -38,6 +38,8 @@ public class Ssd {
                 processReadCommand(command);
             } else if (command.getType() == CommandType.ERASE) {
                 processEraseCommand(command);
+            } else if (command.getType() ==CommandType.FLUSH) {
+                processFlushCommand(command);
             }
         } catch (Exception e) {
             // ignore
