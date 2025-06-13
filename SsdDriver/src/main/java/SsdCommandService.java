@@ -8,7 +8,7 @@ public class SsdCommandService {
     static {
         commandMap.put(CommandType.WRITE, new SsdWriter());
         commandMap.put(CommandType.ERASE, new SsdEraser());
-        commandMap.put(CommandType.READ, new SsdReader());
+        commandMap.put(CommandType.READ, new BufferReader(new SsdReader()));
         commandMap.put(CommandType.FLUSH, new SsdFlush());
     }
 

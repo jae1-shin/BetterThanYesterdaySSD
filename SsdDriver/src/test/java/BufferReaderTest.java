@@ -4,19 +4,32 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BufferReaderTest {
     private final String bufferPath = "buffer";
-    private final BufferReader reader = new BufferReader();
+    private BufferReader reader;
 
     @BeforeEach
     void setup() throws Exception {
+        SsdReader ssdReader = new SsdReader();
+        reader = new BufferReader(ssdReader);
+        writeDefaultValue();
+
         createFile("1_W_10_0xAAAA_test");
         createFile("2_E_10_2_test");
         createFile("3_W_11_0xBBBB_test");
+    }
+
+    void writeDefaultValue() throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append(SsdConstants.DEFAULT_DATA.repeat(100));
+        Files.writeString(Paths.get(SsdConstants.SSD_NAND_FILE), sb.toString());
     }
 
     void createFile(String fileName) throws Exception {
@@ -27,10 +40,14 @@ class BufferReaderTest {
     }
 
     @Test
-    void testReadLBA() {
+    void 버퍼에서_먼저_읽기_성공() {
         assertEquals("0x00000000", reader.read(10));
         assertEquals("0xBBBB", reader.read(11));
-        assertEquals("", reader.read(12));
+    }
+
+    @Test
+    void 버퍼에_없으면_SSD에서_읽기_성공() {
+        assertEquals(SsdConstants.DEFAULT_DATA, reader.read(12));
     }
 
     @AfterEach
