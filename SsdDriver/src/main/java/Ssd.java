@@ -4,7 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 public class Ssd {
     public static final String DATA_FORMAT = "^0x[0-9A-Fa-f]{8}$";
@@ -31,13 +30,19 @@ public class Ssd {
             return;
         }
 
-        if (isWriteCommand(args)) {
-            processWriteCommand(args);
-        } else if (isReadCommand(args)) {
-            processReadCommand(args);
-        } else if (isEraseCommand(args)) {
-            processEraseCommand(args);
+        try {
+            Command command = BufferUtil.getCommandFromSsdArgs(args);
+            if (command.getType() == CommandType.WRITE) {
+                processWriteCommand(command);
+            } else if (command.getType() == CommandType.READ) {
+                processReadCommand(command);
+            } else if (command.getType() == CommandType.ERASE) {
+                processEraseCommand(command);
+            }
+        } catch (Exception e) {
+            // ignore
         }
+
     }
 
     void initFiles() throws IOException {
@@ -72,38 +77,20 @@ public class Ssd {
         Files.writeString(Paths.get(SsdConstants.SSD_NAND_FILE), (SsdConstants.DEFAULT_DATA).repeat(LBA_MAX_COUNT));
     }
 
-    private void processWriteCommand(String[] args) {
-        SsdWriter writer = new SsdWriter();
-
-        int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
-        try {
-            writer.write(LBA, args[ARGUMENT_DATA_INDEX]);
-        } catch (IOException e) {
-            // ignore
-        }
+    private void processWriteCommand(Command command) throws IOException {
+        SsdCommandService.execute(command);
     }
 
-    private void processReadCommand(String[] args) {
-        SsdReader reader = new SsdReader();
-
-        int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
-        try {
-            reader.read(LBA);
-        } catch (IOException e) {
-            // ignore
-        }
+    private void processReadCommand(Command command) throws IOException {
+        SsdCommandService.execute(command);
     }
 
-    private void processEraseCommand(String[] args) {
-        SsdEraser eraser = new SsdEraser();
+    private void processEraseCommand(Command command) throws IOException {
+        SsdCommandService.execute(command);
+    }
 
-        int LBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]);
-        int size = Integer.parseInt(args[ARGUMENT_DATA_INDEX]);
-        try {
-            eraser.erase(LBA, size);
-        } catch (IOException e) {
-            // ignore
-        }
+    private void processFlushCommand(Command command) throws IOException {
+        SsdCommandService.execute(command);
     }
 
     private boolean isWriteCommand(String[] args) {

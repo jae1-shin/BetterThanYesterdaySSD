@@ -2,10 +2,15 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class SsdWriter {
+public class SsdWriter implements SsdCommand {
 
     public static final String DEFAULT_DATA = "0x00000000";
     public static final int MAX_DATA_COUNT = 100;
+
+    @Override
+    public void execute(Command command) throws IOException {
+        write(command.getLba(), command.getData());
+    }
 
     public void write(int address, String data) throws IOException {
         checkFileAndWriteDefaultData();

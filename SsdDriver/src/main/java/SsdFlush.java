@@ -6,7 +6,12 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class SsdFlush {
+public class SsdFlush implements SsdCommand {
+
+    @Override
+    public void execute(Command command) throws IOException {
+        plush();
+    }
 
     public void plush() throws IOException {
         List<Command> commandList = BufferUtil.getCommandList();

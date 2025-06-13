@@ -1,8 +1,14 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
-public class BufferReader {
+public class BufferReader implements SsdCommand {
+
+    @Override
+    public void execute(Command command) throws IOException {
+        read(command.getLba());
+    }
 
     public String read(int targetLBA) {
         List<Command> commandList = BufferUtil.getCommandList();
@@ -27,5 +33,4 @@ public class BufferReader {
     private boolean isTargetLBAWrited(int targetLBA, Command cmd) {
         return cmd.type == CommandType.WRITE && cmd.lba == targetLBA;
     }
-
 }
