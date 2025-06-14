@@ -2,7 +2,6 @@ package command.buffer;
 
 import command.context.CommandContext;
 import command.impl.ReadCommand;
-import command.CommandType;
 import common.SSDConstants;
 import common.util.BufferUtil;
 
@@ -13,7 +12,7 @@ public class ReadBufferCommand extends ReadCommand {
 
     @Override
     protected void read(int targetLBA) throws IOException {
-        List<CommandContext> commandContextList = BufferUtil.getCommandList();
+        List<CommandContext> commandContextList = BufferUtil.getCommandContextList();
 
         for (int i = commandContextList.size() - 1; i >= 0; i--) {
             CommandContext cmd = commandContextList.get(i);
@@ -32,11 +31,11 @@ public class ReadBufferCommand extends ReadCommand {
     }
 
     private boolean isTargetLBAErased(int targetLBA, CommandContext cmd) {
-        return cmd.getType() == CommandType.ERASE &&
+        return cmd.isErase() &&
                 targetLBA >= cmd.getLba() && targetLBA < (cmd.getLba() + cmd.getSize());
     }
 
     private boolean isTargetLBAWrited(int targetLBA, CommandContext cmd) {
-        return cmd.getType() == CommandType.WRITE && cmd.getLba() == targetLBA;
+        return cmd.isWirte() && cmd.getLba() == targetLBA;
     }
 }

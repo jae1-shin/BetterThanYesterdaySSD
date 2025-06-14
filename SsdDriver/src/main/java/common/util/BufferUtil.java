@@ -9,11 +9,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class BufferUtil {
 
-    public static List<CommandContext> getCommandList() {
+    public static List<CommandContext> getCommandContextList() {
         File bufferDir = new File(SSDConstants.BUFFER_PATH);
         File[] files = bufferDir.listFiles();
         if (files == null) return Collections.emptyList();
@@ -21,7 +20,7 @@ public class BufferUtil {
         List<File> sortedFiles = Arrays.stream(files)
                 .filter(f -> !f.getName().contains("empty"))
                 .sorted(Comparator.comparing(File::getName))
-                .collect(Collectors.toList());
+                .toList();
 
         List<CommandContext> commandContextList = new ArrayList<>();
         for (File file : sortedFiles) {

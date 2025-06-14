@@ -31,14 +31,11 @@ public class BufferOptimizer {
         getBufferFromDisk();
         flushBufferIfNeeded();
 
-        if (newCmd.getType() == CommandType.WRITE) {
+        if (newCmd.isWirte()) {
             applyIgnoreWrite(newCmd);
-        } else {
+        } else if (newCmd.isErase()) {
             applyIgnoreErase(newCmd);
-        }
-
-        if (newCmd.getType() == CommandType.ERASE) {
-            applyMergeErase(newCmd);
+            applyMergeErase();
         }
 
         BufferUtil.rewriteBuffer(buffer);
@@ -52,11 +49,11 @@ public class BufferOptimizer {
     }
 
     private void getBufferFromDisk() {
-        buffer = BufferUtil.getCommandList();
+        buffer = BufferUtil.getCommandContextList();
     }
 
     private void applyIgnoreWrite(CommandContext newCmd) {
-        buffer.removeIf(cmd -> cmd.getType() == CommandType.WRITE && cmd.getLba() == newCmd.getLba());
+        buffer.removeIf(cmd -> cmd.isWirte() && cmd.getLba() == newCmd.getLba());
         buffer.add(newCmd);
     }
 
@@ -65,10 +62,10 @@ public class BufferOptimizer {
         int newEnd = newCmd.getLba() + newCmd.getSize() - 1;
 
         buffer.removeIf(cmd -> {
-            if (cmd.getType() == CommandType.WRITE) {
+            if (cmd.isWirte()) {
                 // Write 명령어의 LBA가 Erase 범위에 포함되면 삭제
                 return cmd.getLba() >= newStart && cmd.getLba() <= newEnd;
-            } else if (cmd.getType() == CommandType.ERASE) {
+            } else if (cmd.isErase()) {
                 // 기존 Erase 명령어 범위가 새 Erase 범위와 겹치면 삭제
                 int start = cmd.getLba();
                 int end = cmd.getLba() + cmd.getSize() - 1;
@@ -80,14 +77,14 @@ public class BufferOptimizer {
         buffer.add(newCmd);
     }
 
-    private void applyMergeErase(CommandContext newCmd) {
+    private void applyMergeErase() {
         if (buffer.size() < 2) return;
 
         ListIterator<CommandContext> iter = buffer.listIterator(buffer.size());
         CommandContext current = iter.previous();
         CommandContext previous = iter.previous();
 
-        if (current.getType() == CommandType.ERASE && previous.getType() == CommandType.ERASE) {
+        if (current.isErase() && previous.isErase()) {
             int start1 = previous.getLba();
             int end1 = previous.getLba() + previous.getSize() - 1;
             int start2 = current.getLba();

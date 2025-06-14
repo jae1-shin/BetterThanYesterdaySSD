@@ -1,6 +1,7 @@
 package command.impl;
 
 import command.Command;
+import command.CommandService;
 import command.context.CommandContext;
 import command.CommandType;
 import common.util.BufferUtil;
@@ -16,13 +17,13 @@ public class FlushCommand implements Command {
     }
 
     private void flush() throws IOException {
-        List<CommandContext> commandContextList = BufferUtil.getCommandList();
+        WriteCommand writeCommand = new WriteCommand();
+        EraseCommand eraseCommand = new EraseCommand();
+        List<CommandContext> commandContextList = BufferUtil.getCommandContextList();
         for (CommandContext cmd : commandContextList) {
-            if (cmd.getType() == CommandType.WRITE) {
-                WriteCommand writeCommand = new WriteCommand();
+            if (cmd.isWirte()) {
                 writeCommand.execute(cmd);
-            } else if (cmd.getType() == CommandType.ERASE) {
-                EraseCommand eraseCommand = new EraseCommand();
+            } else if (cmd.isErase()) {
                 eraseCommand.execute(cmd);
             }
         }

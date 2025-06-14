@@ -32,4 +32,12 @@ public abstract class CommandContext {
     public String getCommandFullName() {
         return commandFullName;
     }
+
+    public boolean isWirte() {
+        return type == CommandType.WRITE;
+    }
+
+    public boolean isErase() {
+        return type == CommandType.ERASE;
+    }
 }
