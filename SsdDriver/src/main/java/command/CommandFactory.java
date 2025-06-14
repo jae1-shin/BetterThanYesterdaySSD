@@ -1,8 +1,8 @@
 package command;
 
-import command.buffer.BufferEraseCommand;
-import command.buffer.BufferReadCommand;
-import command.buffer.BufferWriteCommand;
+import command.buffer.EraseBufferCommand;
+import command.buffer.ReadBufferCommand;
+import command.buffer.WriteBufferCommand;
 import command.context.CommandContext;
 import command.impl.EmptyCommand;
 import command.impl.FlushCommand;
@@ -16,9 +16,9 @@ public class CommandFactory {
     private static final Map<CommandType, Command> commandMap = new EnumMap<>(CommandType.class);
 
     static {
-        commandMap.put(CommandType.WRITE, new BufferWriteCommand());
-        commandMap.put(CommandType.ERASE, new BufferEraseCommand());
-        commandMap.put(CommandType.READ, new BufferReadCommand(new ReadCommand()));
+        commandMap.put(CommandType.WRITE, new WriteBufferCommand());
+        commandMap.put(CommandType.ERASE, new EraseBufferCommand());
+        commandMap.put(CommandType.READ, new ReadBufferCommand(new ReadCommand()));
         commandMap.put(CommandType.FLUSH, new FlushCommand());
         commandMap.put(CommandType.EMPTY, new EmptyCommand());
     }
