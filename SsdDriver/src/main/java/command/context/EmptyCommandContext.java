@@ -2,10 +2,9 @@ package command.context;
 
 import command.CommandType;
 
-public class EmptyCommandContext extends CommandContext{
+public class EmptyCommandContext extends CommandContext {
 
-    protected EmptyCommandContext() {
+    public EmptyCommandContext() {
         super(CommandType.EMPTY);
-        this.commandFullName = "empty";
     }
 }

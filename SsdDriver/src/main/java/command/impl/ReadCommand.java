@@ -17,7 +17,7 @@ public class ReadCommand implements Command {
         read(commandContext.getLba());
     }
 
-    public String read(int LBA) throws IOException {
+    protected void read(int LBA) throws IOException {
         long offset = (long) LBA * SSDConstants.BLOCK_SIZE;
 
         try (RandomAccessFile raf = new RandomAccessFile(SSDConstants.SSD_NAND_FILE, "r")) {
@@ -27,14 +27,19 @@ public class ReadCommand implements Command {
             int bytesRead = raf.read(buffer);
 
             String readStr = new String(buffer, 0, bytesRead);
+            writeOutput(readStr);
+        }
+    }
 
+    protected void writeOutput(String readStr) {
+        try {
             Files.writeString(Paths.get(SSDConstants.OUTPUT_FILE_PATH),
                     readStr,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING
             );
-
-            return readStr;
+        } catch (IOException e) {
+            // ignore
         }
     }
 }

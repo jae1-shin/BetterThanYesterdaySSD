@@ -1,5 +1,7 @@
+import command.buffer.ReadBufferCommand;
 import command.context.EraseCommandContext;
 import command.context.FlushCommandContext;
+import command.context.ReadCommandContext;
 import command.context.WriteCommandContext;
 import command.impl.EraseCommand;
 import command.impl.FlushCommand;
@@ -29,7 +31,7 @@ class SSDActionTest {
     public static final String WRITE_TEST_VALUE = "0x1234ABCD";
     public static final int TEST_LBA_ADDRESS = 3;
 
-    ReadCommand readCommand = new ReadCommand();
+    ReadCommand readBufferCommand = new ReadBufferCommand();
     WriteCommand writeCommand = new WriteCommand();
     EraseCommand eraseCommand = new EraseCommand();
 
@@ -50,20 +52,20 @@ class SSDActionTest {
         try {
             for (int i = 0; i < 5; i++) {
                 writeCommand.execute(new WriteCommandContext(i, WRITE_TEST_VALUE));
-                readCommand.read(i);
+                readBufferCommand.execute(new ReadCommandContext(i));
                 String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(WRITE_TEST_VALUE);
             }
 
             eraseCommand.execute(new EraseCommandContext(1, 3));
             for (int i : new int[]{1, 2, 3}) {
-                readCommand.read(i);
+                readBufferCommand.execute(new ReadCommandContext(i));
                 String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(SSDConstants.DEFAULT_DATA);
             }
 
             for (int i : new int[]{0, 4}) {
-                readCommand.read(i);
+                readBufferCommand.execute(new ReadCommandContext(i));
                 String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(WRITE_TEST_VALUE);
             }
@@ -78,7 +80,7 @@ class SSDActionTest {
     @ValueSource(ints = {0, 1, 2})
     void 파라미터에_해당하는_데이터_읽기_성공(int LBA) throws IOException {
         writeSampleData();
-        readCommand.read(LBA);
+        readBufferCommand.execute(new ReadCommandContext(LBA));
 
         int start = LBA * 10;
         int end = Math.min(start + 10, SAMPLE_DATA.length());
@@ -92,7 +94,7 @@ class SSDActionTest {
     @ValueSource(ints = {5, 50, 99})
     void 기록이_한적이_없는_LBA를_읽으면_0X00000000으로_읽힌다(int LBA) throws IOException {
         writeSampleData();
-        readCommand.read(LBA);
+        readBufferCommand.execute(new ReadCommandContext(LBA));
 
         String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
         assertThat(output).isEqualTo(DEFAULT_VALUE);

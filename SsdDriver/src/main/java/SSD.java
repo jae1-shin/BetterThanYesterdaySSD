@@ -1,5 +1,4 @@
-import command.context.CommandContext;
-import command.CommandFactory;
+import command.CommandService;
 import command.context.CommandContextFactory;
 import common.SSDConstants;
 import common.util.BufferUtil;
@@ -26,7 +25,7 @@ public class SSD {
     public static final int ARGUMENT_MAX_COUNT = 3;
 
     public void processCommand(String[] args) {
-        try  {
+        try {
             initFiles();
         } catch (IOException e) {
             // ignore
@@ -38,7 +37,7 @@ public class SSD {
         }
 
         try {
-            CommandFactory.execute(CommandContextFactory.getCommandContext(args));
+            CommandService.execute(CommandContextFactory.getCommandContext(args));
         } catch (Exception e) {
             // ignore
         }
@@ -102,7 +101,8 @@ public class SSD {
 
     private boolean isValidDataForErase(String[] args) {
         if (isReadCommand(args) || isWriteCommand(args) || isFlushCommand(args)) return true;
-        if (Integer.parseInt(args[ARGUMENT_DATA_INDEX]) < 0 || Integer.parseInt(args[ARGUMENT_DATA_INDEX]) > 10) return false;
+        if (Integer.parseInt(args[ARGUMENT_DATA_INDEX]) < 0 || Integer.parseInt(args[ARGUMENT_DATA_INDEX]) > 10)
+            return false;
         int lastLBA = Integer.parseInt(args[ARGUMENT_ADDRESS_INDEX]) + Integer.parseInt(args[ARGUMENT_DATA_INDEX]) - 1;
         return isEraseCommand(args) && isValidAddressRange(Integer.toString(lastLBA));
     }

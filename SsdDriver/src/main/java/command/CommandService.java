@@ -4,21 +4,19 @@ import command.buffer.EraseBufferCommand;
 import command.buffer.ReadBufferCommand;
 import command.buffer.WriteBufferCommand;
 import command.context.CommandContext;
-import command.impl.EmptyCommand;
-import command.impl.FlushCommand;
-import command.impl.ReadCommand;
+import command.impl.*;
 
 import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class CommandFactory {
+public class CommandService {
     private static final Map<CommandType, Command> commandMap = new EnumMap<>(CommandType.class);
 
     static {
         commandMap.put(CommandType.WRITE, new WriteBufferCommand());
         commandMap.put(CommandType.ERASE, new EraseBufferCommand());
-        commandMap.put(CommandType.READ, new ReadBufferCommand(new ReadCommand()));
+        commandMap.put(CommandType.READ, new ReadBufferCommand());
         commandMap.put(CommandType.FLUSH, new FlushCommand());
         commandMap.put(CommandType.EMPTY, new EmptyCommand());
     }

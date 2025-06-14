@@ -1,5 +1,6 @@
 import command.context.CommandContext;
 import command.context.EraseCommandContext;
+import command.context.ReadCommandContext;
 import command.context.WriteCommandContext;
 import command.impl.ReadCommand;
 import command.impl.WriteCommand;
@@ -91,7 +92,7 @@ class SSDTest {
             String expected = "0x12345678";
             for (int i = 0; i < 5; i++) {
                 writeCommand.execute(new WriteCommandContext(i, expected));
-                readCommand.read(i);
+                readCommand.execute(new ReadCommandContext(i));
                 String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(expected);
             }
