@@ -27,6 +27,6 @@ public class Flusher implements Command {
             }
         }
 
-        BufferUtil.clearBuffer();
+        BufferUtil.initBuffer();
     }
 }

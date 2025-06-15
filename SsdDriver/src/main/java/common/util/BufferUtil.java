@@ -68,6 +68,15 @@ public class BufferUtil {
         return new CommandContext(0, CommandType.EMPTY, 0, 0, null, null);
     }
 
+    public static void initBuffer() {
+        try {
+            deleteBufferDirAndFiles();
+            checkAndCreateBuffer();
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
     public static void rewriteBuffer(List<CommandContext> commandContexts) {
         deleteBufferDirAndFiles();
         try {
@@ -87,15 +96,6 @@ public class BufferUtil {
         }
     }
 
-    public static void clearBuffer() {
-        try {
-            deleteBufferDirAndFiles();
-            checkAndCreateBuffer();
-        } catch (Exception e) {
-            // ignore
-        }
-    }
-
     public static void deleteBufferDirAndFiles() {
         File bufferDir = new File(SSDConstants.BUFFER_PATH);
 
@@ -112,7 +112,7 @@ public class BufferUtil {
         BufferUtil.checkAndCreateEmptyBufferFiles(bufferDir);
     }
 
-    public static File checkAndCreateBufferDir() {
+    private static File checkAndCreateBufferDir() {
         File bufferDir = new File(SSDConstants.BUFFER_PATH);
         if (!bufferDir.exists()) {
             bufferDir.mkdirs();
@@ -120,7 +120,7 @@ public class BufferUtil {
         return bufferDir;
     }
 
-    public static void checkAndCreateEmptyBufferFiles(File bufferDir) throws IOException {
+    private static void checkAndCreateEmptyBufferFiles(File bufferDir) throws IOException {
         for (int bufferNum = 1; bufferNum <= SSDConstants.BUFFER_SIZE; bufferNum++) {
             if (existBufferFile(bufferDir, bufferNum)) continue;
             Files.writeString(Paths.get(bufferDir.getPath(), getBufferDefaultFileName(bufferNum)), "");
