@@ -30,7 +30,7 @@ public class BufferOptimizer {
         getBufferFromDisk();
         flushBufferIfNeeded();
 
-        if (newCmd.isWirte()) {
+        if (newCmd.isWrite()) {
             applyIgnoreWrite(newCmd);
         } else if (newCmd.isErase()) {
             applyIgnoreErase(newCmd);
@@ -52,8 +52,36 @@ public class BufferOptimizer {
     }
 
     private void applyIgnoreWrite(CommandContext newCmd) {
-        buffer.removeIf(cmd -> cmd.isWirte() && cmd.getLba() == newCmd.getLba());
+        buffer.removeIf(cmd -> cmd.isWrite() && cmd.getLba() == newCmd.getLba());
+
+        // Erase 범위가 모두 Write로 OverWrite 되었으면 Erase 삭제
+        ListIterator<CommandContext> it = buffer.listIterator();
+        while (it.hasNext()) {
+            CommandContext cmd = it.next();
+            if (!cmd.isErase()) continue;
+            if (isEraseFullyOverwritten(cmd, newCmd)) {
+                it.remove();
+            }
+        }
+
         buffer.add(newCmd);
+    }
+
+    private boolean isEraseFullyOverwritten(CommandContext eraseCmd, CommandContext newCmd) {
+        int start = eraseCmd.getLba();
+        int end = start + eraseCmd.getSize() - 1;
+
+        for (int lba = start; lba <= end; lba++) {
+            if (!isLbaOverwritten(lba, newCmd)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isLbaOverwritten(int lba, CommandContext newCmd) {
+        if (newCmd.isWrite() && newCmd.getLba() == lba) return true;
+        return buffer.stream().anyMatch(cmd -> cmd.isWrite() && cmd.getLba() == lba);
     }
 
     private void applyIgnoreErase(CommandContext newCmd) {
@@ -61,7 +89,7 @@ public class BufferOptimizer {
         int newEnd = newCmd.getLba() + newCmd.getSize() - 1;
 
         buffer.removeIf(cmd -> {
-            if (cmd.isWirte()) {
+            if (cmd.isWrite()) {
                 // Write 명령어의 LBA가 Erase 범위에 포함되면 삭제
                 return cmd.getLba() >= newStart && cmd.getLba() <= newEnd;
             } else if (cmd.isErase()) {

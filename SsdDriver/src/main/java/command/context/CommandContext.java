@@ -33,11 +33,15 @@ public abstract class CommandContext {
         return commandFullName;
     }
 
-    public boolean isWirte() {
+    public boolean isWrite() {
         return type == CommandType.WRITE;
     }
 
     public boolean isErase() {
         return type == CommandType.ERASE;
+    }
+
+    public String toString() {
+        return commandFullName;
     }
 }

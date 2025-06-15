@@ -142,12 +142,10 @@ class BufferOptimizerTest {
         bufferOptimizer.processCommand(new WriteCommandContext(11, "0x12345678"));
         bufferOptimizer.processCommand(new WriteCommandContext(10, "0x12345678"));
 
-        assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(3);
+        assertThat(bufferOptimizer.getBuffer().size()).isEqualTo(2);
 
-        assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("E_10_2");
-        assertThat(bufferOptimizer.getBuffer().get(1).getCommandFullName()).isEqualTo("W_11_0x12345678");
-        assertThat(bufferOptimizer.getBuffer().get(2).getCommandFullName()).isEqualTo("W_10_0x12345678");
-
+        assertThat(bufferOptimizer.getBuffer().get(0).getCommandFullName()).isEqualTo("W_11_0x12345678");
+        assertThat(bufferOptimizer.getBuffer().get(1).getCommandFullName()).isEqualTo("W_10_0x12345678");
     }
 
     void deleteBufferFolder() {

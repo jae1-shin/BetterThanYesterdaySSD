@@ -36,6 +36,6 @@ public class ReadBufferCommand extends ReadCommand {
     }
 
     private boolean isTargetLBAWrited(int targetLBA, CommandContext cmd) {
-        return cmd.isWirte() && cmd.getLba() == targetLBA;
+        return cmd.isWrite() && cmd.getLba() == targetLBA;
     }
 }

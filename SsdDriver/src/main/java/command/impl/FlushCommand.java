@@ -1,9 +1,7 @@
 package command.impl;
 
 import command.Command;
-import command.CommandService;
 import command.context.CommandContext;
-import command.CommandType;
 import common.util.BufferUtil;
 
 import java.io.IOException;
@@ -21,7 +19,7 @@ public class FlushCommand implements Command {
         EraseCommand eraseCommand = new EraseCommand();
         List<CommandContext> commandContextList = BufferUtil.getCommandContextList();
         for (CommandContext cmd : commandContextList) {
-            if (cmd.isWirte()) {
+            if (cmd.isWrite()) {
                 writeCommand.execute(cmd);
             } else if (cmd.isErase()) {
                 eraseCommand.execute(cmd);
