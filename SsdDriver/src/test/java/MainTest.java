@@ -185,7 +185,6 @@ class MainTest {
         }
     }
 
-    // TODO: read
     @Test
     void 읽기_args_정상_테스트() {
         try {
