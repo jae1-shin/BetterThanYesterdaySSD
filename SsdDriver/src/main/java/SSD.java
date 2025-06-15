@@ -47,7 +47,7 @@ public class SSD {
     void initFiles() throws IOException {
         checkAndClearOutputFile();
         checkAndCreateNandFile();
-        checkAndCreateBuffer();
+        BufferUtil.checkAndCreateBuffer();
     }
 
     private void checkAndClearOutputFile() throws IOException {
@@ -62,11 +62,6 @@ public class SSD {
 
     private void writeDefaultData() throws IOException {
         Files.writeString(Paths.get(SSDConstants.SSD_NAND_FILE), (SSDConstants.DEFAULT_DATA).repeat(LBA_MAX_COUNT));
-    }
-
-    private void checkAndCreateBuffer() throws IOException {
-        File bufferDir = BufferUtil.checkAndCreateBufferDir();
-        BufferUtil.checkAndCreateEmptyBufferFiles(bufferDir);
     }
 
     private boolean isWriteCommand(String[] args) {

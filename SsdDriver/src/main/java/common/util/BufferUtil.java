@@ -48,25 +48,6 @@ public class BufferUtil {
         return commandContextList;
     }
 
-    public static void rewriteBuffer(List<CommandContext> commandContexts) {
-        deleteBufferDirAndFiles();
-        try {
-            File bufferDir = checkAndCreateBufferDir();
-            createBufferFiles(commandContexts, bufferDir);
-            checkAndCreateEmptyBufferFiles(bufferDir);
-        } catch (IOException e) {
-            // ignore
-        }
-    }
-
-    private static void createBufferFiles(List<CommandContext> commandContexts, File bufferDir) throws IOException {
-        int order = 1;
-        for (CommandContext commandContext : commandContexts) {
-            String fileName = String.format("%d_%s", order++, commandContext.getCommandFullName());
-            Files.writeString(Paths.get(bufferDir.getPath(), fileName), "");
-        }
-    }
-
     public static CommandContext getCommandFromSsdArgs(String[] parts) throws Exception {
         String commandFullName = String.join("_", Arrays.copyOfRange(parts, 0, parts.length));
         String cmdType = parts[0];
@@ -87,12 +68,29 @@ public class BufferUtil {
         return new CommandContext(0, CommandType.EMPTY, 0, 0, null, null);
     }
 
-  public static void clearBuffer() {
+    public static void rewriteBuffer(List<CommandContext> commandContexts) {
+        deleteBufferDirAndFiles();
+        try {
+            File bufferDir = checkAndCreateBufferDir();
+            createBufferFiles(commandContexts, bufferDir);
+            checkAndCreateEmptyBufferFiles(bufferDir);
+        } catch (IOException e) {
+            // ignore
+        }
+    }
+
+    private static void createBufferFiles(List<CommandContext> commandContexts, File bufferDir) throws IOException {
+        int order = 1;
+        for (CommandContext commandContext : commandContexts) {
+            String fileName = String.format("%d_%s", order++, commandContext.getCommandFullName());
+            Files.writeString(Paths.get(bufferDir.getPath(), fileName), "");
+        }
+    }
+
+    public static void clearBuffer() {
         try {
             deleteBufferDirAndFiles();
-
-            File bufferDir = checkAndCreateBufferDir();
-            checkAndCreateEmptyBufferFiles(bufferDir);
+            checkAndCreateBuffer();
         } catch (Exception e) {
             // ignore
         }
@@ -107,6 +105,11 @@ public class BufferUtil {
             }
             bufferDir.delete();
         }
+    }
+
+    public static void checkAndCreateBuffer() throws IOException {
+        File bufferDir = BufferUtil.checkAndCreateBufferDir();
+        BufferUtil.checkAndCreateEmptyBufferFiles(bufferDir);
     }
 
     public static File checkAndCreateBufferDir() {
