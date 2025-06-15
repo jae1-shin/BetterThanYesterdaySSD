@@ -1,4 +1,4 @@
-import command.buffer.ReadBufferCommand;
+import command.impl.buffer.ReadBufferCommand;
 import command.context.EraseCommandContext;
 import command.context.FlushCommandContext;
 import command.context.ReadCommandContext;

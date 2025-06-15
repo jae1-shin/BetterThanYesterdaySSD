@@ -1,10 +1,9 @@
-package command.buffer;
+package command.impl.buffer;
 
 import command.context.CommandContext;
 import command.context.EraseCommandContext;
 import command.context.FlushCommandContext;
 import command.impl.FlushCommand;
-import command.CommandType;
 import common.util.BufferUtil;
 
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class BufferOptimizer {
-    private static BufferOptimizer controller = null;
+    private static BufferOptimizer optimizer = null;
     private List<CommandContext> buffer = Collections.emptyList();
 
     private BufferOptimizer() {
@@ -21,10 +20,10 @@ public class BufferOptimizer {
     }
 
     public static BufferOptimizer getInstance() {
-        if (controller == null) {
-            controller = new BufferOptimizer();
+        if (optimizer == null) {
+            optimizer = new BufferOptimizer();
         }
-        return controller;
+        return optimizer;
     }
 
     public void processCommand(CommandContext newCmd) throws IOException {
@@ -42,7 +41,7 @@ public class BufferOptimizer {
     }
 
     private void flushBufferIfNeeded() throws IOException {
-        if (buffer.size() != 5) return;
+        if (buffer.size() < 5) return;
         FlushCommand flushCommand = new FlushCommand();
         flushCommand.execute(new FlushCommandContext());
         getBufferFromDisk();

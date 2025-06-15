@@ -1,8 +1,8 @@
 package command;
 
-import command.buffer.EraseBufferCommand;
-import command.buffer.ReadBufferCommand;
-import command.buffer.WriteBufferCommand;
+import command.impl.buffer.EraseBufferCommand;
+import command.impl.buffer.ReadBufferCommand;
+import command.impl.buffer.WriteBufferCommand;
 import command.context.CommandContext;
 import command.impl.*;
 

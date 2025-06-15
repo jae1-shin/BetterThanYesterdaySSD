@@ -1,6 +1,5 @@
-import command.buffer.ReadBufferCommand;
+import command.impl.buffer.ReadBufferCommand;
 import command.context.ReadCommandContext;
-import command.impl.ReadCommand;
 import common.SSDConstants;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

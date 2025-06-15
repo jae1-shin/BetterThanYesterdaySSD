@@ -1,6 +1,4 @@
-import command.context.CommandContext;
-import command.buffer.BufferOptimizer;
-import command.CommandType;
+import command.impl.buffer.BufferOptimizer;
 import command.context.EraseCommandContext;
 import command.context.WriteCommandContext;
 import org.junit.jupiter.api.BeforeEach;

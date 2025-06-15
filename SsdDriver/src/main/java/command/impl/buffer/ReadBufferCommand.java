@@ -1,4 +1,4 @@
-package command.buffer;
+package command.impl.buffer;
 
 import command.context.CommandContext;
 import command.impl.ReadCommand;
