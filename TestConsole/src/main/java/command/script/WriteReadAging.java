@@ -1,35 +1,35 @@
-package script;
-
-import command.Command;
-import command.ConsoleService;
+package command.script;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class Script3 extends Command {
+import command.common.Command;
+import command.common.CommandResult;
+import command.common.ConsoleService;
+
+//3_WriteReadAging
+public class WriteReadAging extends TestScript {
     public static final int LOOP_COUNT = 200;
     public static final int[] targetLBA = new int[]{0, 99};
 
-    public Script3(ConsoleService service) {
+    public WriteReadAging(ConsoleService service) {
         super(service);
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public CommandResult doExecute(String[] args) {
         for (int i = 0; i < LOOP_COUNT; i++) {
             Map<Integer, String> writeData = createWriteData();
 
             writeAtTargetLBA(writeData);
 
             if (!readCompareTargetLBA(writeData)) {
-                System.out.println("FAIL");
-                return false;
+                return CommandResult.scriptFail(FAIL_FLAG);
             }
         }
 
-        System.out.println("PASS");
-        return true;
+        return CommandResult.pass("PASS");
     }
 
     private Map<Integer, String> createWriteData() {

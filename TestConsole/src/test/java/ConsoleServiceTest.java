@@ -1,6 +1,5 @@
-import command.ConsoleService;
+import command.common.ConsoleService;
 import jdk.jfr.Description;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -17,7 +16,6 @@ class ConsoleServiceTest {
 
     @Test
     @Description("실제 ssd.jar 테스트입니다.")
-    @Disabled
     void erase_실제ssd_jar_지우기_테스트() {
         ConsoleService cs = new ConsoleService();
 

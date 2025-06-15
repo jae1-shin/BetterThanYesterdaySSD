@@ -1,9 +1,12 @@
-package script;
+package command.script;
 
-import command.Command;
-import command.ConsoleService;
+import command.common.Command;
+import command.common.CommandResult;
+import command.common.ConsoleService;
 
-public class Script4 extends Command {
+//4_EraseAndWriteAging
+
+public class EraseAndWriteAging extends TestScript {
     public static final int LOOP_COUNT = 30;
     public static final String WRITE_VALUE = "0x11111111";
     public static final String OVERWRITE_VALUE = "0x22222222";
@@ -11,12 +14,12 @@ public class Script4 extends Command {
     public static final int BASE_COUNT = 3;
     public static final int EXCEPT_COUNT = 2;
 
-    public Script4(ConsoleService service) {
+    public EraseAndWriteAging(ConsoleService service) {
         super(service);
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public CommandResult doExecute(String[] args) {
         service.erase_range(0, 2);
 
         for (int i = 0; i < LOOP_COUNT; i++) {
@@ -30,15 +33,13 @@ public class Script4 extends Command {
                 for (int LBA = startLBA; LBA < startLBA + count; LBA++) {
                     service.erase(LBA, 1);
                     if (!service.readCompare(LBA, ERASED_VALUE)) {
-                        System.out.println("FAIL");
-                        return false;
+                        return CommandResult.scriptFail(FAIL_FLAG);
                     }
                 }
             }
         }
 
-        System.out.println("PASS");
-        return true;
+        return CommandResult.pass(PASS_FLAG);
     }
 }
 
