@@ -1,7 +1,12 @@
-import command.impl.Eraser;
-import command.impl.Flusher;
-import command.impl.Reader;
-import command.impl.Writer;
+import command.impl.buffer.ReadBufferCommand;
+import command.context.EraseCommandContext;
+import command.context.FlushCommandContext;
+import command.context.ReadCommandContext;
+import command.context.WriteCommandContext;
+import command.impl.EraseCommand;
+import command.impl.FlushCommand;
+import command.impl.ReadCommand;
+import command.impl.WriteCommand;
 import common.SSDConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -26,9 +31,9 @@ class SSDActionTest {
     public static final String WRITE_TEST_VALUE = "0x1234ABCD";
     public static final int TEST_LBA_ADDRESS = 3;
 
-    Reader reader = new Reader();
-    Writer writer = new Writer();
-    Eraser eraser = new Eraser();
+    ReadCommand readBufferCommand = new ReadBufferCommand();
+    WriteCommand writeCommand = new WriteCommand();
+    EraseCommand eraseCommand = new EraseCommand();
 
     @BeforeEach
     void setUp() {
@@ -46,21 +51,21 @@ class SSDActionTest {
     void 다섯개_write_직후_세개_일부_erase_ssdEraserTest_erase() {
         try {
             for (int i = 0; i < 5; i++) {
-                writer.write(i, WRITE_TEST_VALUE);
-                reader.read(i);
+                writeCommand.execute(new WriteCommandContext(i, WRITE_TEST_VALUE));
+                readBufferCommand.execute(new ReadCommandContext(i));
                 String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(WRITE_TEST_VALUE);
             }
 
-            eraser.erase(1, 3);
+            eraseCommand.execute(new EraseCommandContext(1, 3));
             for (int i : new int[]{1, 2, 3}) {
-                reader.read(i);
+                readBufferCommand.execute(new ReadCommandContext(i));
                 String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(SSDConstants.DEFAULT_DATA);
             }
 
             for (int i : new int[]{0, 4}) {
-                reader.read(i);
+                readBufferCommand.execute(new ReadCommandContext(i));
                 String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
                 assertThat(output).isEqualTo(WRITE_TEST_VALUE);
             }
@@ -75,7 +80,7 @@ class SSDActionTest {
     @ValueSource(ints = {0, 1, 2})
     void 파라미터에_해당하는_데이터_읽기_성공(int LBA) throws IOException {
         writeSampleData();
-        reader.read(LBA);
+        readBufferCommand.execute(new ReadCommandContext(LBA));
 
         int start = LBA * 10;
         int end = Math.min(start + 10, SAMPLE_DATA.length());
@@ -89,7 +94,7 @@ class SSDActionTest {
     @ValueSource(ints = {5, 50, 99})
     void 기록이_한적이_없는_LBA를_읽으면_0X00000000으로_읽힌다(int LBA) throws IOException {
         writeSampleData();
-        reader.read(LBA);
+        readBufferCommand.execute(new ReadCommandContext(LBA));
 
         String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
         assertThat(output).isEqualTo(DEFAULT_VALUE);
@@ -99,10 +104,10 @@ class SSDActionTest {
     @Disabled
     void 파일_Write시_파일이_없으면_초기화() throws Exception {
         // arrange
-        Writer ssdWriter = new Writer();
+        WriteCommand ssdWriteCommand = new WriteCommand();
 
         // act
-        ssdWriter.write(TEST_LBA_ADDRESS, WRITE_TEST_VALUE);
+        ssdWriteCommand.execute(new WriteCommandContext(TEST_LBA_ADDRESS, WRITE_TEST_VALUE));
         RandomAccessFile raf = new RandomAccessFile(SSDConstants.SSD_NAND_FILE, "r");
         raf.seek(0);
         byte[] buf = new byte[SSDConstants.BLOCK_SIZE];
@@ -118,7 +123,7 @@ class SSDActionTest {
         // arrange
 
         // act
-        writer.write(TEST_LBA_ADDRESS, WRITE_TEST_VALUE);
+        writeCommand.execute(new WriteCommandContext(TEST_LBA_ADDRESS, WRITE_TEST_VALUE));
         RandomAccessFile raf = new RandomAccessFile(SSDConstants.SSD_NAND_FILE, "r");
         raf.seek(3 * SSDConstants.BLOCK_SIZE);
         byte[] buf = new byte[SSDConstants.BLOCK_SIZE];
@@ -139,8 +144,8 @@ class SSDActionTest {
         Files.createFile(folder.resolve("4_E_4_1"));
         Files.createFile(folder.resolve("5_W_5_0x1234ABCD"));
 
-        Flusher ssdFlusher = new Flusher();
-        ssdFlusher.flush();
+        FlushCommand flushCommand = new FlushCommand();
+        flushCommand.execute(new FlushCommandContext());
         RandomAccessFile raf = new RandomAccessFile(SSDConstants.SSD_NAND_FILE, "r");
         raf.seek(1 * SSDConstants.BLOCK_SIZE);
         byte[] buf = new byte[SSDConstants.BLOCK_SIZE];
@@ -175,8 +180,8 @@ class SSDActionTest {
         Files.createFile(folder.resolve("4_E_4_1"));
         Files.createFile(folder.resolve("5_empty"));
 
-        Flusher ssdFlusher = new Flusher();
-        ssdFlusher.flush();
+        FlushCommand flushCommand = new FlushCommand();
+        flushCommand.execute(new FlushCommandContext());
         RandomAccessFile raf = new RandomAccessFile(SSDConstants.SSD_NAND_FILE, "r");
         raf.seek(5 * SSDConstants.BLOCK_SIZE);
         byte[] buf = new byte[SSDConstants.BLOCK_SIZE];
