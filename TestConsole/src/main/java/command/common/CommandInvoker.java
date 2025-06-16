@@ -25,6 +25,6 @@ public class CommandInvoker {
     }
 
     public boolean hasCommand(String commandName) {
-        return commands.containsKey(commandName);
+        return commands.containsKey(commandName.toLowerCase());
     }
 }
