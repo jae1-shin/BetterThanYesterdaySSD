@@ -35,7 +35,8 @@
 ### ❓ How to Use
 ---  /JarLibs/shell.jar , /JarLibs/ssd.jar 파일을 아래 구조로 배치하여 실행 
 
-```Test Console
+- 폴더 구조
+```Folder
 ├── Console
 │   └── shell.jar
 └── JarLibs
