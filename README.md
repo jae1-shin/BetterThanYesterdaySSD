@@ -33,8 +33,21 @@
 
 
 ### ❓ How to Use
----
+---  /JarLibs/shell.jar , /JarLibs/ssd.jar 파일을 아래 구조로 배치하여 실행 
 
+```Test Console
+├── Console
+│   └── shell.jar
+└── JarLibs
+│   └── ssd.jar
+
+```
+
+실행 방법
+1. 테스트 콘솔 java -jar shell.jar
+2. 러너 스크립트 java -jar shell.jar ".\shell_script.txt" 
+
+![image](https://github.com/user-attachments/assets/25526bc7-c645-4af8-ac8c-1b7c9e2759f9)
 
 
 ### ✏️ Commit Convention
