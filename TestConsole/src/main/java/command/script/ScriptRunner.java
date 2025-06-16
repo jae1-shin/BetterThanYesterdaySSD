@@ -30,7 +30,7 @@ public class ScriptRunner implements RunMode {
         CommandFactory factory = new CommandFactory();
         CommandInvoker invoker = new CommandInvoker();
 
-        CommandRegistrar.registerConsoleCommands(invoker, factory, service);
+        CommandRegistrar.registerScriptCommands(invoker, factory, service);
 
         List<String> scriptNames;
         try {
@@ -54,13 +54,16 @@ public class ScriptRunner implements RunMode {
 
     private boolean isValidScriptNames(List<String> scriptNames, CommandInvoker invoker) {
         if (scriptNames.isEmpty()) return false;
+
+        int scriptCount = scriptNames.size();
+        int validScriptCount = 0;
         for (String script : scriptNames) {
             if (invoker.hasCommand(script)) {
-                return true;
+                validScriptCount++;
             }
         }
 
-        return false;
+        return validScriptCount == scriptCount;
     }
 
     private boolean fileExists(String fileName) {
