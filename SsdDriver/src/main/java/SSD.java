@@ -1,5 +1,5 @@
-import command.CommandContext;
-import command.CommandFactory;
+import command.CommandService;
+import command.context.CommandContextFactory;
 import command.validation.CommandValidator;
 import command.validation.CommandValidatorFactory;
 import common.SSDConstants;
@@ -28,8 +28,7 @@ public class SSD {
         }
 
         try {
-            CommandContext commandContext = BufferUtil.getCommandFromSsdArgs(args);
-            CommandFactory.execute(commandContext);
+            CommandService.execute(CommandContextFactory.getCommandContext(args));
         } catch (Exception e) {
             // ignore
         }

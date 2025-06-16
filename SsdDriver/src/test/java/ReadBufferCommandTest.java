@@ -1,5 +1,5 @@
-import command.buffer.BufferReader;
-import command.impl.Reader;
+import command.impl.buffer.ReadBufferCommand;
+import command.context.ReadCommandContext;
 import common.SSDConstants;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,18 +14,17 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BufferReaderTest {
-    private BufferReader reader;
+class ReadBufferCommandTest {
+    private ReadBufferCommand reader;
 
     @BeforeEach
     void setup() throws Exception {
-        Reader ssdReader = new Reader();
-        reader = new BufferReader(ssdReader);
+        reader = new ReadBufferCommand();
         writeDefaultValue();
 
-        createFile("1_W_10_0xAAAA_test");
-        createFile("2_E_10_2_test");
-        createFile("3_W_11_0xBBBB_test");
+        createFile("1_W_10_0xAAAABBBB");
+        createFile("2_E_10_2");
+        createFile("3_W_11_0xBBBBAAAA");
     }
 
     void writeDefaultValue() throws IOException {
@@ -42,14 +41,21 @@ class BufferReaderTest {
     }
 
     @Test
-    void 버퍼에서_먼저_읽기_성공() {
-        assertEquals("0x00000000", reader.read(10));
-        assertEquals("0xBBBB", reader.read(11));
+    void 버퍼에서_먼저_읽기_성공() throws IOException {
+        reader.execute(new ReadCommandContext(10));
+        String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
+        assertEquals("0x00000000", output);
+
+        reader.execute(new ReadCommandContext(11));
+        output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
+        assertEquals("0xBBBBAAAA", output);
     }
 
     @Test
-    void 버퍼에_없으면_SSD에서_읽기_성공() {
-        assertEquals(SSDConstants.DEFAULT_DATA, reader.read(12));
+    void 버퍼에_없으면_SSD에서_읽기_성공() throws IOException {
+        reader.execute(new ReadCommandContext(12));
+        String output = Files.readString(Paths.get(SSDConstants.OUTPUT_FILE_PATH));
+        assertEquals(SSDConstants.DEFAULT_DATA, output);
     }
 
     @AfterEach

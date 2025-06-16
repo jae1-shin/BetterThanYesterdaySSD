@@ -1,11 +1,11 @@
-package command.buffer;
+package command.impl.buffer;
 
 import command.Command;
-import command.CommandContext;
+import command.context.CommandContext;
 
 import java.io.IOException;
 
-public class BufferWriter implements Command {
+public class EraseBufferCommand implements Command {
 
     @Override
     public void execute(CommandContext commandContext) throws IOException {

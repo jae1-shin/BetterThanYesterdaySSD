@@ -1,5 +1,7 @@
 package command;
 
+import command.context.CommandContext;
+
 import java.io.IOException;
 
 public interface Command {
